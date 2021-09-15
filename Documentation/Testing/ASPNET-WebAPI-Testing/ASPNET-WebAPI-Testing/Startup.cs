@@ -1,5 +1,6 @@
 using ASPNET_WebAPI_Testing.Models;
 using ASPNET_WebAPI_Testing.Repositories;
+using ASPNET_WebAPI_Testing.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -9,11 +10,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace ASPNET_WebAPI_Testing
@@ -30,13 +34,32 @@ namespace ASPNET_WebAPI_Testing
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //debug
+            IdentityModelEventSource.ShowPII = true;
+
             //enable all access CORS
             services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
+
+            //JWT Token
+            services.AddAuthentication().AddJwtBearer(cfg =>
+            {
+                cfg.RequireHttpsMetadata = false;
+                cfg.SaveToken = true;
+
+                cfg.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["AppSettings:JwtSecret"])),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
 
             //JSON Serializer
             services.AddControllersWithViews().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore).
                 AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
 
+            services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IBookRepository, BookRepository>();
             services.AddDbContext<BookContext>(options => options.UseSqlServer(_configuration.GetConnectionString("SQL_BooksDatabase")));
             services.AddControllers();
@@ -68,6 +91,8 @@ namespace ASPNET_WebAPI_Testing
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {
