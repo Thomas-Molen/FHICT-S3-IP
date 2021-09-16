@@ -1,5 +1,7 @@
 ﻿using ASPNET_WebAPI_Testing.Models;
 using ASPNET_WebAPI_Testing.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -12,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace ASPNET_WebAPI_Testing.Controllers
 {
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ApiController]
     [Route("api/[controller]")]
     public class BooksController : ControllerBase

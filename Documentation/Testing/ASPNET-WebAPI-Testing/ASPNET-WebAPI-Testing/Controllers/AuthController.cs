@@ -31,7 +31,6 @@ namespace ASPNET_WebAPI_Testing.Controllers
         [HttpPost("google")]
         public async Task<IActionResult> Google([FromBody]UserView userView)
         {
-            Console.WriteLine("I GOT INTO THE API CALL");
             try
             {
                 Console.WriteLine("TokenID = " + userView.tokenId);
@@ -64,14 +63,6 @@ namespace ASPNET_WebAPI_Testing.Controllers
                 BadRequest(ex.Message);
             }
             return BadRequest();
-        }
-
-        [AllowAnonymous]
-        [HttpPost("googleTest")]
-        public async Task<IActionResult> GoogleTest([FromBody] UserView userView)
-        {
-            Console.WriteLine("HERE TAKE THIS: " + userView.tokenId);
-            return Ok();
         }
     }
 }
