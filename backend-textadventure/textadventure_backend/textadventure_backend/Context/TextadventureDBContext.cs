@@ -19,12 +19,12 @@ namespace textadventure_backend.Context
 
         }
 
-        public virtual DbSet<users> users { get; set; }
+        public virtual DbSet<Users> Users { get; set; }
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<users>(entity =>
+            modelBuilder.Entity<Users>(entity =>
             {
                 entity.Property(model => model.id).HasColumnName("id");
 

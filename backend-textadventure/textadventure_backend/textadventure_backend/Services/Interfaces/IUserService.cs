@@ -8,6 +8,7 @@ namespace textadventure_backend.Services.Interfaces
 {
     public interface IUserService
     {
-        Task<IEnumerable<users>> GetUsers();
+        Task<VerificationResponse> Register(RegisterRequest request);
+        Task<VerificationResponse> Login(LoginRequest request);
     }
 }

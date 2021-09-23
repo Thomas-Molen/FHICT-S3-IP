@@ -17,13 +17,36 @@ namespace textadventure_backend.Controllers
         public UserController(IUserService _userService)
         {
             userService = _userService;
-            Console.WriteLine("Got into the controller");
         }
 
-        [HttpGet]
-        public async Task<IEnumerable<users>> GetUsers()
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] RegisterRequest model)
         {
-            return await userService.GetUsers();
+            try
+            {
+                var response = await userService.Register(model);
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequest model)
+        {
+            try
+            {
+                var response = await userService.Login(model);
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

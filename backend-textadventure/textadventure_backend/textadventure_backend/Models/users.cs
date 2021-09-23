@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace textadventure_backend.Models
 {
-    public class users : DefaultModel
+    public class Users : DefaultModel
     {
         public string email { get; set; }
         public string username { get; set; }
@@ -15,16 +15,16 @@ namespace textadventure_backend.Models
         [JsonIgnore]
         public string password { get; set; }
 
-        public users()
+        public Users()
         {
 
         }
 
-        public users(string _email, string _password, string _username)
+        public Users(string _email, string _username, string _password)
         {
             email = _email;
-            password = _password;
             username = _username;
+            password = _password;
         }
     }
 }

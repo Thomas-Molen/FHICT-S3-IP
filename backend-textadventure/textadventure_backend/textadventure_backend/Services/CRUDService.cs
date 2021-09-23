@@ -20,10 +20,10 @@ namespace textadventure_backend.Services
 
         public virtual async Task<T> Create(T entity)
         {
-            using (var _context = contextFactory.CreateDbContext())
+            using (var context = contextFactory.CreateDbContext())
             {
-                var created = await _context.Set<T>().AddAsync(entity);
-                await _context.SaveChangesAsync();
+                var created = await context.Set<T>().AddAsync(entity);
+                await context.SaveChangesAsync();
 
                 return created.Entity;
             }
@@ -31,11 +31,11 @@ namespace textadventure_backend.Services
 
         public virtual async Task<T> Delete(int id)
         {
-            using (var _context = contextFactory.CreateDbContext())
+            using (var context = contextFactory.CreateDbContext())
             {
-                var entity = await _context.Set<T>().FirstOrDefaultAsync(model => model.id == id);
-                _context.Set<T>().Remove(entity);
-                await _context.SaveChangesAsync();
+                var entity = await context.Set<T>().FirstOrDefaultAsync(model => model.id == id);
+                context.Set<T>().Remove(entity);
+                await context.SaveChangesAsync();
 
                 return entity;
             }
@@ -43,18 +43,18 @@ namespace textadventure_backend.Services
 
         public virtual async Task<T> Find(int id)
         {
-            using (var _context = contextFactory.CreateDbContext())
+            using (var context = contextFactory.CreateDbContext())
             {
-                var entity = await _context.Set<T>().FirstOrDefaultAsync(model => model.id == id);
+                var entity = await context.Set<T>().FirstOrDefaultAsync(model => model.id == id);
                 return entity;
             }
         }
 
         public virtual async Task<IEnumerable<T>> Get()
         {
-            using (var _context = contextFactory.CreateDbContext())
+            using (var context = contextFactory.CreateDbContext())
             {
-                var entity = await _context.Set<T>().ToListAsync();
+                var entity = await context.Set<T>().ToListAsync();
                 return entity;
             }
         }
