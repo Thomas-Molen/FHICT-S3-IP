@@ -332,9 +332,9 @@ ASALocalRun/
 
 # Local History for Visual Studio
 .localhistory/
-net_core_backend/net_core_backend/appsettings.json
-net_core_backend/net_core_backend/appsettings.Development.json
-net_core_backend/backend_testing_xunit/appsettings.test.json
+backend-textadventure/textadventure_backend/textadventure_backend/appsettings.json
+backend-textadventure/textadventure_backend/textadventure_backend/appsettings.Development.json
+backend-textadventure/textadventure_backend_testing/textadventure_backend_testing/appsettings.test.json
 
 # dependencies
 /node_modules
