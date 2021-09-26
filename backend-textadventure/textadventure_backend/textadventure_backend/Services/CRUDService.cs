@@ -33,7 +33,7 @@ namespace textadventure_backend.Services
         {
             using (var context = contextFactory.CreateDbContext())
             {
-                var entity = await context.Set<T>().FirstOrDefaultAsync(model => model.id == id);
+                var entity = await context.Set<T>().FirstOrDefaultAsync(model => model.Id == id);
                 context.Set<T>().Remove(entity);
                 await context.SaveChangesAsync();
 
@@ -45,7 +45,7 @@ namespace textadventure_backend.Services
         {
             using (var context = contextFactory.CreateDbContext())
             {
-                var entity = await context.Set<T>().FirstOrDefaultAsync(model => model.id == id);
+                var entity = await context.Set<T>().FirstOrDefaultAsync(model => model.Id == id);
                 return entity;
             }
         }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,7 @@ namespace textadventure_backend.Controllers
             try
             {
                 var response = await userService.Register(model);
+                setTokenCookie(response.RefreshToken);
 
                 return Ok(response);
             }
@@ -40,6 +42,7 @@ namespace textadventure_backend.Controllers
             try
             {
                 var response = await userService.Login(model);
+                setTokenCookie(response.RefreshToken);
 
                 return Ok(response);
             }
@@ -47,6 +50,16 @@ namespace textadventure_backend.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        private void setTokenCookie(string token)
+        {
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Expires = DateTime.UtcNow.AddDays(7)
+            };
+            Response.Cookies.Append("refreshToken", token, cookieOptions);
         }
     }
 }

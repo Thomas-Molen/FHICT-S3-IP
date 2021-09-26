@@ -26,20 +26,20 @@ namespace textadventure_backend.Context
         {
             modelBuilder.Entity<Users>(entity =>
             {
-                entity.Property(model => model.id).HasColumnName("id");
+                entity.Property(model => model.Id).HasColumnName("id");
 
-                entity.Property(model => model.email).HasColumnName("email")
+                entity.Property(model => model.Email).HasColumnName("email")
                     .HasMaxLength(100)
                     .IsRequired();
 
-                entity.Property(model => model.username).HasColumnName("username")
+                entity.Property(model => model.Username).HasColumnName("username")
                     .HasMaxLength(30)
                     .IsRequired();
 
-                entity.Property(model => model.admin).HasColumnName("admin")
+                entity.Property(model => model.Admin).HasColumnName("admin")
                     .HasDefaultValue(0);
 
-                entity.Property(model => model.password).HasColumnName("password")
+                entity.Property(model => model.Password).HasColumnName("password")
                     .HasMaxLength(200)
                     .IsRequired();
             });

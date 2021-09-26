@@ -14,18 +14,15 @@ namespace textadventure_backend.Controllers
     [Route("api/[controller]")]
     public class TestingController : ControllerBase
     {
-        private readonly ICRUDService<Users> crudService;
 
-        public TestingController(ICRUDService<Users> _crudService)
+        public TestingController()
         {
-            crudService = _crudService;
         }
 
-       [HttpGet]
-       public async Task<IActionResult> GetUsers()
+        [HttpGet]
+        public async Task<IActionResult> GetUsers()
         {
-            var users = await crudService.Get();
-            return Ok(users);
+            return Ok("hello!");
         }
     }
 }
