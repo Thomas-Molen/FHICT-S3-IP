@@ -18,7 +18,7 @@ namespace textadventure_backend.Models
         public string Token { get; set; }
         public DateTime ExpiresAt { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public DateTime RevokedAt { get; set; }
+        public DateTime? RevokedAt { get; set; } = null;
         public bool Active { get; set; } = true;
         public int UserId { get; set; }
 
@@ -28,7 +28,7 @@ namespace textadventure_backend.Models
         public bool Expired => DateTime.UtcNow >= ExpiresAt;
 
         [NotMapped]
-        public bool Useable => RevokedAt == null && !Expired;
+        public bool Useable => RevokedAt == null && !Expired && Active == true;
 
         public RefreshTokens()
         {

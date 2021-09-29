@@ -30,8 +30,9 @@ namespace textadventure_backend.Controllers
 
                 return Ok(response);
             }
-            catch (Exception ex)
+            catch (Microsoft.EntityFrameworkCore.DbUpdateException ex)
             {
+                var exception = ex;
                 return BadRequest(ex.Message);
             }
         }
@@ -57,7 +58,9 @@ namespace textadventure_backend.Controllers
             var cookieOptions = new CookieOptions
             {
                 HttpOnly = true,
-                Expires = DateTime.UtcNow.AddDays(7)
+                Expires = DateTime.UtcNow.AddMinutes(10),
+                SameSite = SameSiteMode.None,
+                Secure = true
             };
             Response.Cookies.Append("refreshToken", token, cookieOptions);
         }

@@ -42,17 +42,12 @@ namespace textadventure_backend.Services
                     BCrypt.Net.BCrypt.HashPassword(request.password)
                 );
 
-                // authentication successful so generate jwt token
-                var token = GenerateJwtToken(newUser);
-                var refreshToken = GenerateRefreshToken();
-
                 await db.AddAsync(newUser);
                 await db.SaveChangesAsync();
 
-                // save refresh token
-                newUser.RefreshTokens.Add(refreshToken);
-                db.Update(newUser);
-                db.SaveChanges();
+                // authentication successful so generate tokens
+                var token = GenerateJwtToken(newUser);
+                var refreshToken = await GenerateRefreshToken(newUser);
 
                 return new VerificationResponse(newUser, token, refreshToken.Token);
             }
@@ -62,7 +57,7 @@ namespace textadventure_backend.Services
         {
             using (var db = contextFactory.CreateDbContext())
             {
-                Users user = await db.Users.FirstOrDefaultAsync(u => u.Email == request.email);
+                Users user = await db.Users.Include(u => u.RefreshTokens).FirstOrDefaultAsync(u => u.Email == request.email);
 
                 if (user == null)
                 {
@@ -76,19 +71,14 @@ namespace textadventure_backend.Services
 
                 // authentication successful so generate jwt token
                 var token =  GenerateJwtToken(user);
-                var refreshToken = GenerateRefreshToken();
-
-                // save refresh token
-                user.RefreshTokens.Add(refreshToken);
-                db.Update(user);
-                db.SaveChanges();
+                var refreshToken = await GenerateRefreshToken(user);
 
                 return new VerificationResponse(user, token, refreshToken.Token);
             }
         }
 
         //JWT
-        public VerificationResponse RefreshToken(string token)
+        /*public async Task<VerificationResponse> RenewTokens(string token)
         {
             using (var db = contextFactory.CreateDbContext())
             {
@@ -106,46 +96,69 @@ namespace textadventure_backend.Services
                 }
 
                 // replace old refresh token with a new one and save
-                var newRefreshToken = GenerateRefreshToken();
-                refreshToken.RevokedAt = DateTime.UtcNow;
-                user.RefreshTokens.Add(newRefreshToken);
-                db.Users.Update(user);
-                db.SaveChanges();
+                var newRefreshToken = GenerateRefreshToken(user);
+
+                var activeRefreshTokens = db.Entry(user).Collection(u => u.RefreshTokens).Query().Where(rt => rt.Useable == true).ToList();
+                activeRefreshTokens.ForEach(delegate (RefreshTokens refreshToken) 
+                {
+                    refreshToken.RevokedAt = DateTime.UtcNow;
+                });
+
+                await db.AddAsync(newRefreshToken);
+                await db.SaveChangesAsync();
 
                 // generate new jwt
                 var jwtToken = GenerateJwtToken(user);
 
                 return new VerificationResponse(user, jwtToken, newRefreshToken.Token);
             }
-        }
+        }*/
 
         private string GenerateJwtToken(Users user)
         {
-            // generate token that is valid for 7 days
+            // generate token that is valid for x days
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(appSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()) }),
-                Expires = DateTime.UtcNow.AddDays(7),
+                Expires = DateTime.UtcNow.AddMinutes(5),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
 
-        private RefreshTokens GenerateRefreshToken()
+        private async Task<RefreshTokens> GenerateRefreshToken(Users user)
         {
             using (var rngCryptoServiceProvider = new RNGCryptoServiceProvider())
+            using (var db = contextFactory.CreateDbContext())
             {
                 var randomBytes = new byte[64];
                 rngCryptoServiceProvider.GetBytes(randomBytes);
-                return new RefreshTokens
+
+                if (user.RefreshTokens != null)
                 {
-                    Token = Convert.ToBase64String(randomBytes),
-                    ExpiresAt = DateTime.UtcNow.AddDays(7),
-                    CreatedAt = DateTime.UtcNow
-                };
+                    user.RefreshTokens.ToList().ForEach(delegate (RefreshTokens refreshToken)
+                    {
+                        if (refreshToken.Useable)
+                        {
+                            refreshToken.RevokedAt = DateTime.UtcNow;
+                            db.Update(refreshToken);
+                        }
+                    });
+                }
+                
+                var newRefreshToken = new RefreshTokens(
+                    user,
+                    Convert.ToBase64String(randomBytes),
+                    DateTime.UtcNow.AddMinutes(10)
+                );
+
+                await db.AddAsync(newRefreshToken);
+                await db.SaveChangesAsync();
+
+                return newRefreshToken;
             }
         }
     }

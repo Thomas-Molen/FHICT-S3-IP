@@ -155,7 +155,7 @@ namespace textadventure_backend.Context
                 entity.Property(model => model.PositionX).HasColumnName("position_x")
                     .IsRequired();
 
-                entity.Property(model => model.PositionX).HasColumnName("position_y")
+                entity.Property(model => model.PositionY).HasColumnName("position_y")
                     .IsRequired();
 
                 entity.Property(model => model.Event).HasColumnName("event")
@@ -243,10 +243,10 @@ namespace textadventure_backend.Context
                 entity.Property(model => model.ExpiresAt).HasColumnName("expires_at")
                     .IsRequired();
 
-                entity.Property(model => model.ExpiresAt).HasColumnName("created_at")
+                entity.Property(model => model.CreatedAt).HasColumnName("created_at")
                     .IsRequired();
 
-                entity.Property(model => model.ExpiresAt).HasColumnName("revoked_at");
+                entity.Property(model => model.RevokedAt).HasColumnName("revoked_at");
 
                 entity.Property(model => model.Active).HasColumnName("active")
                     .IsRequired()

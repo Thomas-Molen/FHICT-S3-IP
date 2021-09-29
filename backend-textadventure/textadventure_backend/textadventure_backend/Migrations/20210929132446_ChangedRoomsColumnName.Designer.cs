@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using textadventure_backend.Context;
 
 namespace textadventure_backend.Migrations
 {
     [DbContext(typeof(TextadventureDBContext))]
-    partial class TextadventureDBContextModelSnapshot : ModelSnapshot
+    [Migration("20210929132446_ChangedRoomsColumnName")]
+    partial class ChangedRoomsColumnName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -203,16 +205,14 @@ namespace textadventure_backend.Migrations
                         .HasColumnName("active");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("created_at");
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("ExpiresAt")
                         .HasColumnType("datetime2")
-                        .HasColumnName("expires_at");
+                        .HasColumnName("revoked_at");
 
                     b.Property<DateTime?>("RevokedAt")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("revoked_at");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Token")
                         .IsRequired()
