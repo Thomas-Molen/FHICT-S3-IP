@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,16 +12,26 @@ namespace textadventure_backend.Context
     public class ContextFactory : IDesignTimeDbContextFactory<TextadventureDBContext>, IContextFactory
     {
         private readonly string connectionString;
-        public ContextFactory(string _connectionString)
+        public ContextFactory()
         {
-            connectionString = _connectionString;
+            string path = Directory.GetCurrentDirectory();
+
+            IConfigurationBuilder builder =
+                new ConfigurationBuilder()
+                    .SetBasePath(path)
+                    .AddJsonFile("appsettings.json");
+
+            IConfigurationRoot config = builder.Build();
+
+            connectionString = config.GetConnectionString("SQL_DB");
+
+        }
+        public ContextFactory(string connectionString)
+        {
+            this.connectionString = connectionString;
 
             var options = new DbContextOptionsBuilder<TextadventureDBContext>();
             options.UseSqlServer(connectionString);
-
-            var context = new TextadventureDBContext(options.Options);
-
-            context.Database.EnsureCreated();
         }
 
         public TextadventureDBContext CreateDbContext(string[] args = null)

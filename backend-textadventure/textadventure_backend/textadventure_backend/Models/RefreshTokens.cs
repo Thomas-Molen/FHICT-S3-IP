@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -8,7 +9,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace textadventure_backend.Models
 {
-    [Owned]
     public class RefreshTokens
     {
         [Key]
@@ -16,13 +16,31 @@ namespace textadventure_backend.Models
         public int Id { get; set; }
 
         public string Token { get; set; }
-        public DateTime Expires { get; set; }
-        public bool IsExpired => DateTime.UtcNow >= Expires;
-        public DateTime Created { get; set; }
-        public string CreatedByIp { get; set; }
-        public DateTime? Revoked { get; set; }
-        public string RevokedByIp { get; set; }
-        public string ReplacedByToken { get; set; }
-        public bool IsActive => Revoked == null && !IsExpired;
+        public DateTime ExpiresAt { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime RevokedAt { get; set; }
+        public bool Active { get; set; } = true;
+        public int UserId { get; set; }
+
+        public virtual Users User { get; set; }
+
+        [NotMapped]
+        public bool Expired => DateTime.UtcNow >= ExpiresAt;
+
+        [NotMapped]
+        public bool Useable => RevokedAt == null && !Expired;
+
+        public RefreshTokens()
+        {
+
+        }
+
+        public RefreshTokens(Users user, string token, DateTime expiresAt)
+        {
+            User = user;
+            UserId = user.Id;
+            Token = token;
+            ExpiresAt = expiresAt;
+        }
     }
 }

@@ -10,14 +10,12 @@ namespace textadventure_backend.Models
     {
         public string Email { get; set; }
         public string Username { get; set; }
-        public bool Admin { get; set; }
+        public bool Admin { get; set; } = false;
+        public virtual ICollection<RefreshTokens> RefreshTokens { get; set; }
+        public virtual ICollection<Adventurers> Adventurers { get; set; }
 
         [JsonIgnore]
         public string Password { get; set; }
-
-        [JsonIgnore]
-        public List<RefreshTokens> RefreshTokens { get; set; }
-
 
         public Users()
         {

@@ -44,7 +44,7 @@ namespace textadventure_backend.Services
 
                 // authentication successful so generate jwt token
                 var token = GenerateJwtToken(newUser);
-                var refreshToken = GenerateRefreshToken("ipadresslol");
+                var refreshToken = GenerateRefreshToken();
 
                 await db.AddAsync(newUser);
                 await db.SaveChangesAsync();
@@ -76,7 +76,7 @@ namespace textadventure_backend.Services
 
                 // authentication successful so generate jwt token
                 var token =  GenerateJwtToken(user);
-                var refreshToken = GenerateRefreshToken("ipadresslol");
+                var refreshToken = GenerateRefreshToken();
 
                 // save refresh token
                 user.RefreshTokens.Add(refreshToken);
@@ -100,16 +100,14 @@ namespace textadventure_backend.Services
                 } 
                 var refreshToken = user.RefreshTokens.Single(x => x.Token == token);
 
-                if (!refreshToken.IsActive)
+                if (!refreshToken.Useable)
                 {
                     throw new ArgumentException("Token is no longer active");   
                 }
 
                 // replace old refresh token with a new one and save
-                var newRefreshToken = GenerateRefreshToken("tmpipadress");
-                refreshToken.Revoked = DateTime.UtcNow;
-                refreshToken.RevokedByIp = "tmpipadress";
-                refreshToken.ReplacedByToken = newRefreshToken.Token;
+                var newRefreshToken = GenerateRefreshToken();
+                refreshToken.RevokedAt = DateTime.UtcNow;
                 user.RefreshTokens.Add(newRefreshToken);
                 db.Users.Update(user);
                 db.SaveChanges();
@@ -136,7 +134,7 @@ namespace textadventure_backend.Services
             return tokenHandler.WriteToken(token);
         }
 
-        private RefreshTokens GenerateRefreshToken(string ipAddress)
+        private RefreshTokens GenerateRefreshToken()
         {
             using (var rngCryptoServiceProvider = new RNGCryptoServiceProvider())
             {
@@ -145,9 +143,8 @@ namespace textadventure_backend.Services
                 return new RefreshTokens
                 {
                     Token = Convert.ToBase64String(randomBytes),
-                    Expires = DateTime.UtcNow.AddDays(7),
-                    Created = DateTime.UtcNow,
-                    CreatedByIp = ipAddress
+                    ExpiresAt = DateTime.UtcNow.AddDays(7),
+                    CreatedAt = DateTime.UtcNow
                 };
             }
         }
