@@ -28,49 +28,25 @@ namespace textadventure_backend.Models
 
         public Rooms()
         {
-
+            Adventurers = new HashSet<Adventurers>();
+            AdventurerMaps = new HashSet<AdventurerMaps>();
         }
 
-        public Rooms(Dungeons dungeon, Vector2 position, string _event, Interactions northInteraction, Interactions eastInteraction, Interactions southInteraction, Interactions westInteraction)
+        public Rooms(Vector2 position, string _event)
         {
-            Dungeon = dungeon;
-            DungeonId = dungeon.Id;
+            Adventurers = new HashSet<Adventurers>();
+            AdventurerMaps = new HashSet<AdventurerMaps>();
+
             PositionX = (int)position.X;
             PositionY = (int)position.Y;
             Event = _event;
-
-            NorthInteraction = northInteraction;
-            NorthInteractionId = northInteraction.Id;
-
-            EastInteraction = eastInteraction;
-            EastInteractionId = eastInteraction.Id;
-
-            SouthInteraction = southInteraction;
-            SouthInteractionId = southInteraction.Id;
-
-            WestInteraction = westInteraction;
-            WestInteractionId = westInteraction.Id;
         }
 
-        public Rooms(Dungeons dungeon, int positionX, int positionY, string _event, Interactions northInteraction, Interactions eastInteraction, Interactions southInteraction, Interactions westInteraction)
+        public Rooms(int positionX, int positionY, string _event)
         {
-            Dungeon = dungeon;
-            DungeonId = dungeon.Id;
             PositionX = positionX;
             PositionY = positionY;
             Event = _event;
-
-            NorthInteraction = northInteraction;
-            NorthInteractionId = northInteraction.Id;
-
-            EastInteraction = eastInteraction;
-            EastInteractionId = eastInteraction.Id;
-
-            SouthInteraction = southInteraction;
-            SouthInteractionId = southInteraction.Id;
-
-            WestInteraction = westInteraction;
-            WestInteractionId = westInteraction.Id;
         }
     }
 }

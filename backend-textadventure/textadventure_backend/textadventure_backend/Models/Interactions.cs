@@ -18,14 +18,20 @@ namespace textadventure_backend.Models
 
         public Interactions()
         {
-
+            RoomNorth = new HashSet<Rooms>();
+            RoomEast = new HashSet<Rooms>();
+            RoomSouth = new HashSet<Rooms>();
+            RoomWest = new HashSet<Rooms>();
         }
 
-        public Interactions(string type, NPCs npc)
+        public Interactions(string type)
         {
+            RoomNorth = new HashSet<Rooms>();
+            RoomEast = new HashSet<Rooms>();
+            RoomSouth = new HashSet<Rooms>();
+            RoomWest = new HashSet<Rooms>();
+
             Type = type;
-            NPC = npc;
-            NPCId = npc.Id;
         }
     }
 }

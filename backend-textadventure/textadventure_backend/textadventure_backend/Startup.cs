@@ -17,6 +17,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using textadventure_backend.Context;
 using textadventure_backend.Helpers;
+using textadventure_backend.Hubs;
 using textadventure_backend.Models;
 using textadventure_backend.Services;
 using textadventure_backend.Services.Interfaces;
@@ -35,9 +36,17 @@ namespace textadventure_backend
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
+            services.AddCors(options => options.AddPolicy("CorsPolicy", builder =>
+            {
+                builder.AllowAnyHeader()
+                .AllowAnyMethod()
+                .SetIsOriginAllowed((host) => true)
+                .AllowCredentials();
+            }));
 
             services.AddControllers();
+
+            services.AddSignalR();
 
             // configure strongly typed settings objects
             var appSettingsSection = Configuration.GetSection("AppSettings");
@@ -88,7 +97,7 @@ namespace textadventure_backend
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseCors("AllowAll");
+            app.UseCors("CorsPolicy");
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
@@ -108,10 +117,9 @@ namespace textadventure_backend
 
             app.UseAuthorization();
 
-            
-
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHub<GameHub>("/game");
                 endpoints.MapControllers();
             });
         }

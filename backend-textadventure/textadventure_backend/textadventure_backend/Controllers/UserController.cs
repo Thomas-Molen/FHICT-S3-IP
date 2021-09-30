@@ -53,6 +53,23 @@ namespace textadventure_backend.Controllers
             }
         }
 
+        [HttpPost("renew-token")]
+        public async Task<IActionResult> RenewToken()
+        {
+            var refreshToken = Request.Cookies["refreshToken"];
+            try
+            {
+                var response = await userService.RenewToken(refreshToken);
+                setTokenCookie(response.RefreshToken);
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         private void setTokenCookie(string token)
         {
             var cookieOptions = new CookieOptions

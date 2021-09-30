@@ -35,10 +35,8 @@ namespace textadventure_backend.Models
 
         }
 
-        public RefreshTokens(Users user, string token, DateTime expiresAt)
+        public RefreshTokens(string token, DateTime expiresAt)
         {
-            User = user;
-            UserId = user.Id;
             Token = token;
             ExpiresAt = expiresAt;
         }

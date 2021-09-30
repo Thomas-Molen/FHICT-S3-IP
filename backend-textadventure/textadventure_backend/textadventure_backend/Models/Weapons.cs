@@ -17,15 +17,15 @@ namespace textadventure_backend.Models
 
         Weapons()
         {
-
+            NPCs = new HashSet<NPCs>();
         }
 
-        Weapons(string name, int attack, Adventurers adventurer)
+        Weapons(string name, int attack)
         {
+            NPCs = new HashSet<NPCs>();
+
             Name = name;
             Attack = attack;
-            Adventurer = adventurer;
-            AdventurerId = adventurer.Id;
         }
     }
 }

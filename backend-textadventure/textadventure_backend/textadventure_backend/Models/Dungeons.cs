@@ -12,7 +12,8 @@ namespace textadventure_backend.Models
 
         public Dungeons()
         {
-
+            Rooms = new HashSet<Rooms>();
+            Adventurers = new HashSet<Adventurers>();
         }
     }
 }

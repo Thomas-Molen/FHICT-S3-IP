@@ -18,14 +18,5 @@ namespace textadventure_backend.Models
         {
 
         }
-
-        public AdventurerMaps(Adventurers adventurer, Rooms room)
-        {
-            Adventurer = adventurer;
-            AdventurerId = adventurer.Id;
-
-            Room = room;
-            RoomId = room.Id;
-        }
     }
 }

@@ -18,23 +18,15 @@ namespace textadventure_backend.Models
 
         public NPCs()
         {
-
+            Interaction = new HashSet<Interactions>();
         }
 
-        public NPCs(string conversation, int risk, Weapons weapon)
+        public NPCs(string conversation, int risk)
         {
-            Conversation = conversation;
-            Risk = risk;
-            Weapon = weapon;
-            WeaponId = weapon.Id;
-        }
+            Interaction = new HashSet<Interactions>();
 
-        public NPCs(string conversation, int risk, Items item)
-        {
             Conversation = conversation;
             Risk = risk;
-            Item = item;
-            ItemId = item.Id;
         }
     }
 }

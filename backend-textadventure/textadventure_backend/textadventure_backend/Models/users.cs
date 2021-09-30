@@ -19,11 +19,15 @@ namespace textadventure_backend.Models
 
         public Users()
         {
-
+            RefreshTokens = new HashSet<RefreshTokens>();
+            Adventurers = new HashSet<Adventurers>();
         }
 
         public Users(string _email, string _username, string _password)
         {
+            RefreshTokens = new HashSet<RefreshTokens>();
+            Adventurers = new HashSet<Adventurers>();
+
             Email = _email;
             Username = _username;
             Password = _password;

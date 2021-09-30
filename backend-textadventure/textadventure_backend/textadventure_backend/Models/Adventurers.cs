@@ -23,15 +23,9 @@ namespace textadventure_backend.Models
 
         public Adventurers()
         {
-
-        }
-
-        public Adventurers(Users user, Dungeons dungeon)
-        {
-            User = user;
-            UserId = user.Id;
-            Dungeon = dungeon;
-            DungeonId = dungeon.Id;
+            AdventurerMaps = new HashSet<AdventurerMaps>();
+            Weapons = new HashSet<Weapons>();
+            Items = new HashSet<Items>();
         }
     }
 }
