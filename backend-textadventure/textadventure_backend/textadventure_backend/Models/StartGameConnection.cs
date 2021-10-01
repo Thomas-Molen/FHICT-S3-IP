@@ -9,7 +9,6 @@ namespace textadventure_backend.Models
     {
         //Testing props
         public string User { get; set; }
-        public string Room { get; set; }
         //public Users User { get; set; }
         //public Dungeons Dungeon { get; set; }
     }

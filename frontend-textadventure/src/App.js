@@ -14,12 +14,12 @@ const App = () => {
       .configureLogging(LogLevel.Information)
       .build();
 
-      connection.on("ReceiveMessage", (user, message) => {
+      connection.on("ReceiveMessage", (message) => {
         console.log('message received: ', message);
       });
 
       await connection.start();
-      await connection.invoke("JoinGame", {user, room});
+      await connection.invoke("JoinGame", {user});
       setConnection(connection);
     } 
     catch (ex) 
