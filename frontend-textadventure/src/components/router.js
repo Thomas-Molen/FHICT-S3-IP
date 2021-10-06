@@ -1,7 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import * as Components from './index';
-import { ExampleComponent } from './index';
 import { useUserActions } from '../actions'
 import { useRecoilState } from 'recoil';
 import { textState } from '../state'
@@ -16,18 +15,9 @@ function FirstExampleComponent() {
             <p>Component 1</p>
             <p>{globalTextState}</p>
             <input onChange={(e) => textActions.setGlobalTextState(e.target.value)} />
-        </div>
-    )
-}
-
-function SecondExampleComponent() {
-    const [globalTextState] = useRecoilState(textState)
-
-
-    return (
-        <div>
-            <p>Component 2</p>
-            <p>{globalTextState}</p>
+            <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+            <br /><br /><br /><br /><br /><br /><br /><br />
+            <p>hello</p>
         </div>
     )
 }
@@ -36,11 +26,10 @@ const Routes = () => {
     return (
         <main>
             <Switch>
-                <Route exact path='/example' component={() => Components.ExampleComponent()} />
+                <Route exact path='/game' component={() => Components.ExampleComponent()} />
                 <Route path='/' component={() =>
                     <div>
                         <FirstExampleComponent />
-                        <SecondExampleComponent />
                     </div>} />
             </Switch>
         </main>

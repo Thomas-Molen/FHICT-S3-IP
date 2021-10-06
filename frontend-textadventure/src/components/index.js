@@ -1,2 +1,3 @@
 export * from './ExampleComponent/ExampleComponent'
-export * from './HubComponent/Lobby'
+export * from './PersistantComponent/NavigationComponent'
+export * from './PersistantComponent/FooterComponent'

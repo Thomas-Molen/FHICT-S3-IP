@@ -30,13 +30,6 @@ export function ExampleComponent() {
         <p className="example-text">
           Example component, have fun.
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-        </a>
         <p>{globalTextState}</p>
         <button onClick={() => {
           textActions.setGlobalTextState("My NEW TEXT")
