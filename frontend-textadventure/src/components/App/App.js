@@ -1,5 +1,5 @@
 import './App.css';
-import { NavigationComponent, FooterComponent } from '../';
+import { NavigationComponent, FooterComponent, IntroductionPageComponent } from '../';
 import { withRouter } from 'react-router-dom'
 import Routes from '../router'
 import { useHistory } from 'react-router-dom'
@@ -10,7 +10,7 @@ function App({ location }) {
 
   return (
     <div>
-      <NavigationComponent />
+      <IntroductionPageComponent />
       <Routes />
       <FooterComponent />
     </div>
