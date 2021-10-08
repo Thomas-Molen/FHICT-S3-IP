@@ -1,0 +1,19 @@
+.socialmediaBackground{
+    height: 25vh;
+    width: 100vw;
+    max-width:100%;
+    background-position: left;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.socialmediaHeader{
+    text-align: center;
+    font-weight: bold;
+    margin-top: 2%;
+    margin-bottom: 1%;
+}
+
+.socialmediaButton{
+    width: 4%;
+}

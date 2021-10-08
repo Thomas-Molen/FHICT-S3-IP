@@ -1,0 +1,13 @@
+.footerBackground{
+    background-color: #141516;
+    height: 8vh;
+    width: 100vw;
+    max-width:100%;
+}
+
+.copyrightText{
+    position: relative;
+    top: 13%;
+    color:white;
+    font-size: 1.5vw;
+}

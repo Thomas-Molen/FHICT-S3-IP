@@ -1,0 +1,38 @@
+.informationBackground{
+    height: 60vh;
+    width: 100vw;
+    max-width:100%;
+}
+
+.aboutInformation{
+    position: relative;
+    left: -25%;
+    top: 30%;
+    width: 32vw;
+}
+
+.InformationHeader{
+    font-size: 60px;
+    font-weight: bold;
+}
+
+.InformationFooter{
+    margin-top: -10px;
+    margin-bottom: 30px;
+    color: #BAB8B8;
+    font-size: 50px;
+}
+
+.InformationText{
+    margin-top: -10px;
+    padding-left: 10px;
+    font-size: 20px;
+    border-left: solid 2px #686868;
+}
+
+.contactInformation{
+    position: relative;
+    left: 25%;
+    top: 30%;
+    width: 32vw;
+}
