@@ -1,4 +1,5 @@
-.fullscreen {
+/* background */
+.background {
     background-image: url("../../Assets/IntroductionPageBG.svg");
     height: 100vh;
     width: 100%;
@@ -18,12 +19,102 @@
   .TAtitle {
     color: white;
     position: absolute;
-    left: 9%;
-    top: 2.5%;
-    font-size: 5vh;
+    left: 8%;
+    top: 1.5%;
+    font-size: 6vh;
   }
 
-  @media only screen and (max-width: 1200px) {
-    .TAtitle 
-    {display:none;}
-   }
+  .TAannouncement {
+    color: black;
+    position: absolute;
+    left: 35%;
+    top: 1.7%;
+    font-size: 3vh;
+
+    overflow: hidden;
+    border-right: .15em solid rgb(53, 53, 53);
+    white-space: nowrap;
+    margin: 0 auto;
+    letter-spacing: .1em;
+    animation: 
+      typing 3.5s steps(50, end),
+      blink-caret 1s step-end infinite;
+  }
+  
+  /* The typing effect */
+  @keyframes typing {
+    from { width: 0 }
+    to { width: 42% }
+  }
+  
+  /* The typewriter cursor effect */
+  @keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: rgb(53, 53, 53); }
+  }
+
+  .TASignupButton {
+    position: absolute;
+    top: 1%;
+    left: 92%;
+    height: 5vh;
+    width: 6.5vw;
+  }
+
+  .TASignupText{
+    position: absolute;
+    top: 5%;
+    left: 14%;
+    font-weight: bold;
+    font-size: 2.5vh
+  }
+
+
+/* Introduction */
+.introductionField {
+  position: absolute;
+  left: 10%;
+  top: 30%;
+}
+
+.introductionHeader {
+  color: white;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 60px;
+}
+
+.introductionFooter {
+  margin-top: -1%;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 55px;
+  color: #BAB8B8;
+}
+
+.introductionText {
+  margin-top: 2%;
+  width: 60%;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 30px;
+  line-height: 35px;
+  color: #E7E7E7;
+}
+
+.introductionSignupButton {
+  margin-right: 2%;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
