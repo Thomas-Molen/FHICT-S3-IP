@@ -12,7 +12,7 @@
   .TAlogo {
     content: url("../../Assets/Logo.svg");
     position: absolute;
-    left: 2%;
+    left: 1%;
     top: 1.5%;
     height: 8vh;
   }
@@ -20,7 +20,7 @@
   .TAtitle {
     color: white;
     position: absolute;
-    left: 8%;
+    left: 7%;
     top: 1.5%;
     font-size: 6vh;
   }
@@ -63,11 +63,10 @@
   }
 
   .TASignupText{
-    position: absolute;
-    top: 5%;
-    left: 14%;
+    position: relative;
     font-weight: bold;
-    font-size: 2.5vh
+    font-size: 2.5vh;
+    bottom: 10%;
   }
 
 .introductionField {
@@ -103,7 +102,6 @@
 
 .introductionSignupButton {
   margin-right: 2%;
-
 }
 
 

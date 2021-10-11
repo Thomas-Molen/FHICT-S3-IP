@@ -1,0 +1,21 @@
+.SignUpForm{
+    position: absolute;
+    background-color: white;
+    padding: 1%;
+    width: 15%;
+    z-index: 100;
+    top: 8%;
+    right: 1%
+}
+
+.signUpFormField{
+    margin-bottom: 5%;
+}
+
+.signUpSubmit{
+    margin-top: 5%;
+}
+
+.signUpSubmitButton{
+    margin-right: 5%;
+}

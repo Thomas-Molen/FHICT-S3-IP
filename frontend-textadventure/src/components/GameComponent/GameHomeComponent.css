@@ -9,8 +9,8 @@
   }
 
 .gameHeader{
-    position: absolute;
-    top: 120%;
+    position: relative;
+    top: -30%;
     text-align: center;
 }
 

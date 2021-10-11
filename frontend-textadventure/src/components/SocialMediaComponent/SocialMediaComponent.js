@@ -30,7 +30,5 @@ export function SocialMediaComponent() {
                     </a>
             </div>
         </div>
-
-
     )
 }
