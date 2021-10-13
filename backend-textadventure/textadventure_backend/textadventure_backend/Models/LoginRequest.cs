@@ -11,6 +11,6 @@ namespace textadventure_backend.Models
         [Required]
         public string email { get; set; }
         [Required]
-        public string passsword { get; set; }
+        public string password { get; set; }
     }
 }

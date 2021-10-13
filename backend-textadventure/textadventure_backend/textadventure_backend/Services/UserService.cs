@@ -58,7 +58,7 @@ namespace textadventure_backend.Services
                     throw new ArgumentException("Email does not exist");
                 }
 
-                if (!BCrypt.Net.BCrypt.Verify(request.passsword, user.Password))
+                if (!BCrypt.Net.BCrypt.Verify(request.password, user.Password))
                 {
                     throw new ArgumentException("Combination of email and password does not match");
                 }

@@ -1,4 +1,3 @@
-export * from './ExampleComponent/ExampleComponent'
 export * from './IntroductionComponent/IntroductionComponent'
 export * from './SocialMediaComponent/SocialMediaComponent'
 export * from './GameComponent/GameHomeComponent'

@@ -23,8 +23,8 @@ export function IntroductionComponent() {
                     Compete with other players on the official rankings or play for fun!
                 </p>
                 <div>
-                    <Button className="introductionSignupButton" variant="primary" size="lg" href="javascript:void(0)"><b>SIGN UP</b></Button>
-                    <Button variant="light" size="lg" href="javascript:void(0)"><b>PLAY</b></Button>
+                    <Button className="introductionSignupButton" variant="primary" size="lg" href="#"><b>SIGN UP</b></Button>
+                    <Button variant="light" size="lg" href="#"><b>PLAY</b></Button>
                 </div>
             </div>
         </div>

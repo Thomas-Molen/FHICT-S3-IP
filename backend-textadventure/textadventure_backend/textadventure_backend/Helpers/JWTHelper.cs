@@ -26,6 +26,11 @@ namespace textadventure_backend.Helpers
         //JWT
         public async Task<VerificationResponse> RenewTokens(string _refreshToken)
         {
+            if (_refreshToken == null)
+            {
+                throw new ArgumentException("No refreshToken given");
+            }
+
             using (var db = contextFactory.CreateDbContext())
             {
                 Users user = db.Users.FirstOrDefault(u => u.RefreshTokens.Any(rt => rt.Token == _refreshToken));
