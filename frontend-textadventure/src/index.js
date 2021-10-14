@@ -10,13 +10,11 @@ import { BrowserRouter } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.css';
 
 ReactDOM.render(
-  <React.StrictMode>
     <RecoilRoot>
       <BrowserRouter>
         <App />
       </BrowserRouter>
-    </RecoilRoot>
-  </React.StrictMode>,
+    </RecoilRoot>,
   document.getElementById('root')
 );
 

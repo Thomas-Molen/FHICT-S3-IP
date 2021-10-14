@@ -9,6 +9,7 @@ namespace textadventure_backend.Models
     public class VerificationResponse
     {
         public int Id { get; set; }
+        public string Username { get; set; }
         public string Email { get; set; }
         public bool Admin { get; set; }
         public string Token { get; set; }
@@ -19,6 +20,7 @@ namespace textadventure_backend.Models
         public VerificationResponse(Users user, string _token, string _refreshToken)
         {
             Id = user.Id;
+            Username = user.Username;
             Email = user.Email;
             Admin = user.Admin;
             Token = _token;

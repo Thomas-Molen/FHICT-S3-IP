@@ -1,7 +1,11 @@
 import './SignUpComponent.css'
 import { React, useState } from 'react';
+import { useJWTActions, useUserActions } from '../../actions'
 
 export function SignUpComponent({ isOpen }) {
+    const JWTActions = useJWTActions();
+    const UserAtions = useUserActions();
+
     const [isLogin, setIsLogin] = useState(true);
 
     const [email, setEmail] = useState("");
@@ -40,9 +44,15 @@ export function SignUpComponent({ isOpen }) {
             credentials: "include",
             body: JSON.stringify(body),
         })
-            .then(response => response.json())
+            .then(function (response) {
+                if (!response.ok) {
+                    throw Error(response.statusText);
+                }
+                return response.json();
+            })
             .then(data => {
-                console.log(data);
+                JWTActions.setGlobalJWTState(data.token);
+                UserAtions.setGlobalUserState({ user_id: data.id, username: data.username, email: data.email, admin: data.admin });
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -87,9 +97,15 @@ export function SignUpComponent({ isOpen }) {
                 credentials: "include",
                 body: JSON.stringify(body),
             })
-                .then(response => response.json())
+                .then(function (response) {
+                    if (!response.ok) {
+                        throw Error(response.statusText);
+                    }
+                    return response.json();
+                })
                 .then(data => {
-                    console.log(data);
+                    JWTActions.setGlobalJWTState(data.token);
+                    UserAtions.setGlobalUserState({ user_id: data.id, username: data.username, email: data.email, admin: data.admin });
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -98,7 +114,7 @@ export function SignUpComponent({ isOpen }) {
     }
 
     function checkPassword() {
-        if (registerPassword && repeatRegisterPassword && registerPassword == repeatRegisterPassword) {
+        if (registerPassword && repeatRegisterPassword && registerPassword === repeatRegisterPassword) {
             return true;
         }
         return false;

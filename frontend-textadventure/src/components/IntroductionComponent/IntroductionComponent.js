@@ -1,10 +1,13 @@
 import './IntroductionComponent.css'
-import React, { useState } from 'react';
+import React, { useReducer, useState } from 'react';
 import { Button } from 'react-bootstrap'
 import { SignUpComponent } from '..';
+import { JWTState, userState } from '../../state';
+import { useRecoilState } from 'recoil';
 
 export function IntroductionComponent() {
-
+    const [globalUserState] = useRecoilState(userState);
+    const [globalJWTState] = useRecoilState(JWTState)
     const [isSignUpOpen, setIsSignUpOpen] = useState(false);
     return (
         <div className="introductionBackground d-flex align-items-center justify-content-center">
@@ -12,8 +15,12 @@ export function IntroductionComponent() {
                 <a className="TAlogo" href="/"></a>
                 <h1 className="TAtitle">Text Adventure</h1>
                 <p className="TAannouncement">Welcome to the 0.1 launch. Sign in and play for free!</p>
-                <Button className="TASignupButton" variant="dark" size="lg" onClick={() => setIsSignUpOpen(!isSignUpOpen)}><p className="TASignupText">SIGN IN</p></Button>
-                <SignUpComponent isOpen={isSignUpOpen} className="LoginComponent"></SignUpComponent>
+                { globalUserState.user_id == null &&
+                <>
+                    <Button className="TASignupButton" variant="dark" size="lg" onClick={() => setIsSignUpOpen(!isSignUpOpen)}><p className="TASignupText">SIGN IN</p></Button>
+                    <SignUpComponent isOpen={isSignUpOpen} className="LoginComponent"></SignUpComponent>
+                </>
+                }
             </div>
             <div className="introductionField">
                 <h1 className="introductionHeader">Begin your adventure today!</h1>

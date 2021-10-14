@@ -65,7 +65,7 @@ namespace textadventure_backend.Helpers
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()) }),
-                Expires = DateTime.UtcNow.AddMinutes(2),
+                Expires = DateTime.UtcNow.AddHours(2),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
@@ -82,7 +82,7 @@ namespace textadventure_backend.Helpers
 
                 var newRefreshToken = new RefreshTokens(
                     Convert.ToBase64String(randomBytes),
-                    DateTime.UtcNow.AddMinutes(3)
+                    DateTime.UtcNow.AddDays(7)
                 );
 
                 user.RefreshTokens.Add(newRefreshToken);
