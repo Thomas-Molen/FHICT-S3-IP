@@ -7,7 +7,7 @@ import { useRecoilState } from 'recoil';
 
 export function IntroductionComponent() {
     const [globalUserState] = useRecoilState(userState);
-    const [globalJWTState] = useRecoilState(JWTState)
+    const [globalJWTState] = useRecoilState(JWTState);
     const [isSignUpOpen, setIsSignUpOpen] = useState(false);
     return (
         <div className="introductionBackground d-flex align-items-center justify-content-center">
