@@ -1,23 +1,16 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using textadventure_backend.Context;
 using textadventure_backend.Helpers;
 using textadventure_backend.Hubs;
-using textadventure_backend.Models;
 using textadventure_backend.Services;
 using textadventure_backend.Services.Interfaces;
 
@@ -35,13 +28,9 @@ namespace textadventure_backend
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(options => options.AddPolicy("CorsPolicy", builder =>
-            {
-                builder.AllowAnyHeader()
-                .AllowAnyMethod()
-                .SetIsOriginAllowed((host) => true)
-                .AllowCredentials();
-            }));
+            services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin()
+                                                            .AllowAnyMethod()
+                                                             .AllowAnyHeader()));
 
             services.AddControllers();
 
@@ -76,7 +65,7 @@ namespace textadventure_backend
 
             services.AddDbContext<TextadventureDBContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("SQL_DB"));
+                options.UseMySQL(Configuration.GetConnectionString("SQL_DB"));
             });
 
             services.AddSingleton<IContextFactory>(new ContextFactory(Configuration.GetConnectionString("SQL_DB")));
@@ -97,7 +86,7 @@ namespace textadventure_backend
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseCors("CorsPolicy");
+            app.UseCors("AllowAll");
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
