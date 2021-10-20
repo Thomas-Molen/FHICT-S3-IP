@@ -10,30 +10,48 @@ export function IntroductionComponent() {
     const [globalJWTState] = useRecoilState(JWTState);
     const [isSignUpOpen, setIsSignUpOpen] = useState(false);
     return (
-        <div className="introductionBackground d-flex align-items-center justify-content-center">
-            <div className="TAbar">
-                <a className="TAlogo" href="/"></a>
-                <h1 className="TAtitle">Text Adventure</h1>
-                <p className="TAannouncement">Welcome to the 0.1 launch. Sign in and play for free!</p>
-                { globalUserState.user_id == null &&
-                <>
-                    <Button className="TASignupButton" variant="dark" size="lg" onClick={() => setIsSignUpOpen(!isSignUpOpen)}><p className="TASignupText">SIGN IN</p></Button>
-                    <SignUpComponent isOpen={isSignUpOpen} className="LoginComponent"></SignUpComponent>
-                </>
-                }
-            </div>
-            <div className="introductionField">
-                <h1 className="introductionHeader">Begin your adventure today!</h1>
-                <h2 className="introductionFooter">Explore &amp; Discover</h2>
-                <p className="introductionText">
-                    Our new cloud technology will allow you to resume your adventure any time, any where.<br />
-                    Compete with other players on the official rankings or play for fun!
-                </p>
-                <div>
-                    <Button className="introductionSignupButton" variant="primary" size="lg" href="#"><b>SIGN UP</b></Button>
-                    <Button variant="light" size="lg" href="#"><b>PLAY</b></Button>
+        <>
+            <div className="introductionBackground container-fluid">
+                <div className="row">
+                    <div className="col-xl-6 col-sm-8 col-6 row">
+                        <div className="col-10 col-sm-2 col-xl-2">
+                            <a className="TAlogo" href="/"></a>
+                        </div>
+                        <div className="col-0 col-md-10 col-xl-10">
+                            <h1 className="TAtitle">Text Adventure</h1>
+                        </div>
+                    </div>
+                    <div className="col-xl-6 col-sm-4 col-6 row">
+                        <div className="col-xl-9 TAannouncementCol">
+                            <p className="TAannouncement">Welcome to the 0.1 launch. Sign in and play for free!</p>
+                        </div>
+                        <div className="col-xl-3 col-12 text-end">
+                            {globalUserState.user_id == null &&
+                                <>
+                                    <button type="button" className="btn btn-dark btn-lg signUpButton" onClick={() => setIsSignUpOpen(!isSignUpOpen)}>SIGN IN</button>
+                                    <div className="text-start">
+                                        <SignUpComponent isOpen={isSignUpOpen} className="LoginComponent"></SignUpComponent>
+                                    </div>
+                                </>
+                            }
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+            <div className="introductionContainer container-fluid">
+                <div className="row">
+                    <div className="offset-xl-1 col-xl-6 col-12 introductionInformation">
+                        <h1 className="introductionHeader">Begin your adventure today!</h1>
+                        <h2 className="introductionFooter">Explore &amp; Discover</h2>
+                        <p className="introductionText">
+                            Our new cloud technology will allow you to resume your adventure any time, any where.<br />
+                            Compete with other players on the official rankings or play for fun!
+                        </p>
+                        <Button className="introductionSignInButton" variant="light" size="lg" onClick={() => setIsSignUpOpen(!isSignUpOpen)}><b>LOG IN</b></Button>
+                        <Button className="" variant="primary" size="lg" href="#"><b>PLAY</b></Button>
+                    </div>
+                </div>
+            </div>
+        </>
     )
 }

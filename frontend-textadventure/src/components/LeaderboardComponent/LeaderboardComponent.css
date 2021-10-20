@@ -1,27 +1,22 @@
 .leaderboardBackground {
     background-image: url("../../Assets/LeaderboardPageBG.svg");
     height: 130vh;
-    width: 100vw;
-    max-width:100%;
     background-position: center;
     background-repeat: no-repeat;
-    background-size: cover;
 }
 
 .leaderboardHeader{
-    position: relative;
-    top: -40%;
     text-align: center;
 }
 
 .leaderboardHeaderText{
     color: white;
-    font-size: 4vw;
+    font-size: 80px;
     font-weight: bold;
 }
 
 .leaderboardFooterText{
     color: #BAB8B8;
-    font-size: 2.5vw;
+    font-size: 40px;
     margin-top: -10px;
 }

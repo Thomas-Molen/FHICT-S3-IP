@@ -1,28 +1,36 @@
 .introductionBackground {
     background-image: url("../../Assets/IntroductionPageBG.svg");
-    height: 100vh;
-    width: 100vw;
-    max-width:100%;
+    height: 65px;
     background-position: left;
     background-repeat: no-repeat;
     background-size: cover;
-    margin-bottom: -8%;
+  }
+
+  .introductionContainer{
+    max-height: 82vh;
+    background-color: #212529;
+    padding-bottom: 5%;
   }
 
   .TAlogo {
     content: url("../../Assets/Logo.svg");
-    position: absolute;
-    left: 1%;
-    top: 1.5%;
     height: 8vh;
+    margin-top: 2vh;
+    margin-left: 0.7vw;
   }
   
   .TAtitle {
     color: white;
-    position: absolute;
-    left: 7%;
-    top: 1.5%;
     font-size: 6vh;
+    margin-top: 2vh;
+  }
+
+  @media (max-width: 800px) 
+  {
+    .TAtitle
+      {
+          display: none;
+      }
   }
 
   .TAannouncement {
@@ -54,25 +62,33 @@
     50% { border-color: rgb(53, 53, 53); }
   }
 
-  .TASignupButton {
-    position: absolute;
-    top: 1%;
-    left: 92%;
-    height: 5vh;
-    width: 6.5vw;
-  }
+  @media (max-width: 1780px) 
+{
+  .TAannouncement
+    {
+        display: none;
+    }
+  .TAannouncementCol
+    {
+        visibility: none;
+    }
+}
 
-  .TASignupText{
-    position: relative;
-    font-weight: bold;
-    font-size: 2.5vh;
-    bottom: 10%;
-  }
+  @media (max-width: 1200px) 
+{
+  .TAannouncementCol
+    {
+        display: none;
+    }
+}
 
-.introductionField {
-  position: absolute;
-  left: 10%;
-  top: 30%;
+.signUpButton{
+  font-weight: bold !important;
+  margin-top: 10px;
+}
+
+.introductionInformation {
+  padding-top: 5vw;
 }
 
 .introductionHeader {
@@ -92,15 +108,23 @@
 
 .introductionText {
   margin-top: 2%;
-  width: 60%;
-  font-style: normal;
-  font-weight: normal;
+  max-width: 60%;
   font-size: 30px;
   line-height: 35px;
+  margin-left: 0.5vw;
+  margin-bottom: 3%;
   color: #E7E7E7;
 }
 
-.introductionSignupButton {
+@media (max-width: 500px) 
+{
+  .introductionText
+    {
+        display: none;
+    }
+}
+
+.introductionSignInButton{
   margin-right: 2%;
 }
 

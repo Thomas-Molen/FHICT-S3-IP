@@ -4,9 +4,9 @@ import React from 'react';
 export function InformationComponent() {
 
     return (
-        <div className="informationBackground container">
-            <div className="row">
-                <div className="col">
+        <div className="informationBackground container-fluid">
+            <div className="row informationRow">
+                <div className="col-0 col-xl-4 offset-xl-1">
                     <div className="aboutInformation">
                         <h1 className="InformationHeader">What is this game?</h1>
                         <h2 className="InformationFooter">Text-based Adventure</h2>
@@ -16,7 +16,7 @@ export function InformationComponent() {
                         </p>
                     </div>
                 </div>
-                <div className="col">
+                <div className="col-xl-4 offset-xl-2 col-0">
                     <div className="contactInformation">
                         <h1 className="InformationHeader">Contact us!</h1>
                         <h2 className="InformationFooter">Dev team</h2>
