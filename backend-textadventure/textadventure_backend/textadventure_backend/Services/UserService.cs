@@ -10,12 +10,12 @@ using Microsoft.AspNetCore.Http;
 
 namespace textadventure_backend.Services
 {
-    public class UserService : CRUDService<Users>, IUserService
+    public class UserService :  IUserService
     {
         private readonly IContextFactory contextFactory;
         private readonly JWTHelper JWT;
 
-        public UserService(IContextFactory _contextFactory, IOptions<AppSettings> _appSettings) : base(_contextFactory)
+        public UserService(IContextFactory _contextFactory, IOptions<AppSettings> _appSettings)
         {
             contextFactory = _contextFactory;
             JWT = new JWTHelper(_contextFactory, _appSettings);

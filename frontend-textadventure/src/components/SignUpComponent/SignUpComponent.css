@@ -7,6 +7,7 @@
     top: 8%;
     right: 1%;
     min-width: 200px;
+    font-size: 20px !important;
 }
 
 .signUpFormField{
@@ -19,4 +20,20 @@
 
 .signUpSubmitButton{
     margin-right: 5%;
+    font-size: 16px !important;
 }
+
+.signUpSwitchLink{
+    font-size: 16px !important;
+}
+
+::-webkit-input-placeholder {
+    font-size: 16px!important;
+ }
+ 
+ :-moz-placeholder { /* Firefox 18- */
+       font-size: 16px!important;
+ }
+ ::-moz-placeholder {  /* Firefox 19+ */
+       font-size: 16px!important;
+ }

@@ -60,7 +60,7 @@ namespace textadventure_backend.Migrations
                         .HasColumnType("int")
                         .HasColumnName("health");
 
-                    b.Property<int>("RoomId")
+                    b.Property<int?>("RoomId")
                         .HasColumnType("int");
 
                     b.Property<int>("UserId")
@@ -157,7 +157,7 @@ namespace textadventure_backend.Migrations
                     b.Property<string>("Conversation")
                         .IsRequired()
                         .HasMaxLength(5000)
-                        .HasColumnType("text")
+                        .HasColumnType("varchar(5000)")
                         .HasColumnName("conversation");
 
                     b.Property<int>("ItemId")
@@ -188,25 +188,26 @@ namespace textadventure_backend.Migrations
                         .HasColumnName("id");
 
                     b.Property<bool>("Active")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("tinyint(1)")
                         .HasDefaultValue(true)
                         .HasColumnName("active");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime")
+                        .HasColumnType("datetime(6)")
                         .HasColumnName("created_at");
 
                     b.Property<DateTime>("ExpiresAt")
-                        .HasColumnType("datetime")
+                        .HasColumnType("datetime(6)")
                         .HasColumnName("expires_at");
 
                     b.Property<DateTime?>("RevokedAt")
-                        .HasColumnType("datetime")
+                        .HasColumnType("datetime(6)")
                         .HasColumnName("revoked_at");
 
                     b.Property<string>("Token")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasColumnType("longtext")
                         .HasColumnName("token");
 
                     b.Property<int>("UserId")
@@ -278,6 +279,7 @@ namespace textadventure_backend.Migrations
                         .HasColumnName("id");
 
                     b.Property<bool>("Admin")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("tinyint(1)")
                         .HasDefaultValue(false)
                         .HasColumnName("admin");
@@ -367,8 +369,7 @@ namespace textadventure_backend.Migrations
                     b.HasOne("textadventure_backend.Models.Rooms", "Room")
                         .WithMany("Adventurers")
                         .HasForeignKey("RoomId")
-                        .HasConstraintName("FK_Adventurers_Rooms")
-                        .IsRequired();
+                        .HasConstraintName("FK_Adventurers_Rooms");
 
                     b.HasOne("textadventure_backend.Models.Users", "User")
                         .WithMany("Adventurers")

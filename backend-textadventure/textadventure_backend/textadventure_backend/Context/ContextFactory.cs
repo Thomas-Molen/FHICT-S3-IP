@@ -31,13 +31,13 @@ namespace textadventure_backend.Context
             this.connectionString = connectionString;
 
             var options = new DbContextOptionsBuilder<TextadventureDBContext>();
-            options.UseMySQL(connectionString);
+            options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
         }
 
         public TextadventureDBContext CreateDbContext(string[] args = null)
         {
             var options = new DbContextOptionsBuilder<TextadventureDBContext>();
-            options.UseMySQL(connectionString);
+            options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 
             return new TextadventureDBContext(options.Options);
         }

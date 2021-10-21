@@ -30,7 +30,7 @@ namespace textadventure_backend.Controllers
 
                 return Ok(response);
             }
-            catch (Microsoft.EntityFrameworkCore.DbUpdateException ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }

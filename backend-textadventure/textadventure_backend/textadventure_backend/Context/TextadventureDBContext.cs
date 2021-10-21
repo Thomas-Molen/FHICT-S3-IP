@@ -78,7 +78,8 @@ namespace textadventure_backend.Context
                    .WithMany(r => r.Adventurers)
                    .HasForeignKey(a => a.RoomId)
                    .OnDelete(DeleteBehavior.ClientSetNull)
-                   .HasConstraintName("FK_Adventurers_Rooms");
+                   .HasConstraintName("FK_Adventurers_Rooms")
+                   .IsRequired(false);
             });
 
             modelBuilder.Entity<AdventurerMaps>(entity =>

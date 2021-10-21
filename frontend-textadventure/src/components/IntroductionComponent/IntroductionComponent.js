@@ -14,10 +14,10 @@ export function IntroductionComponent() {
             <div className="introductionBackground container-fluid">
                 <div className="row">
                     <div className="col-xl-6 col-sm-8 col-6 row">
-                        <div className="col-10 col-sm-2 col-xl-2">
+                        <div className="col-10 col-sm-2 col-xl-1">
                             <a className="TAlogo" href="/"></a>
                         </div>
-                        <div className="col-0 col-md-10 col-xl-10">
+                        <div className="col-0 col-md-10 col-xl-11">
                             <h1 className="TAtitle">Text Adventure</h1>
                         </div>
                     </div>
@@ -47,8 +47,16 @@ export function IntroductionComponent() {
                             Our new cloud technology will allow you to resume your adventure any time, any where.<br />
                             Compete with other players on the official rankings or play for fun!
                         </p>
-                        <Button className="introductionSignInButton" variant="light" size="lg" onClick={() => setIsSignUpOpen(!isSignUpOpen)}><b>LOG IN</b></Button>
-                        <Button className="" variant="primary" size="lg" href="#"><b>PLAY</b></Button>
+                        {globalUserState.user_id == null &&
+                            <>
+                                <Button className="introductionSignInButton" variant="light" size="lg" onClick={() => setIsSignUpOpen(!isSignUpOpen)}><b>LOG IN</b></Button>
+                                <Button className="introductionPlayButton disabled" variant="primary" size="lg" href='javascript:void(0)'><b>PLAY</b></Button>
+                            </>
+                        }
+                        {globalUserState.user_id != null &&
+                            <Button className="introductionPlayButton" variant="primary" size="lg" onClick={() => window.scrollTo(0, 950)}><b>PLAY</b></Button>
+                        }
+
                     </div>
                 </div>
             </div>

@@ -45,7 +45,7 @@ export function SignUpComponent({ isOpen }) {
                         )
                     })()}
 
-                    <button type="button" className="btn btn-link" onClick={() => setIsLogin(!isLogin)}>create account</button>
+                    <button type="button" className="btn btn-link signUpSwitchLink" onClick={() => setIsLogin(!isLogin)}>create account</button>
                 </div>
             </div>
         )
@@ -113,7 +113,7 @@ export function SignUpComponent({ isOpen }) {
                     )
                 })()}
 
-                <button type="button" className="btn btn-link" onClick={() => setIsLogin(!isLogin)}>log in</button>
+                <button type="button" className="btn btn-link signUpSwitchLink" onClick={() => setIsLogin(!isLogin)}>log in</button>
             </div>
         </div>
     )

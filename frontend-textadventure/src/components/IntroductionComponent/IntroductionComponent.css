@@ -14,15 +14,16 @@
 
   .TAlogo {
     content: url("../../Assets/Logo.svg");
-    height: 8vh;
+    height: 75px;
     margin-top: 2vh;
     margin-left: 0.7vw;
   }
   
   .TAtitle {
     color: white;
-    font-size: 6vh;
+    font-size: 55px;
     margin-top: 2vh;
+    margin-left: 2.5vw;
   }
 
   @media (max-width: 800px) 
@@ -85,6 +86,7 @@
 .signUpButton{
   font-weight: bold !important;
   margin-top: 10px;
+  font-size: 22px !important;
 }
 
 .introductionInformation {
@@ -126,9 +128,12 @@
 
 .introductionSignInButton{
   margin-right: 2%;
+  font-size: 22px !important;
 }
 
-
+.introductionPlayButton{
+  font-size: 22px !important;
+}
 
 
 

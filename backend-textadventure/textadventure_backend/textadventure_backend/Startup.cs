@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using textadventure_backend.Context;
 using textadventure_backend.Helpers;
 using textadventure_backend.Hubs;
@@ -67,14 +68,9 @@ namespace textadventure_backend
                 };
             });
 
-            services.AddDbContext<TextadventureDBContext>(options =>
-            {
-                options.UseMySQL(Configuration.GetConnectionString("SQL_DB"));
-            });
-
             services.AddSingleton<IContextFactory>(new ContextFactory(Configuration.GetConnectionString("SQL_DB")));
-
             services.AddSingleton<IUserService, UserService>();
+            services.AddSingleton<IAdventurerService, AdventurerService>();
 
             services.AddHttpContextAccessor();
 
