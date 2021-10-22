@@ -26,7 +26,7 @@ export function IntroductionComponent() {
                             <p className="TAannouncement">Welcome to the 0.1 launch. Sign in and play for free!</p>
                         </div>
                         <div className="col-xl-3 col-12 text-end">
-                            {globalUserState.user_id == null &&
+                            {!globalUserState.user_id &&
                                 <>
                                     <button type="button" className="btn btn-dark btn-lg signUpButton" onClick={() => setIsSignUpOpen(!isSignUpOpen)}>SIGN IN</button>
                                     <div className="text-start">
