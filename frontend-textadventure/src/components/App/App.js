@@ -6,7 +6,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { JWTMiddleware } from '../JWTMiddleware';
 import authHook from '../../actions/useAuthHook'
 function App() {
-  const hook = authHook()
+  console.log("hello");
+  const hook = authHook();
   return (
     <div>
       <Routes />
