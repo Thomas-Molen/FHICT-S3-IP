@@ -7,7 +7,6 @@ import jwt_decode from "jwt-decode";
 
 export default function useAuthHook() {
     const globalJWTState = useRecoilValue(JWTState);
-    const [globalJWTState, setGlobalJWTState] = useRecoilState(JWTState);
     const setGlobalJWTState = useSetRecoilState(JWTState);
 
     const JWTActions = useJWTActions();
