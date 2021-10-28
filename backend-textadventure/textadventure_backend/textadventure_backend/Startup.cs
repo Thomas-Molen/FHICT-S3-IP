@@ -47,7 +47,9 @@ namespace textadventure_backend
 
             // configure jwt authentication
             var appSettings = appSettingsSection.Get<AppSettings>();
-            var key = System.Text.Encoding.ASCII.GetBytes(appSettings.Secret);
+
+            var key = System.Text.Encoding.ASCII.GetBytes(Configuration["AppSettings:Secret"]);
+
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
