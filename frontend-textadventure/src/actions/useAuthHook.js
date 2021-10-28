@@ -18,7 +18,7 @@ export default function useAuthHook() {
     
     async function RefreshJWT() {
         if (globalJWTState == "empty" || new Date() >= new Date(jwt_decode(globalJWTState).exp * 1000)) {
-            await fetch('https://localhost:5001/api/User/renew-token', {
+            await fetch('https://backendtextadventure.azurewebsites.net/api/User/renew-token', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
