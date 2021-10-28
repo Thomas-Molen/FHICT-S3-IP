@@ -19,10 +19,10 @@ export function GameHomeComponent() {
                 </div>
                 <div className="d-flex justify-content-center">
                     {globalUserState.user_id == null &&
-                        <Button variant="light" className="gameButton" disabled onClick={() => GetAdventurers('https://localhost:5001/api/Adventurer/get')}><p className="gameButtonText">C:\ Start</p></Button>
+                        <Button variant="light" className="gameButton" disabled><p className="gameButtonText">C:\ Start</p></Button>
                     }
                     {globalUserState.user_id != null &&
-                        <Button variant="light" className="gameButton" onClick={() => GetAdventurers('https://localhost:5001/api/Adventurer/get')}><p className="gameButtonText">C:\ Start</p></Button>
+                        <Button variant="light" className="gameButton" onClick={() => GetAdventurers('https://backendtextadventure.azurewebsites.net/api/Adventurer/get')}><p className="gameButtonText">C:\ Start</p></Button>
                     }
                 </div>
             </div>
