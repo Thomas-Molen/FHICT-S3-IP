@@ -1,6 +1,5 @@
 
-import React from 'react'
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { JWTState } from '../state'
 import { useJWTActions, useUserActions } from '../actions'
 import jwt_decode from "jwt-decode";
@@ -18,7 +17,7 @@ export default function useAuthHook() {
     
     async function RefreshJWT() {
         if (globalJWTState == "empty" || new Date() >= new Date(jwt_decode(globalJWTState).exp * 1000)) {
-            await fetch('https://backendtextadventure.azurewebsites.net/api/User/renew-token', {
+            await fetch('https://localhost:5101/api/User/renew-token', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -1,5 +1,5 @@
 import './IntroductionComponent.css'
-import React, { useReducer, useState } from 'react';
+import React, { useState } from 'react';
 import { Button } from 'react-bootstrap'
 import { SignUpComponent } from '..';
 import { JWTState, userState } from '../../state';
@@ -7,7 +7,6 @@ import { useRecoilState } from 'recoil';
 
 export function IntroductionComponent() {
     const [globalUserState] = useRecoilState(userState);
-    const [globalJWTState] = useRecoilState(JWTState);
     const [isSignUpOpen, setIsSignUpOpen] = useState(false);
     return (
         <>

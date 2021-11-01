@@ -39,7 +39,7 @@ export function SignUpComponent({ isOpen }) {
                             )
                         }
                         return (
-                            <button className="btn btn-primary d-inline signUpSubmitButton" onClick={() => Login('https://backendtextadventure.azurewebsites.net/api/User/login', { email: email, password: loginPassword })}>
+                            <button className="btn btn-primary d-inline signUpSubmitButton" onClick={() => Login('https://localhost:5101/api/User/login', { email: email, password: loginPassword })}>
                                 Log in
                             </button>
                         )
@@ -107,7 +107,7 @@ export function SignUpComponent({ isOpen }) {
                         )
                     }
                     return (
-                        <button className="btn btn-primary d-inline signUpSubmitButton" onClick={() => Register('https://backendtextadventure.azurewebsites.net/api/User/register', { email: email, username: username, password: registerPassword })}>
+                        <button className="btn btn-primary d-inline signUpSubmitButton" onClick={() => Register('https://localhost:5101/api/User/register', { email: email, username: username, password: registerPassword })}>
                             Register
                         </button>
                     )

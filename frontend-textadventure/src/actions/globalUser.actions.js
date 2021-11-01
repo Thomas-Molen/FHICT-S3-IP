@@ -1,7 +1,5 @@
-import React from 'react';
-
 import { userState } from '../state';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 
 
 export { useUserActions }

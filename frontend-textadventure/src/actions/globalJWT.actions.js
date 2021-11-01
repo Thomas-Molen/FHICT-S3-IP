@@ -1,7 +1,5 @@
-import React from 'react';
-
 import { JWTState } from '../state';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 
 
 export { useJWTActions }

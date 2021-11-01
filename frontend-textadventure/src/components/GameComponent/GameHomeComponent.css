@@ -9,6 +9,7 @@
 .gameHeader{
     text-align: center;
     padding-top: 3vw;
+    margin-bottom: 70px;
 }
 
 .gameHeaderText{
@@ -30,8 +31,42 @@
 
 /* Character Selection */
 .GameCharacterSelection{
-    font-size: 50px;
     background-color: white;
-    padding: 1%;
+    padding: 1.5%;
+    padding-top: 1%;
     border-radius: 20px;
+    display: inline-block;
 }
+
+.adventurerOption{
+    background-color: #565656;
+    border-radius: 15px;
+    margin:1%;
+    padding-left: 15px;
+    padding-right: 20px;
+    font-size: 30px;
+    color: white;
+
+    border-style: solid;
+    border-color: white;
+    border-width: 5px;
+}
+
+.adventurerOption:hover{
+    cursor: pointer;
+}
+
+.adventurerDeleteButton{
+    padding-right: 5px !important;
+    padding-left: 5px !important;
+}
+
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Old versions of Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
+  }
