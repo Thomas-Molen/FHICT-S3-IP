@@ -41,7 +41,6 @@ namespace textadventure_backend
 
             services.AddSignalR();
 
-            // configure strongly typed settings objects
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
 
