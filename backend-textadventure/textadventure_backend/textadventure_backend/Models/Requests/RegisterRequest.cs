@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace textadventure_backend.Models
+namespace textadventure_backend.Models.Requests
 {
     public class RegisterRequest
     {

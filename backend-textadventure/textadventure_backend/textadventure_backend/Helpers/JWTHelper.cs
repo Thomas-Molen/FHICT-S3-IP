@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using textadventure_backend.Context;
 using textadventure_backend.Models;
+using textadventure_backend.Models.Responses;
 
 namespace textadventure_backend.Helpers
 {
@@ -16,11 +17,13 @@ namespace textadventure_backend.Helpers
     {
         private readonly IContextFactory contextFactory;
         private readonly AppSettings appSettings;
+        private readonly JwtSecurityTokenHandler tokenHandler;
 
         public JWTHelper(IContextFactory _contextFactory, IOptions<AppSettings> _appSettings)
         {
             contextFactory = _contextFactory;
             appSettings = _appSettings.Value;
+            tokenHandler = new JwtSecurityTokenHandler();
         }
 
         //JWT
@@ -91,6 +94,21 @@ namespace textadventure_backend.Helpers
 
                 return newRefreshToken;
             }
+        }
+
+        public int GetUserIdFromJWT(string authHeader)
+        {
+            var JWTToken = tokenHandler.ReadJwtToken(authHeader.Replace("Bearer ", ""));
+            using (var db = contextFactory.CreateDbContext())
+            {
+                int userId = int.Parse(JWTToken.Claims.First(t => t.Type == "id").Value);
+                var user = db.Users.FirstOrDefault(u => u.Id == userId);
+                if (user == null)
+                {
+                    throw new ArgumentException("there is no user connected to this token");
+                }
+                return user.Id;
+            }   
         }
     }
 }

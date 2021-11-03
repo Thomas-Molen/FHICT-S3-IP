@@ -8,7 +8,8 @@ namespace textadventure_backend.Services.Interfaces
 {
     public interface IAdventurerService
     {
-        Task<ICollection<Adventurers>> Create(int userId);
+        Task Create(string name, int userId);
         Task<ICollection<Adventurers>> Get(int userId);
+        Task Delete(int userId, int adventurerId);
     }
 }

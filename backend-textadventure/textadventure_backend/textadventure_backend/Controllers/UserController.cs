@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using textadventure_backend.Models;
+using textadventure_backend.Models.Requests;
 using textadventure_backend.Services.Interfaces;
 
 namespace textadventure_backend.Controllers

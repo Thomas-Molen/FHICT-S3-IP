@@ -1,6 +1,7 @@
 import './SignUpComponent.css'
 import { React, useState } from 'react';
 import { useJWTActions, useUserActions } from '../../actions'
+import { CreateRequest } from '../../actions/APIConnectionHelper'
 
 export function SignUpComponent({ isOpen }) {
     const JWTActions = useJWTActions();
@@ -39,7 +40,7 @@ export function SignUpComponent({ isOpen }) {
                             )
                         }
                         return (
-                            <button className="btn btn-primary d-inline signUpSubmitButton" onClick={() => Login('https://localhost:5101/api/User/login', { email: email, password: loginPassword })}>
+                            <button className="btn btn-primary d-inline signUpSubmitButton" onClick={() => Login()}>
                                 Log in
                             </button>
                         )
@@ -50,31 +51,16 @@ export function SignUpComponent({ isOpen }) {
             </div>
         )
 
-    function Login(route, body) {
+    async function Login() {
         setIsLoggingIn(true);
-        fetch(route, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            credentials: "include",
-            body: JSON.stringify(body),
-        })
-            .then(function (response) {
-                if (!response.ok) {
-                    setIsLoggingIn(false);
-                    throw Error(response.statusText);
-                }
-                return response.json();
-            })
+        await CreateRequest('POST', 'User/login', { email: email, password: loginPassword })
             .then(data => {
                 JWTActions.setGlobalJWTState(data.token);
                 UserAtions.setGlobalUserState({ user_id: data.id, username: data.username, email: data.email, admin: data.admin });
-                setIsLoggingIn(false);
             })
             .catch(error => {
-                setIsLoggingIn(false);
                 console.error('Error:', error);
+                setIsLoggingIn(false);
             });
     }
 
@@ -107,7 +93,7 @@ export function SignUpComponent({ isOpen }) {
                         )
                     }
                     return (
-                        <button className="btn btn-primary d-inline signUpSubmitButton" onClick={() => Register('https://localhost:5101/api/User/register', { email: email, username: username, password: registerPassword })}>
+                        <button className="btn btn-primary d-inline signUpSubmitButton" onClick={() => Register()}>
                             Register
                         </button>
                     )
@@ -118,34 +104,18 @@ export function SignUpComponent({ isOpen }) {
         </div>
     )
 
-    function Register(route, body) {
+    async function Register() {
         if (checkPassword) {
             setIsRegistering(true);
-            console.log("started");
-            fetch(route, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                },
-                credentials: "include",
-                body: JSON.stringify(body),
-            })
-                .then(function (response) {
-                    if (!response.ok) {
-                        setIsRegistering(false);
-                        throw Error(response.statusText);
-                    }
-                    return response.json();
-                })
+            await CreateRequest('POST', 'User/register', { email: email, username: username, password: registerPassword })
                 .then(data => {
                     JWTActions.setGlobalJWTState(data.token);
                     UserAtions.setGlobalUserState({ user_id: data.id, username: data.username, email: data.email, admin: data.admin });
                     setIsRegistering(false);
                 })
                 .catch(error => {
-                    setIsRegistering(false);
                     console.error('Error:', error);
+                    setIsRegistering(false);
                 });
         }
     }

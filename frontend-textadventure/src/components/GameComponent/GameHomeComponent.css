@@ -56,12 +56,29 @@
     cursor: pointer;
 }
 
+.adventurerOptionName{
+    margin-bottom: -5px;
+}
+
 .adventurerDeleteButton{
     padding-right: 5px !important;
     padding-left: 5px !important;
 }
 
-.noselect {
+.CreateAdventurerButton{
+    margin-right: 5%;
+}
+
+.closeCreateAdventure{
+    margin-right: 10px;
+}
+
+.SelectionButtonText{
+    margin-bottom: 0px !important;
+    font-size: 15px !important;
+}
+
+.noselect{
     -webkit-touch-callout: none; /* iOS Safari */
       -webkit-user-select: none; /* Safari */
        -khtml-user-select: none; /* Konqueror HTML */
@@ -70,3 +87,7 @@
               user-select: none; /* Non-prefixed version, currently
                                     supported by Chrome, Edge, Opera and Firefox */
   }
+
+.noclick{
+    pointer-events: none
+}

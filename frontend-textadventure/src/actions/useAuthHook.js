@@ -1,8 +1,8 @@
-
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { JWTState } from '../state'
 import { useJWTActions, useUserActions } from '../actions'
 import jwt_decode from "jwt-decode";
+import { CreateRequest } from './APIConnectionHelper';
 
 export default function useAuthHook() {
     const globalJWTState = useRecoilValue(JWTState);
@@ -17,20 +17,7 @@ export default function useAuthHook() {
     
     async function RefreshJWT() {
         if (globalJWTState == "empty" || new Date() >= new Date(jwt_decode(globalJWTState).exp * 1000)) {
-            await fetch('https://localhost:5101/api/User/renew-token', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-                },
-                credentials: "include",
-            })                    
-                .then(function (response) {
-                    if (!response.ok) {
-                        throw Error(response.statusText);
-                    }
-                    return response.json();
-                })
+            await CreateRequest('POST', 'User/renew-token')
                 .then(data => {
                     JWTActions.setGlobalJWTState(data.token);
                     UserAtions.setGlobalUserState({ user_id: data.id, username: data.username, email: data.email, admin: data.admin });

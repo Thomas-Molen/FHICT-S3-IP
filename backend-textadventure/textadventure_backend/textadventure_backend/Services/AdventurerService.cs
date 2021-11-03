@@ -17,7 +17,7 @@ namespace textadventure_backend.Services
             contextFactory = _contextFactory;
         }
 
-        public async Task<ICollection<Adventurers>> Create(int userId)
+        public async Task Create(string name, int userId)
         {
             using (var db = contextFactory.CreateDbContext())
             {
@@ -29,16 +29,37 @@ namespace textadventure_backend.Services
                     await db.SaveChangesAsync();
                 }
 
+                if (name == "" || name == null)
+                {
+                    name = "Adventurer";
+                }
+
                 var adventurer = new Adventurers
                 {
-                    Dungeon = dungeon
+                    Name = name,
+                    Dungeon = dungeon,
+                    UserId = userId
                 };
-                var user = db.Users.Include(u => u.Adventurers).FirstOrDefault(u => u.Id == userId);
-                user.Adventurers.Add(adventurer);
-                db.Update(user);
-                await db.SaveChangesAsync();
 
-                return user.Adventurers.ToList();
+                await db.AddAsync(adventurer);
+                await db.SaveChangesAsync();
+            }
+        }
+
+        public async Task Delete(int userId, int adventurerId)
+        {
+            using (var db = contextFactory.CreateDbContext())
+            {
+                var user = await db.Users.Include(u => u.Adventurers.Where(a => a.Id == adventurerId)).FirstOrDefaultAsync(u => u.Id == userId);
+                var adventurer = user.Adventurers.FirstOrDefault();
+
+                if (adventurer == null)
+                {
+                    throw new ArgumentException("Given adventurer not connected to current user");
+                }
+
+                db.Remove(adventurer);
+                await db.SaveChangesAsync();
             }
         }
 
@@ -46,8 +67,10 @@ namespace textadventure_backend.Services
         {
             using (var db = contextFactory.CreateDbContext())
             {
-                var user = db.Users.Include(u => u.Adventurers).FirstOrDefault(u => u.Id == userId);
-                return user.Adventurers.ToList();
+                var user = await db.Users.Include(u => u.Adventurers).FirstOrDefaultAsync(u => u.Id == userId);
+
+                return user.Adventurers;
+                
             }
         }
     }

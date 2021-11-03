@@ -7,6 +7,8 @@ using textadventure_backend.Helpers;
 using textadventure_backend.Models;
 using textadventure_backend.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
+using textadventure_backend.Models.Responses;
+using textadventure_backend.Models.Requests;
 
 namespace textadventure_backend.Services
 {

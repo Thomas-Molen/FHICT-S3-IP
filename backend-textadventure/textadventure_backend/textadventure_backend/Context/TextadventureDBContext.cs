@@ -62,6 +62,10 @@ namespace textadventure_backend.Context
                 entity.Property(model => model.Health).HasColumnName("health")
                     .IsRequired();
 
+                entity.Property(model => model.Name).HasColumnName("name")
+                    .HasMaxLength(20)
+                    .IsRequired();
+
                 entity.HasOne(a => a.User)
                    .WithMany(u => u.Adventurers)
                    .HasForeignKey(a => a.UserId)

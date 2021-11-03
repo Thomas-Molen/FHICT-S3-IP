@@ -10,6 +10,8 @@ namespace textadventure_backend.Models
     {
         public int Experience { get; set; } = 0;
         public int Health { get; set; } = 20;
+
+        public string Name { get; set; } = "Adventurer";
         public int UserId { get; set; }
         public int DungeonId { get; set; }
         public int? RoomId { get; set; }
