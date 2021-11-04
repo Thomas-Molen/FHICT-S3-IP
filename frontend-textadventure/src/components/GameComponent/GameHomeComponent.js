@@ -38,11 +38,11 @@ export function GameHomeComponent() {
             </div>
             <div className="container d-flex justify-content-center">
                 <div className="GameCharacterSelection d-flex flex-wrap justify-content-center">
-                    {adventurers.map((adventurer, index) =>
-                        <div className="d-flex align-items-center justify-content-center">
-                            <div className="adventurerOption align-items-center noselect" onClick={(selectedOption) => SelectAdventurer(selectedOption.target, index)}>
+                    {adventurers.map((adventurer) =>
+                        <div className="d-flex align-items-center justify-content-center" key={adventurer.id} onClick={(selectedOption) => SelectAdventurer(selectedOption.target, adventurer.id)}>
+                            <div className="adventurerOption align-items-center noselect">
                                 <div className="d-flex justify-content-between">
-                                    <p className="adventurerOptionName noclick text-start">{adventurer.name}</p>
+                                    <p className="adventurerOptionName text-start" >{adventurer.name}</p>
                                     <Button variant="danger" className="adventurerDeleteButton" onClick={(selectedButton) => DeleteAdventurer(selectedButton.target, adventurer.id)}><Icon icon="bx:bxs-trash" className="noclick" color="white" width="24" /></Button>
                                 </div>
                                 <div className="d-flex d-inline align-items-center justify-content-center noclick">
@@ -53,58 +53,61 @@ export function GameHomeComponent() {
                             </div>
                         </div>
                     )}
-                    
+
                     <div className="d-flex col-12 justify-content-center SelectAdventurersButtonOptions">
-                    {!settingAdventurerName ?
-                        (selectedAdventurer == null) ?
-                            <>
-                                <Button variant="secondary" className="CreateAdventurerButton" size="lg" onClick={() => setSettingAdventurerName(!settingAdventurerName)}><p className="SelectionButtonText noclick">New adventure</p></Button>
-                                <Button variant="primary" disabled size="lg"><p className="SelectionButtonText">Resume</p></Button>
-                            </>
+                        {!settingAdventurerName ?
+                            (selectedAdventurer == null) ?
+                                <>
+                                    <Button variant="secondary" className="CreateAdventurerButton" size="lg" onClick={() => setSettingAdventurerName(!settingAdventurerName)}><p className="SelectionButtonText noclick">New adventure</p></Button>
+                                    <Button variant="primary" disabled size="lg"><p className="SelectionButtonText">Resume</p></Button>
+                                </>
+                                :
+                                <>
+                                    <Button variant="secondary" className="CreateAdventurerButton" size="lg" onClick={() => setSettingAdventurerName(!settingAdventurerName)}><p className="SelectionButtonText noclick">New adventure</p></Button>
+                                    <Button variant="primary" size="lg" onClick={() => TestingFunction()}><p className="SelectionButtonText noclick">Resume</p></Button>
+                                </>
                             :
                             <>
-                                <Button variant="secondary" className="CreateAdventurerButton" size="lg" onClick={() => setSettingAdventurerName(!settingAdventurerName)}><p className="SelectionButtonText noclick">New adventure</p></Button>
-                                <Button variant="primary" size="lg" onClick={() => TestingFunction()}><p className="SelectionButtonText noclick">Resume</p></Button>
-                            </>
-                        :
-                        <>
-                            <Button variant="secondary" className="CreateAdventurerButton" size="lg">
-                                <div className="d-flex align-items-center">
-                                    <Icon icon="icomoon-free:cross" className="closeCreateAdventure" color="white" width="18" onClick={() => setSettingAdventurerName(!settingAdventurerName)} />
-                                    <input type="text" className="form-control form-control-sm SelectionButtonText" placeholder="Adventurer" maxLength="20" />
-                                </div>
-                            </Button>
-                            {!creatingAdventurer ?
-                                <Button variant="primary" size="lg" onClick={(selectedButton) => CreateAdventurer(selectedButton.target)}><p className="SelectionButtonText noclick">Create</p></Button>
-                                :
-                                <Button variant="primary" className="d-flex align-items-center" disabled size="lg">
-                                    <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                    Loading...
+                                <Button variant="secondary" className="CreateAdventurerButton" size="lg">
+                                    <div className="d-flex align-items-center">
+                                        <Icon icon="icomoon-free:cross" className="closeCreateAdventure" color="white" width="18" onClick={() => setSettingAdventurerName(!settingAdventurerName)} />
+                                        <input type="text" className="form-control form-control-sm SelectionButtonText" placeholder="Adventurer" maxLength="20" />
+                                    </div>
                                 </Button>
-                            }
-                        </>
-                    }
+                                {!creatingAdventurer ?
+                                    <Button variant="primary" size="lg" onClick={(selectedButton) => CreateAdventurer(selectedButton.target)}><p className="SelectionButtonText noclick">Create</p></Button>
+                                    :
+                                    <Button variant="primary" className="d-flex align-items-center" disabled size="lg">
+                                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                        Loading...
+                                    </Button>
+                                }
+                            </>
+                        }
                     </div>
                 </div>
             </div>
         </div>
     )
-    function SelectAdventurer(selectedOption, index) {
-        console.log('got in the select', index);
-        console.log(selectedOption);
+    function SelectAdventurer(selectedOption, adventurerId) {
+        console.log('selected');
+
+        if (selectedOption.nodeName === "BUTTON") {
+            console.log('aint doin shit');
+            return;
+        }
 
         for (let option of document.getElementsByClassName("adventurerOption")) {
             option.style.borderColor = "#ffffff";
         }
 
-        if (selectedAdventurer == adventurers[index]) {
+        if (selectedAdventurer === adventurers.find(a => a.id === adventurerId)) {
             setSelectedAdventurer(null);
             return;
         }
-        setSelectedAdventurer(adventurers[index]);
+        setSelectedAdventurer(adventurers.find(a => a.id === adventurerId));
 
-        while (!selectedOption.classList.contains('adventurerOption'))
-        {
+        while (!selectedOption.classList.contains('adventurerOption')) {
             selectedOption = selectedOption.parentElement;
         }
         selectedOption.style.borderColor = "#11B6DA";
@@ -121,30 +124,19 @@ export function GameHomeComponent() {
             });
     }
 
-    function ClearSelection(adventurerId) {
-        console.log('got in the clear');
-
-        for (let option of document.getElementsByClassName("adventurerOption")) {
-            option.style.borderColor = "#ffffff";
+    function DeleteAdventurer(selectedButton, adventurerId) {
+        if (!window.confirm('Are you sure you want to delete ' + adventurers.find(a => a.id == adventurerId).name + '\nthis action is permanent')){
+            return;
         }
 
         if (selectedAdventurer != null && selectedAdventurer.id == adventurerId) {
             setSelectedAdventurer(null);
-            return;
         }
-    }
 
-    function DeleteAdventurer(selectedButton, adventurerId) {
-        console.log('got in delete');    
-        while (!selectedButton.classList.contains('adventurerOption'))
-        {
+        while (!selectedButton.classList.contains('adventurerOption')) {
             selectedButton = selectedButton.parentElement;
         }
-        selectedButton.disabled = true;
-        console.log(selectedButton.parentElement);
         selectedButton.remove();
-        ClearSelection(adventurerId);
-
         CreateAuthRequest('POST', 'Adventurer/delete', globalJWTState, { "adventurerId": adventurerId })
             .then(function () {
                 GetAdventurers();
@@ -171,8 +163,7 @@ export function GameHomeComponent() {
 
     }
 
-    function TestingFunction()
-    {
+    function TestingFunction() {
         console.log(selectedAdventurer);
     }
 }
