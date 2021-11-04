@@ -116,7 +116,7 @@ namespace textadventure_backend.Services
                         Position = position++,
                         User = adventurer.User.Username,
                         Adventurer = adventurer.Name,
-                        Experience = adventurer.Experience,
+                        Level = (int)(adventurer.Experience / 100),
                         Rooms = adventurer.AdventurerMaps.Count,
                         Damage = damage,
                         Health = adventurer.Health
