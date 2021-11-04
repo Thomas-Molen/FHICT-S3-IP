@@ -8,7 +8,7 @@ namespace textadventure_backend.Models
     public class Interactions : DefaultModel
     {
         public string Type { get; set; }
-        public int NPCId { get; set; }
+        public int? NPCId { get; set; }
 
         public virtual NPCs NPC { get; set; }
         public virtual ICollection<Rooms> RoomNorth { get; set; }

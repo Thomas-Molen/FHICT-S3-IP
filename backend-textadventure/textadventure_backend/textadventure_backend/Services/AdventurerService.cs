@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using textadventure_backend.Context;
 using textadventure_backend.Models;
+using textadventure_backend.Models.Responses;
 using textadventure_backend.Services.Interfaces;
 
 namespace textadventure_backend.Services
@@ -63,14 +64,66 @@ namespace textadventure_backend.Services
             }
         }
 
-        public async Task<ICollection<Adventurers>> Get(int userId)
+        public async Task<ICollection<GetAdventurersResponse>> Get(int userId)
         {
             using (var db = contextFactory.CreateDbContext())
             {
-                var user = await db.Users.Include(u => u.Adventurers).FirstOrDefaultAsync(u => u.Id == userId);
+                var user = await db.Users.Include(u => u.Adventurers).ThenInclude(a => a.Weapons.Where(w => w.Equiped)).FirstOrDefaultAsync(u => u.Id == userId);
 
-                return user.Adventurers;
+                var result = new List<GetAdventurersResponse>();
+                foreach (var adventurer in user.Adventurers)
+                {
+                    int damage = 0;
+                    var currentWeapon = adventurer.Weapons.FirstOrDefault();
+                    if (adventurer.Weapons.FirstOrDefault() != null)
+                    {
+                        damage = currentWeapon.Attack;
+                    }
+                    var adventurerToAdd = new GetAdventurersResponse
+                    {
+                        Id = adventurer.Id,
+                        Level = (int)(adventurer.Experience / 100),
+                        Name = adventurer.Name,
+                        Health = adventurer.Health,
+                        Damage = damage
+                    };
+                    result.Add(adventurerToAdd);
+                }
+
+                return result;
                 
+            }
+        }
+
+        public async Task<ICollection<LeaderboardResponse>> GetLeaderboard()
+        {
+            using (var db = contextFactory.CreateDbContext())
+            {
+                var adventurers = await db.Adventurers.Include(a => a.User).Include(a => a.AdventurerMaps).Include(a => a.Weapons.Where(w => w.Equiped)).OrderByDescending(a => a.Experience).Take(25).ToListAsync();
+                var result = new List<LeaderboardResponse>();
+                int position = 1;
+
+                foreach (var adventurer in adventurers)
+                {
+                    int damage = 0;
+                    var currentWeapon = adventurer.Weapons.FirstOrDefault();
+                    if (adventurer.Weapons.FirstOrDefault() != null)
+                    {
+                        damage = currentWeapon.Attack;
+                    }
+                    var leaderboardEntry = new LeaderboardResponse
+                    {
+                        Position = position++,
+                        User = adventurer.User.Username,
+                        Adventurer = adventurer.Name,
+                        Experience = adventurer.Experience,
+                        Rooms = adventurer.AdventurerMaps.Count,
+                        Damage = damage,
+                        Health = adventurer.Health
+                    };
+                    result.Add(leaderboardEntry);
+                }
+                return result;
             }
         }
     }

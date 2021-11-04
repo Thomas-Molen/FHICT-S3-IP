@@ -118,6 +118,9 @@ namespace textadventure_backend.Context
                     .HasMaxLength(101)
                     .IsRequired();
 
+                entity.Property(model => model.Equiped).HasColumnName("equiped")
+                    .IsRequired();
+
                 entity.HasOne(w => w.Adventurer)
                    .WithMany(a => a.Weapons)
                    .HasForeignKey(w => w.AdventurerId)
@@ -210,7 +213,8 @@ namespace textadventure_backend.Context
                    .WithMany(npc => npc.Interaction)
                    .HasForeignKey(i => i.NPCId)
                    .OnDelete(DeleteBehavior.ClientSetNull)
-                   .HasConstraintName("FK_Interactions_NPCs");
+                   .HasConstraintName("FK_Interactions_NPCs")
+                   .IsRequired(false);
             });
 
             modelBuilder.Entity<NPCs>(entity =>

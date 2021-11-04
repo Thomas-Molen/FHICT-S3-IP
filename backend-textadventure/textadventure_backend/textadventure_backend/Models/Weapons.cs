@@ -11,6 +11,7 @@ namespace textadventure_backend.Models
         public int Attack { get; set; }
         public int Durability { get; set; } = 100;
         public int AdventurerId { get; set; }
+        public bool Equiped { get; set; } = false;
 
         public virtual Adventurers Adventurer { get; set; }
         public virtual ICollection<NPCs> NPCs { get; set; }
@@ -18,14 +19,6 @@ namespace textadventure_backend.Models
         Weapons()
         {
             NPCs = new HashSet<NPCs>();
-        }
-
-        Weapons(string name, int attack)
-        {
-            NPCs = new HashSet<NPCs>();
-
-            Name = name;
-            Attack = attack;
         }
     }
 }

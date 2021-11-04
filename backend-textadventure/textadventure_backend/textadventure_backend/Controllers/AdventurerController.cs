@@ -62,12 +62,28 @@ namespace textadventure_backend.Controllers
             }
         }
 
-        [HttpPost("get")]
+        [HttpGet("get")]
         public async Task<IActionResult> Get()
         {
             try
             {
                 var response = await adventurerService.Get(JWT.GetUserIdFromJWT(Request.Headers[HeaderNames.Authorization]));
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpGet("get-leaderboard")]
+        public async Task<IActionResult> GetLeaderboard()
+        {
+            try
+            {
+                var response = await adventurerService.GetLeaderboard();
 
                 return Ok(response);
             }

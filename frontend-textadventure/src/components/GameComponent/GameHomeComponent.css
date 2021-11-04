@@ -28,7 +28,6 @@
     margin-bottom: 0px !important;
 }
 
-
 /* Character Selection */
 .GameCharacterSelection{
     background-color: white;
@@ -36,6 +35,8 @@
     padding-top: 1%;
     border-radius: 20px;
     display: inline-block;
+    margin-bottom: 50px;
+    max-width: 850px;
 }
 
 .adventurerOption{
@@ -61,8 +62,9 @@
 }
 
 .adventurerDeleteButton{
-    padding-right: 5px !important;
-    padding-left: 5px !important;
+    padding: 3px !important;
+    margin-top: 7px;
+    margin-right: -12px;
 }
 
 .CreateAdventurerButton{
@@ -77,6 +79,16 @@
     margin-bottom: 0px !important;
     font-size: 15px !important;
 }
+
+.loadingCreateAdventurerText{
+    display: inline-block;
+}
+
+.SelectAdventurersButtonOptions{
+    margin-top: 20px;
+}
+
+
 
 .noselect{
     -webkit-touch-callout: none; /* iOS Safari */

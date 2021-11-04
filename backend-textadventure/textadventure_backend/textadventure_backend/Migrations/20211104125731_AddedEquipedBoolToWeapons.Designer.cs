@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using textadventure_backend.Context;
 
 namespace textadventure_backend.Migrations
 {
     [DbContext(typeof(TextadventureDBContext))]
-    partial class TextadventureDBContextModelSnapshot : ModelSnapshot
+    [Migration("20211104125731_AddedEquipedBoolToWeapons")]
+    partial class AddedEquipedBoolToWeapons
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -102,7 +104,7 @@ namespace textadventure_backend.Migrations
                         .HasColumnType("int")
                         .HasColumnName("id");
 
-                    b.Property<int?>("NPCId")
+                    b.Property<int>("NPCId")
                         .HasColumnType("int");
 
                     b.Property<string>("Type")
@@ -399,7 +401,8 @@ namespace textadventure_backend.Migrations
                     b.HasOne("textadventure_backend.Models.NPCs", "NPC")
                         .WithMany("Interaction")
                         .HasForeignKey("NPCId")
-                        .HasConstraintName("FK_Interactions_NPCs");
+                        .HasConstraintName("FK_Interactions_NPCs")
+                        .IsRequired();
 
                     b.Navigation("NPC");
                 });
