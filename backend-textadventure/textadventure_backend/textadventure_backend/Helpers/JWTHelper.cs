@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
@@ -15,11 +16,11 @@ namespace textadventure_backend.Helpers
 {
     public class JWTHelper
     {
-        private readonly IContextFactory contextFactory;
+        private readonly IDbContextFactory<TextadventureDBContext> contextFactory;
         private readonly AppSettings appSettings;
         private readonly JwtSecurityTokenHandler tokenHandler;
 
-        public JWTHelper(IContextFactory _contextFactory, IOptions<AppSettings> _appSettings)
+        public JWTHelper(IDbContextFactory<TextadventureDBContext> _contextFactory, IOptions<AppSettings> _appSettings)
         {
             contextFactory = _contextFactory;
             appSettings = _appSettings.Value;

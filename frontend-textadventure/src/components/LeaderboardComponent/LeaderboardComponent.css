@@ -1,12 +1,15 @@
 .leaderboardBackground {
     background-image: url("../../Assets/LeaderboardPageBG.svg");
-    height: 130vh;
-    background-position: center;
+    min-height: 130vh;
+    background-position: left;
     background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .leaderboardHeader{
     text-align: center;
+    margin-bottom: 60px;
+    padding-top: 50px;
 }
 
 .leaderboardHeaderText{
@@ -18,5 +21,10 @@
 .leaderboardFooterText{
     color: #BAB8B8;
     font-size: 40px;
-    margin-top: -10px;
+}
+
+.LeaderboardTable{
+    max-width: 1000px;
+    font-size: 20px;
+    margin-bottom: 80px;
 }

@@ -8,9 +8,9 @@ import authHook from '../../actions/useAuthHook'
 function App() {
   authHook();
   return (
-    <React.Fragment>
+    <>
       <Routes />
-    </React.Fragment>
+    </>
   );
 }
 

@@ -69,9 +69,14 @@ namespace textadventure_backend
                 };
             });
 
-            services.AddSingleton<IContextFactory>(new ContextFactory(Configuration.GetConnectionString("SQL_DB")));
+            services.AddDbContextFactory<TextadventureDBContext>(options =>
+            {
+                options.UseMySql(Configuration.GetConnectionString("SQL_DB"), ServerVersion.AutoDetect(Configuration.GetConnectionString("SQL_DB")));
+            });
+
             services.AddSingleton<IUserService, UserService>();
             services.AddSingleton<IAdventurerService, AdventurerService>();
+            services.AddSingleton<JWTHelper>();
 
             services.AddHttpContextAccessor();
 
@@ -112,6 +117,8 @@ namespace textadventure_backend
                 endpoints.MapHub<GameHub>("/game");
                 endpoints.MapControllers();
             });
+
+            PrepDb.ApplyMigrations(app, env.IsProduction());
         }
     }
 }

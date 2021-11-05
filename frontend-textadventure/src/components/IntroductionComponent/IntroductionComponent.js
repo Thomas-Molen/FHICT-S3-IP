@@ -49,7 +49,7 @@ export function IntroductionComponent() {
                         {globalUserState.user_id == null &&
                             <>
                                 <Button className="introductionSignInButton" variant="light" size="lg" onClick={() => setIsSignUpOpen(!isSignUpOpen)}><b>LOG IN</b></Button>
-                                <Button className="introductionPlayButton disabled" variant="primary" size="lg" href='javascript:void(0)'><b>PLAY</b></Button>
+                                <Button className="introductionPlayButton disabled" variant="primary" size="lg"><b>PLAY</b></Button>
                             </>
                         }
                         {globalUserState.user_id != null &&

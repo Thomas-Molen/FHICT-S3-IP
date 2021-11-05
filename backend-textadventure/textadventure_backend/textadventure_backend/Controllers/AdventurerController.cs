@@ -22,14 +22,12 @@ namespace textadventure_backend.Controllers
     public class AdventurerController : ControllerBase
     {
         private readonly IAdventurerService adventurerService;
-        private readonly JwtSecurityTokenHandler tokenHandler;
         private readonly JWTHelper JWT;
 
-        public AdventurerController(IAdventurerService _adventurerService, IContextFactory _contextFactory, IOptions<AppSettings> _appSettings)
+        public AdventurerController(IAdventurerService _adventurerService, JWTHelper JWThelper)
         {
             adventurerService = _adventurerService;
-            tokenHandler = new JwtSecurityTokenHandler();
-            JWT = new JWTHelper(_contextFactory, _appSettings);
+            JWT = JWThelper;
         }
 
         [HttpPost("create")]

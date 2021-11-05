@@ -14,13 +14,13 @@ namespace textadventure_backend.Services
 {
     public class UserService :  IUserService
     {
-        private readonly IContextFactory contextFactory;
+        private readonly IDbContextFactory<TextadventureDBContext> contextFactory;
         private readonly JWTHelper JWT;
 
-        public UserService(IContextFactory _contextFactory, IOptions<AppSettings> _appSettings)
+        public UserService(IDbContextFactory<TextadventureDBContext> _contextFactory, JWTHelper JWThelper)
         {
             contextFactory = _contextFactory;
-            JWT = new JWTHelper(_contextFactory, _appSettings);
+            JWT = JWThelper;
         }
 
         public async Task<VerificationResponse> Register(RegisterRequest request)

@@ -9,10 +9,6 @@ namespace textadventure_backend.Context
 {
     public partial class TextadventureDBContext : DbContext
     {
-        public TextadventureDBContext()
-        {
-
-        }
 
         public TextadventureDBContext(DbContextOptions<TextadventureDBContext> options) : base(options)
         {
@@ -258,8 +254,7 @@ namespace textadventure_backend.Context
                 entity.Property(model => model.RevokedAt).HasColumnName("revoked_at");
 
                 entity.Property(model => model.Active).HasColumnName("active")
-                    .IsRequired()
-                    .HasDefaultValue(true);
+                    .IsRequired();
 
                 entity.HasOne(rt => rt.User)
                    .WithMany(u => u.RefreshTokens)

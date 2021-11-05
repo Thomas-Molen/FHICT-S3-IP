@@ -12,10 +12,11 @@ namespace textadventure_backend.Services
 {
     public class AdventurerService : IAdventurerService
     {
-        private readonly IContextFactory contextFactory;
-        public AdventurerService(IContextFactory _contextFactory)
+        private readonly IDbContextFactory<TextadventureDBContext> contextFactory;
+
+        public AdventurerService(IDbContextFactory<TextadventureDBContext> _contextFactory)
         {
-            contextFactory = _contextFactory;
+            this.contextFactory = _contextFactory;
         }
 
         public async Task Create(string name, int userId)

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace textadventure_backend.Context
 {
+    [Obsolete("Using default idbcontext now", true)]
     public class ContextFactory : IDesignTimeDbContextFactory<TextadventureDBContext>, IContextFactory
     {
         private readonly string connectionString;
