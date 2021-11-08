@@ -86,6 +86,7 @@ namespace textadventure_backend.Controllers
         public async Task<IActionResult> GumroadTest([FromRoute] string accessToken, [FromForm] GumroadSaleRequest request)
         {
             var b = request;
+            b.variants = HttpContext.Request.Form["variants[Tier]"];
             
             try
             {
