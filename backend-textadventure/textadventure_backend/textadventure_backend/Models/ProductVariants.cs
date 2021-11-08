@@ -7,11 +7,11 @@ namespace textadventure_backend.Models
 {
     public class ProductVariants
     {
-        public string Tier { get; set; }
+        public string tier { get; set; }
 
         public ProductVariants(string tierName)
         {
-            Tier = tierName;
+            tier = tierName;
         }
     }
 }
