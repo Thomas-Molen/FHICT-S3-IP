@@ -43,7 +43,7 @@ namespace textadventure_backend.Models
         public string sale_timestamp { get; set; }
         public string purchaser_id { get; set; }
         public string subscription_id { get; set; }
-        //public string variants { get; set; }
+        public string variants { get; set; }
         public string license_key { get; set; }
         public string ip_country { get; set; }
         public string recurrence { get; set; }
