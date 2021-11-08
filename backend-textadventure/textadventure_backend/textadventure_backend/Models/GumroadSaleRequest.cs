@@ -27,5 +27,18 @@ namespace textadventure_backend.Models
         public string Subscription_Id { get; set; }
         public ProductVariants Variants { get; set; }
         public string Resource_Name { get; set; }
+
+        //public string seller_id { get; set; }
+        //public string product_id { get; set; }
+        //public string product_name { get; set; }
+        //public string permalink { get; set; }
+        //public string product_permalink { get; set; }
+        //public string short_product_id { get; set; }
+        //public string email { get; set; }
+        //public string seller_id { get; set; }
+        //public string seller_id { get; set; }
+        //public string seller_id { get; set; }
+        //public string seller_id { get; set; }
+        //public string seller_id { get; set; }
     }
 }
