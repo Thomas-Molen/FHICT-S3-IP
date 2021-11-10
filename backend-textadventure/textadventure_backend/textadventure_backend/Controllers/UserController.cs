@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -85,9 +84,8 @@ namespace textadventure_backend.Controllers
         [HttpPost("sale/{accessToken}")]
         public async Task<IActionResult> GumroadTest([FromRoute] string accessToken, [FromForm] dynamic request)
         {
-            var b = JsonConvert.DeserializeObject<dynamic>(request.ToString());
             var a = accessToken;
-            
+            var b = request;
             try
             {
                 await userService.GumroadTest();
