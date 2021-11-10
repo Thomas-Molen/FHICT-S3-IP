@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using net_core_backend.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -82,11 +81,9 @@ namespace textadventure_backend.Controllers
             Response.Cookies.Append("refreshToken", token, cookieOptions);
         }
 
-        [HttpPost("sale/{accessToken}")]
-        public async Task<IActionResult> GumroadTest([FromRoute] string accessToken, [FromBody] GumroadSaleRequest request)
+        [HttpPost]
+        public async Task<IActionResult> GumroadTest()
         {
-            var a = accessToken;
-            var b = request;
             try
             {
                 await userService.GumroadTest();
