@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace textadventure_backend.Models
+namespace net_core_backend.Models
 {
     public class GumroadSaleRequest
     {
