@@ -9,9 +9,14 @@ function useAdventurerState() {
 
   return {
     setGlobalAdventurerState,
+    setGlobalAdventurerStateId,
   }
 
   function setGlobalAdventurerState(newGlobalAdventurer) {
     setAdventurer(newGlobalAdventurer);
+  }
+
+  function setGlobalAdventurerStateId(adventurerId) {
+    setAdventurer({id: adventurerId});
   }
 }

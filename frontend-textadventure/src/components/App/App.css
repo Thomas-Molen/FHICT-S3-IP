@@ -40,3 +40,41 @@
 *{
   font-family: monospace;
 }
+
+/* width */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #212529; 
+}
+ 
+/* actual scrollbar */
+::-webkit-scrollbar-thumb {
+  background: #696969; 
+}
+
+/* textarea resize corner */
+::-webkit-resizer {
+  background-color: #252525;
+}
+
+.hidden{
+  display: none !important;
+}
+
+.noselect{
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+.noclick{
+  pointer-events: none
+}
