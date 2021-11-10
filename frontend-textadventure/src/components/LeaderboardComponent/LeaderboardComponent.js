@@ -1,6 +1,6 @@
 import './LeaderboardComponent.css'
 import React, { useEffect, useState } from 'react';
-import { CreateRequest } from '../../actions/APIConnectionHelper';
+import { CreateEntityManagerRequest } from '../../actions/APIConnectionHelper';
 
 export function LeaderboardComponent() {
     const [leaderboard, setLeaderboard] = useState(null);
@@ -26,7 +26,7 @@ export function LeaderboardComponent() {
                         </tr>
                     </thead>
                     <tbody>
-                        {(leaderboard !== null && leaderboard !== []) &&
+                        {(leaderboard !== null && leaderboard !== [] && leaderboard !== undefined) &&
                             leaderboard.map((adventurer) =>
                                 <tr key={adventurer.position}>
                                     <th>{adventurer.position}</th>
@@ -47,7 +47,7 @@ export function LeaderboardComponent() {
 
     function GetLeaderboard() {
         if (leaderboard == null) {
-            CreateRequest('GET', 'Adventurer/get-leaderboard')
+            CreateEntityManagerRequest('GET', 'Adventurer/get-leaderboard')
                 .then(data => {
                     setLeaderboard(data);
                     return data;

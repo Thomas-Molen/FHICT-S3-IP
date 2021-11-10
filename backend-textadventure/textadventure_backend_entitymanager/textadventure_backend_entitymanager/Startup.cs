@@ -1,16 +1,19 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
-using textadventure_backend.Helpers;
-using textadventure_backend.Hubs;
+using textadventure_backend_entitymanager.Context;
+using textadventure_backend_entitymanager.Helpers;
+using textadventure_backend_entitymanager.Services;
+using textadventure_backend_entitymanager.Services.Interfaces;
 
-namespace textadventure_backend
+namespace textadventure_backend_entitymanager
 {
     public class Startup
     {
@@ -33,8 +36,6 @@ namespace textadventure_backend
             }));
 
             services.AddControllers();
-
-            services.AddSignalR();
 
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
@@ -64,6 +65,15 @@ namespace textadventure_backend
                 };
             });
 
+            services.AddDbContextFactory<TextadventureDBContext>(options =>
+            {
+                options.UseMySql(Configuration.GetConnectionString("SQL_DB"), ServerVersion.AutoDetect(Configuration.GetConnectionString("SQL_DB")));
+            });
+
+            services.AddSingleton<IUserService, UserService>();
+            services.AddSingleton<IAdventurerService, AdventurerService>();
+            services.AddSingleton<JWTHelper>();
+
             services.AddHttpContextAccessor();
 
             services.AddHttpClient();
@@ -73,7 +83,6 @@ namespace textadventure_backend
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
             });
         }
-
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -100,9 +109,10 @@ namespace textadventure_backend
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapHub<GameHub>("/game");
                 endpoints.MapControllers();
             });
+
+            PrepDb.ApplyMigrations(app);
         }
     }
 }

@@ -1,0 +1,19 @@
+.gameBackground {
+    background-image: url("../../Assets/GamePageBG.svg");
+    min-height: 120vh;
+    background-position: left;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+.gameHeader{
+  padding-top: 80px;
+  color: white;
+  font-weight: bold;
+  font-size: 50px;
+}
+
+.gameWarningHeader{
+  padding-top: 80px;
+  font-size: 30px;
+}

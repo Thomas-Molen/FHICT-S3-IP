@@ -1,7 +1,7 @@
 import './SignUpComponent.css'
 import { React, useState } from 'react';
 import { useJWTActions, useUserActions } from '../../actions'
-import { CreateRequest } from '../../actions/APIConnectionHelper'
+import { CreateEntityManagerRequest } from '../../actions/APIConnectionHelper'
 
 export function SignUpComponent({ isOpen }) {
     const JWTActions = useJWTActions();
@@ -53,7 +53,7 @@ export function SignUpComponent({ isOpen }) {
 
     async function Login() {
         setIsLoggingIn(true);
-        await CreateRequest('POST', 'User/login', { email: email, password: loginPassword })
+        await CreateEntityManagerRequest('POST', 'User/login', { email: email, password: loginPassword })
             .then(data => {
                 JWTActions.setGlobalJWTState(data.token);
                 UserAtions.setGlobalUserState({ user_id: data.id, username: data.username, email: data.email, admin: data.admin });
@@ -107,7 +107,7 @@ export function SignUpComponent({ isOpen }) {
     async function Register() {
         if (checkPassword) {
             setIsRegistering(true);
-            await CreateRequest('POST', 'User/register', { email: email, username: username, password: registerPassword })
+            await CreateEntityManagerRequest('POST', 'User/register', { email: email, username: username, password: registerPassword })
                 .then(data => {
                     JWTActions.setGlobalJWTState(data.token);
                     UserAtions.setGlobalUserState({ user_id: data.id, username: data.username, email: data.email, admin: data.admin });

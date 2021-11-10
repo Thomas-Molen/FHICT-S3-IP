@@ -15,7 +15,7 @@ ReactDOM.render(
     <RecoilRoot>
       <BrowserRouter>
         <App />
-        {/* <Sugar color={'#ffffff'} background='#212529' time={1000}/>  */}
+        {/* <Sugar color={'#ffffff'} background='#212529'/>  */}
       </BrowserRouter>
     </RecoilRoot>,
   document.getElementById('root')

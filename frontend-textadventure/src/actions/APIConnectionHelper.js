@@ -1,31 +1,26 @@
 import { useRecoilValue } from 'recoil';
 import { JWTState } from '../state';
 
-const baseRoute = "https://localhost:5101/api/" ;
+const baseGameRoute = "https://localhost:5101/api/" ;
+const baseEntityManagerRoute = "https://localhost:5201/api/" ;
 
-export async function CreateRequest(_method, APICall, body = null) {
-    return await CreateFetch(_method, APICall, body);
+export async function CreateGameRequest(_method, APICall, body = null) {
+    return await CreateFetch(baseGameRoute, _method, APICall, body);
 }
 
-export async function CreateAuthRequest(_method, APICall, JWTToken, body = null) {
-    return await CreateFetch(_method, APICall, body, true, JWTToken);
+export async function CreateAuthGameRequest(_method, APICall, JWTToken, body = null) {
+    return await CreateFetch(baseGameRoute, _method, APICall, body, true, JWTToken);
 }
 
+export async function CreateEntityManagerRequest(_method, APICall, body = null) {
+    return await CreateFetch(baseEntityManagerRoute, _method, APICall, body);
+}
 
-// export async function CreateAuthPOSTRequest(APICall, body = null) {
-//     // return await CreateAuthFetch('POST', APICall, body)
-//     console.log('sup');
-// }
+export async function CreateAuthEntityManagerRequest(_method, APICall, JWTToken, body = null) {
+    return await CreateFetch(baseEntityManagerRoute, _method, APICall, body, true, JWTToken);
+}
 
-// export async function CreateAuthGetRequest(APICall) {
-//     return await CreateAuthFetch('GET', APICall, null)
-// }
-
-// export async function CreateAuthRequest(_method, APICall, body) {
-//     return await CreateAuthFetch(_method, APICall, body)
-// }
-
-async function CreateFetch(_method, APICall, body, isAuth = false, JWTToken = "") {
+async function CreateFetch(baseRoute , _method, APICall, body, isAuth = false, JWTToken = "") {
     const route = baseRoute + APICall;
     
     var _headers = {
