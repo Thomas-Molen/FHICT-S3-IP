@@ -83,9 +83,10 @@ namespace textadventure_backend.Controllers
         }
 
         [HttpPost("sale/{accessToken}")]
-        public async Task<IActionResult> GumroadTest([FromRoute] string accessToken, [FromForm] GumroadSaleRequest request)
+        public async Task<IActionResult> GumroadTest([FromRoute] string accessToken, [FromForm] dynamic request)
         {
-            var b = request;
+            var b = JsonConvert.DeserializeObject<dynamic>(request.ToString());
+            var a = accessToken;
             
             try
             {
