@@ -80,20 +80,5 @@ namespace textadventure_backend.Controllers
             };
             Response.Cookies.Append("refreshToken", token, cookieOptions);
         }
-
-        [HttpPost]
-        public async Task<IActionResult> GumroadTest()
-        {
-            try
-            {
-                await userService.GumroadTest();
-
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
     }
 }

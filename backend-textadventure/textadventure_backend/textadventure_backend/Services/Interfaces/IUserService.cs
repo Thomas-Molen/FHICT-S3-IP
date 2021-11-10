@@ -11,6 +11,5 @@ namespace textadventure_backend.Services.Interfaces
         Task<VerificationResponse> Register(RegisterRequest request);
         Task<VerificationResponse> Login(LoginRequest request);
         Task<VerificationResponse> RenewToken(string refreshToken);
-        Task GumroadTest();
     }
 }

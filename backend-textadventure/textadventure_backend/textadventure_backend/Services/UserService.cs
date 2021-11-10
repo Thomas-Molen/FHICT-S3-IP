@@ -75,21 +75,5 @@ namespace textadventure_backend.Services
         {
             return await JWT.RenewTokens(refreshToken);
         }
-
-        public async Task GumroadTest()
-        {
-            using (var db = contextFactory.CreateDbContext())
-            {
-
-                Users newUser = new Users(
-                    "gumroad",
-                    "works",
-                    BCrypt.Net.BCrypt.HashPassword("password")
-                );
-
-                await db.AddAsync(newUser);
-                await db.SaveChangesAsync();
-            }
-        }
     }
 }
