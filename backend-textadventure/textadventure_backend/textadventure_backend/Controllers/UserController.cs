@@ -82,10 +82,9 @@ namespace textadventure_backend.Controllers
         }
 
         [HttpPost("sale/{accessToken}")]
-        public async Task<IActionResult> GumroadTest([FromRoute] string accessToken, [FromForm] GumroadSaleRequest request)
+        public async Task<IActionResult> GumroadTest([FromRoute] string accessToken)
         {
             var a = accessToken;
-            var b = request;
             try
             {
                 await userService.GumroadTest();
