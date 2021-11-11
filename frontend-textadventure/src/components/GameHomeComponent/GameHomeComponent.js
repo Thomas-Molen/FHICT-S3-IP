@@ -1,19 +1,22 @@
 import './GameHomeComponent.css'
 import { React, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Button } from 'react-bootstrap'
 import { JWTState, userState } from '../../state';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { Icon } from '@iconify/react';
 import { CreateAuthEntityManagerRequest } from '../../actions/APIConnectionHelper';
 
 export function GameHomeComponent() {
-    const [globalUserState] = useRecoilState(userState);
-    const [globalJWTState] = useRecoilState(JWTState);
+    const globalUserState = useRecoilValue(userState);
+    const globalJWTState = useRecoilValue(JWTState);
+
     const [isSelectingAdventurers, setIsSelectingAdventurers] = useState(false);
     const [adventurers, setAdventurers] = useState([]);
     const [selectedAdventurer, setSelectedAdventurer] = useState(null);
     const [settingAdventurerName, setSettingAdventurerName] = useState(false);
     const [creatingAdventurer, setCreatingAdventurer] = useState(false);
+    let history = useHistory();
 
     if (!isSelectingAdventurers)
         return (
@@ -23,9 +26,9 @@ export function GameHomeComponent() {
                 </div>
                 <div className="d-flex justify-content-center">
                     {globalUserState.user_id == null ?
-                        <Button variant="light" className="gameHomeButton" disabled><p className="gameButtonText">C:\ Start</p></Button>
+                        <Button variant="light" className="gameHomeButton" disabled><p className="mb-0">C:\ Start</p></Button>
                         :
-                        <Button variant="light" className="gameHomeButton" onClick={() => GetAdventurers()}><p className="gameButtonText">C:\ Start</p></Button>
+                        <Button variant="light" className="gameHomeButton" onClick={() => GetAdventurers()}><p className="mb-0">C:\ Start</p></Button>
                     }
                 </div>
             </div>
@@ -47,7 +50,7 @@ export function GameHomeComponent() {
                                 </div>
                                 <div className="d-flex d-inline align-items-center justify-content-center noclick">
                                     <Icon icon="mdi:chevron-double-up" color="white" />{adventurer.level}
-                                    &nbsp;<Icon icon="mdi:cards-heart" color="white" />{adventurer.health}
+                                    &nbsp;<Icon icon="akar-icons:heart" width="27" color="white" />{adventurer.health}
                                     &nbsp;<Icon icon="mdi:sword" rotate={1} />{adventurer.damage}
                                 </div>
                             </div>
@@ -64,7 +67,7 @@ export function GameHomeComponent() {
                                 :
                                 <>
                                     <Button variant="secondary" className="CreateAdventurerButton" size="lg" onClick={() => setSettingAdventurerName(!settingAdventurerName)}><p className="SelectionButtonText noclick">New adventure</p></Button>
-                                    <Button variant="primary" size="lg" onClick={() => TestingFunction()}><p className="SelectionButtonText noclick">Resume</p></Button>
+                                    <Button variant="primary" size="lg" onClick={() => ResumeGame()}><p className="SelectionButtonText noclick">Resume</p></Button>
                                 </>
                             :
                             <>
@@ -90,7 +93,6 @@ export function GameHomeComponent() {
         </div>
     )
     function SelectAdventurer(selectedOption, adventurerId) {
-        console.log('selected');
 
         if (selectedOption.nodeName === "BUTTON") {
             console.log('aint doin shit');
@@ -163,7 +165,7 @@ export function GameHomeComponent() {
 
     }
 
-    function TestingFunction() {
-        console.log(selectedAdventurer);
+    function ResumeGame() {
+        history.push("/game?user=" + selectedAdventurer.id)
     }
 }

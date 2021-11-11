@@ -75,7 +75,7 @@ namespace textadventure_backend_entitymanager.Controllers
             var cookieOptions = new CookieOptions
             {
                 HttpOnly = true,
-                Expires = DateTime.UtcNow.AddMinutes(10),
+                Expires = DateTime.UtcNow.AddDays(7),
                 SameSite = SameSiteMode.None,
                 Secure = true
             };

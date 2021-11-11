@@ -100,7 +100,6 @@ namespace textadventure_backend_entitymanager.Services
         {
             using (var db = contextFactory.CreateDbContext())
             {
-
                 var adventurer = await db.Adventurers
                     .Include(a => a.Weapons.Where(w => w.Equiped))
                     .FirstOrDefaultAsync(a => a.Id == adventurerId && a.User.Id == userId);

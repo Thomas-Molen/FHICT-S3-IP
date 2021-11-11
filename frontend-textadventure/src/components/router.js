@@ -13,6 +13,7 @@ const Routes = () => {
                 <Route path='/game'>
                     <NavBarComponent />
                     <GamePlayComponent />
+                    <FooterComponent />
                 </Route>
                 }
                 <Route path='/'>

@@ -1,11 +1,12 @@
 import './SignUpComponent.css'
 import { React, useState } from 'react';
-import { useJWTActions, useUserActions } from '../../actions'
+import { JWTState, userState } from '../../state';
 import { CreateEntityManagerRequest } from '../../actions/APIConnectionHelper'
+import { useSetRecoilState } from 'recoil';
 
 export function SignUpComponent({ isOpen }) {
-    const JWTActions = useJWTActions();
-    const UserAtions = useUserActions();
+    const setGlobalJWTState = useSetRecoilState(JWTState);
+    const setGlobalUserState = useSetRecoilState(userState);
 
     const [isLogin, setIsLogin] = useState(true);
     const [isRegistering, setIsRegistering] = useState(false);
@@ -55,8 +56,8 @@ export function SignUpComponent({ isOpen }) {
         setIsLoggingIn(true);
         await CreateEntityManagerRequest('POST', 'User/login', { email: email, password: loginPassword })
             .then(data => {
-                JWTActions.setGlobalJWTState(data.token);
-                UserAtions.setGlobalUserState({ user_id: data.id, username: data.username, email: data.email, admin: data.admin });
+                setGlobalJWTState(data.token);
+                setGlobalUserState({ user_id: data.id, username: data.username, email: data.email, admin: data.admin });
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -109,8 +110,8 @@ export function SignUpComponent({ isOpen }) {
             setIsRegistering(true);
             await CreateEntityManagerRequest('POST', 'User/register', { email: email, username: username, password: registerPassword })
                 .then(data => {
-                    JWTActions.setGlobalJWTState(data.token);
-                    UserAtions.setGlobalUserState({ user_id: data.id, username: data.username, email: data.email, admin: data.admin });
+                    setGlobalJWTState(data.token);
+                    setGlobalUserState({ user_id: data.id, username: data.username, email: data.email, admin: data.admin });
                     setIsRegistering(false);
                 })
                 .catch(error => {

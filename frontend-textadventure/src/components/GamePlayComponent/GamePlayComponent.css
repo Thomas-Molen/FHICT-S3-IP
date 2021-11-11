@@ -1,6 +1,7 @@
-/* Track */
+/* Scroll bar */
+
 ::-webkit-scrollbar-track {
-  background: #252525; 
+    background: #252525;
 }
 
 .gameBackground {
@@ -9,58 +10,98 @@
     background-position: left;
     background-repeat: no-repeat;
     background-size: cover;
-  }
-
-.gameHeader{
-  padding-top: 80px;
-  color: white;
-  font-weight: bold;
-  font-size: 50px;
 }
 
-.gameWarningHeader{
-  padding-top: 80px;
-  font-size: 30px;
+.gameHeader {
+    padding-top: 80px;
+    color: white;
+    font-weight: bold;
+    font-size: 50px;
 }
 
-.gameConsole{
-  width: 100%;
-  height: 60vh;
-  color: #ffffff;
-  background-color: #252525;
-  border-color: #585858;
-  border-width: 2px;
-  font-size: 20px;
-  outline: none;
+.gameWarningHeader {
+    padding-top: 80px;
+    font-size: 30px;
 }
 
-.gameInput{
-  width: 100%;
-  color: #ffffff;
-  background-color: #252525;
-  border-color: #585858;
-  border-width: 2px;
-  font-size: 20px;
-  resize: none;
-  outline: none;
+.gameConsole {
+    width: 100%;
+    min-height: 150px;
+    height: 67vh;
+    color: #ffffff;
+    background-color: #252525;
+    border-color: #585858;
+    border-width: 2px;
+    font-size: 20px;
+    outline: none;
 }
 
-.sendCommandIcon{
-  align-content: flex-end;
-  position: relative;
-  top: -39px;
-  right: 7px;
+.gameInput {
+    width: 100%;
+    color: #ffffff;
+    background-color: #252525;
+    border-color: #585858;
+    border-width: 2px;
+    font-size: 20px;
+    resize: none;
+    outline: none;
 }
 
-.EmptyConsoleInputIcon{
-  pointer-events: none;
-  color: #585858;
+.sendCommandIcon {
+    align-content: flex-end;
+    position: relative;
+    top: -39px;
+    right: 7px;
 }
 
-.ConsoleInputIcon{
-  color: #ffffff;
+.EmptyConsoleInputIcon {
+    pointer-events: none;
+    color: #585858;
 }
 
-.ConsoleInputIcon:hover{
-  cursor: pointer;
+.ConsoleInputIcon {
+    color: #ffffff;
+}
+
+.ConsoleInputIcon:hover {
+    cursor: pointer;
+}
+
+.statsOptionsBar {
+    margin: 5px;
+}
+
+@media (max-width: 800px) {
+    .MiniMap {
+        display: none !important;
+    }
+    .characterStats {
+        min-height: 100% !important;
+    }
+}
+
+.characterStats {
+    min-height: 45.7%;
+    color: #ffffff;
+    background-color: #252525;
+    border-color: #585858;
+    border-width: 2px;
+    border-style: solid;
+    font-size: 20px;
+}
+
+.statsoption {
+    margin-right: 15px;
+}
+
+.statsoption:hover {
+    cursor: pointer;
+}
+
+.selectedStatOption {
+    color: #ffffff !important;
+}
+
+.statsInformationWindow {
+    font-size: 40px;
 }
