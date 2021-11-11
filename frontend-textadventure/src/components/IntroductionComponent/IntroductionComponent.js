@@ -9,7 +9,7 @@ export function IntroductionComponent() {
 
     return (
         <>
-            <div className="introductionContainer container-fluid">
+            <div className="introductionBackground container-fluid">
                 <div className="row">
                     <div className="offset-xl-1 col-xl-6 col-12 introductionInformation">
                         <h1 className="introductionHeader">Begin your adventure today!</h1>

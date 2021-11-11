@@ -1,5 +1,5 @@
-.introductionBackground {
-    background-image: url("../../Assets/IntroductionPageBG.svg");
+.navbarBackground {
+    background-image: url("../../Assets/NavBarBG.svg");
     height: 65px;
     background-position: left;
     background-repeat: no-repeat;

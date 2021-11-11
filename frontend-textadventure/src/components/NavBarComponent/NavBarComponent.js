@@ -9,7 +9,7 @@ export function NavBarComponent() {
     const [isSignUpOpen, setIsSignUpOpen] = useState(false);
     return (
         <>
-            <div className="introductionBackground container-fluid">
+            <div className="navbarBackground container-fluid">
                 <div className="row">
                     <div className="col-xl-6 col-sm-8 col-6 row">
                         <div className="col-10 col-sm-2 col-xl-1">
