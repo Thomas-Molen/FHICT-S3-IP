@@ -1,8 +1,8 @@
 import { useRecoilValue } from 'recoil';
 import { JWTState } from '../state';
 
-const baseGameRoute = "https://backendtextadventure.azurewebsites.net/" ;
-const baseEntityManagerRoute = "https://backendtextadventure-enitymanager.azurewebsites.net/" ;
+const baseGameRoute = "https://backendtextadventure.azurewebsites.net/api/" ;
+const baseEntityManagerRoute = "https://backendtextadventure-enitymanager.azurewebsites.net/api/" ;
 
 export async function CreateGameRequest(_method, APICall, body = null) {
     return await CreateFetch(baseGameRoute, _method, APICall, body);
