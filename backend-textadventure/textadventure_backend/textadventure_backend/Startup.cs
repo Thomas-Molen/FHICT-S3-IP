@@ -1,19 +1,14 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
-using System.IdentityModel.Tokens.Jwt;
-using textadventure_backend.Context;
 using textadventure_backend.Helpers;
 using textadventure_backend.Hubs;
-using textadventure_backend.Services;
-using textadventure_backend.Services.Interfaces;
 
 namespace textadventure_backend
 {
@@ -68,10 +63,6 @@ namespace textadventure_backend
                     ClockSkew = TimeSpan.Zero
                 };
             });
-
-            services.AddSingleton<IContextFactory>(new ContextFactory(Configuration.GetConnectionString("SQL_DB")));
-            services.AddSingleton<IUserService, UserService>();
-            services.AddSingleton<IAdventurerService, AdventurerService>();
 
             services.AddHttpContextAccessor();
 

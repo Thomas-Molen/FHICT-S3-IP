@@ -1,2 +1,0 @@
-# MyChat.Frontend
-

@@ -9,11 +9,13 @@ import {
 import { BrowserRouter } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.css';
 import 'font-awesome/css/font-awesome.min.css';
+import { Sugar } from 'react-preloaders2';
 
 ReactDOM.render(
     <RecoilRoot>
       <BrowserRouter>
         <App />
+        {/* <Sugar color={'#ffffff'} background='#212529'/>  */}
       </BrowserRouter>
     </RecoilRoot>,
   document.getElementById('root')

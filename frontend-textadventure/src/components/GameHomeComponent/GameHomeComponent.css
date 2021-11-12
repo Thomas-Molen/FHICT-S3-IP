@@ -1,0 +1,87 @@
+.gameBackground {
+    background-image: url("../../Assets/GamePageBG.svg");
+    min-height: 120vh;
+    background-position: left;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+.gameHomeHeader{
+    text-align: center;
+    padding-top: 3vw;
+    margin-bottom: 70px;
+}
+
+.gameHomeHeaderText{
+    color: white;
+    font-weight: bold;
+    font-size: 65px;
+    font-family: monospace;
+}
+
+.gameHomeButton{
+    font-weight: bold !important;
+    font-size: 40px !important;
+}
+
+/* Character Selection */
+.GameCharacterSelection{
+    background-color: white;
+    padding: 1.5%;
+    padding-top: 1%;
+    border-radius: 20px;
+    display: inline-block;
+    margin-bottom: 50px;
+    max-width: 850px;
+}
+
+.adventurerOption{
+    background-color: #565656;
+    border-radius: 15px;
+    margin:1%;
+    padding-left: 15px;
+    padding-right: 20px;
+    font-size: 30px;
+    color: white;
+
+    border-style: solid;
+    border-color: white;
+    border-width: 5px;
+}
+
+.adventurerOption:hover{
+    cursor: pointer;
+}
+
+.adventurerOptionName{
+    margin-bottom: -5px;
+}
+
+.adventurerDeleteButton{
+    padding: 3px !important;
+    margin-top: 7px;
+    margin-right: -12px;
+}
+
+.CreateAdventurerButton{
+    margin-right: 5%;
+}
+
+.closeCreateAdventure{
+    margin-right: 10px;
+}
+
+.SelectionButtonText{
+    margin-bottom: 0px !important;
+    font-size: 15px !important;
+}
+
+.loadingCreateAdventurerText{
+    display: inline-block;
+}
+
+.SelectAdventurersButtonOptions{
+    margin-top: 20px;
+    padding-right: -50px;
+    padding-left: -50px;
+}
