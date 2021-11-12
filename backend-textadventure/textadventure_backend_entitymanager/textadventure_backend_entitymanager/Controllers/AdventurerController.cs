@@ -45,7 +45,7 @@ namespace textadventure_backend_entitymanager.Controllers
             }
         }
 
-        [HttpPost("delete")]
+        [HttpDelete("delete")]
         public async Task<IActionResult> Delete(DeleteAdventurerRequest request)
         {
             try
