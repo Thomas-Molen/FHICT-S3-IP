@@ -1,7 +1,7 @@
   .introductionBackground{
     background-image: url("../../Assets/IntroductionPageBG.svg");
       height: 535px;
-      background-position: left;
+      background-position: middle;
       background-repeat: no-repeat;
       background-size: cover;
     padding-bottom: 5%;
