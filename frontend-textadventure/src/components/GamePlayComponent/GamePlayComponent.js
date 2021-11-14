@@ -6,15 +6,19 @@ import { useRecoilValue } from 'recoil';
 import { JWTState } from '../../state';
 import { Icon } from '@iconify/react';
 import ReactTooltip from 'react-tooltip';
-
+import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 
 export function GamePlayComponent() {
     const globalJWTState = useRecoilValue(JWTState);
-
     const [Adventurer, setAdventurer] = useState({ id: null, experience: 0, health: 0, name: "Adventurer", damage: 0, positionX: 0, positionY: 0 });
     const [selectedView, setSelectedView] = useState("stats");
+
     let URI = useLocation();
     let history = useHistory();
+
+    const [connection, setConnection] = useState(null);
+
+    ConnectToHub();
     GetAdventurer();
 
     return (
@@ -128,6 +132,35 @@ export function GamePlayComponent() {
                 .catch(error => {
                     console.error('Error:', error);
                 });
+        }
+    }
+
+    async function ConnectToHub() {
+        if (connection == null && Adventurer.id != null)
+        {
+            try {
+                //create connection
+                const connection = new HubConnectionBuilder()
+                // .withUrl("https://localhost:5101/game")
+                .withUrl("https://localhost:5101/game", { accessTokenFactory: () => globalJWTState })
+                .configureLogging(LogLevel.Information)
+                .withAutomaticReconnect()
+                .build();
+    
+                setConnection(connection);
+                
+                //start connection
+                await connection.start();
+
+                //invoke connection commands
+                // connection.on("ReceiveMessage", (message) => {
+                //     console.log(message);
+                // });
+                // await connection.invoke("JoinGame", Adventurer.id);
+            }
+            catch (e) {
+                console.log("Error: " + e);
+            }
         }
     }
 

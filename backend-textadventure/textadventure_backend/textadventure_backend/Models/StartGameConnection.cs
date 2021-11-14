@@ -7,9 +7,6 @@ namespace textadventure_backend.Models
 {
     public class StartGameConnection
     {
-        //Testing props
-        public string User { get; set; }
-        //public Users User { get; set; }
-        //public Dungeons Dungeon { get; set; }
+        public int AdventurerId { get; set; }
     }
 }

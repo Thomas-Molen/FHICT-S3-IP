@@ -95,7 +95,6 @@ export function GameHomeComponent() {
     function SelectAdventurer(selectedOption, adventurerId) {
 
         if (selectedOption.nodeName === "BUTTON") {
-            console.log('aint doin shit');
             return;
         }
 
@@ -139,7 +138,7 @@ export function GameHomeComponent() {
             selectedButton = selectedButton.parentElement;
         }
         selectedButton.remove();
-        CreateAuthEntityManagerRequest('POST', 'Adventurer/delete', globalJWTState, { "adventurerId": adventurerId })
+        CreateAuthEntityManagerRequest('DELETE', 'Adventurer/delete', globalJWTState, { "adventurerId": adventurerId })
             .then(function () {
                 GetAdventurers();
             })
