@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 
 namespace textadventure_backend.Models
 {
-    public class StartGameConnection
+    public class JoinGameRequest
     {
         public int AdventurerId { get; set; }
+        public int DungeonId { get; set; }
+        public string JWTToken { get; set; }
     }
 }

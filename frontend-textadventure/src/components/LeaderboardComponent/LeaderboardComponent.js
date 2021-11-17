@@ -1,6 +1,6 @@
 import './LeaderboardComponent.css'
 import React, { useEffect, useState } from 'react';
-import { CreateEntityManagerRequest } from '../../actions/APIConnectionHelper';
+import { CreateEntityManagerRequest } from '../../helpers';
 
 export function LeaderboardComponent() {
     const [leaderboard, setLeaderboard] = useState(null);

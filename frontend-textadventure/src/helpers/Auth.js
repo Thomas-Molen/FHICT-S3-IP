@@ -3,7 +3,7 @@ import { JWTState, userState } from '../state'
 import jwt_decode from "jwt-decode";
 import { CreateEntityManagerRequest } from './APIConnectionHelper';
 
-export default function useAuthHook() {
+export function useAuthHook() {
     const [globalJWTState, setGlobalJWTState] = useRecoilState(JWTState);
     const setGlobalUserState = useSetRecoilState(userState)
     

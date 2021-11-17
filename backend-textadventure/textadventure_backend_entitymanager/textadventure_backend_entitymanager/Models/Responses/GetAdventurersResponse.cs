@@ -12,5 +12,6 @@ namespace textadventure_backend_entitymanager.Models.Responses
         public int Id { get; set; }
         public int Damage { get; set; }
         public int Experience { get; set; }
+        public int DungeonId { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 import './SignUpComponent.css'
 import { React, useState } from 'react';
 import { JWTState, userState } from '../../state';
-import { CreateEntityManagerRequest } from '../../actions/APIConnectionHelper'
+import { CreateEntityManagerRequest } from '../../helpers'
 import { useSetRecoilState } from 'recoil';
 
 export function SignUpComponent({ isOpen }) {

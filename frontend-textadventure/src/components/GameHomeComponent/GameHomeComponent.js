@@ -5,7 +5,7 @@ import { Button } from 'react-bootstrap'
 import { JWTState, userState } from '../../state';
 import { useRecoilValue } from 'recoil';
 import { Icon } from '@iconify/react';
-import { CreateAuthEntityManagerRequest } from '../../actions/APIConnectionHelper';
+import { CreateAuthEntityManagerRequest } from '../../helpers';
 
 export function GameHomeComponent() {
     const globalUserState = useRecoilValue(userState);

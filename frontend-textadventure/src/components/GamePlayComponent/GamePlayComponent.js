@@ -1,7 +1,7 @@
 import './GamePlayComponent.css'
 import { React, useState } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
-import { CreateAuthEntityManagerRequest } from '../../actions/APIConnectionHelper';
+import { CreateAuthEntityManagerRequest, cmd} from '../../helpers';
 import { useRecoilValue } from 'recoil';
 import { JWTState } from '../../state';
 import { Icon } from '@iconify/react';
@@ -10,13 +10,17 @@ import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 
 export function GamePlayComponent() {
     const globalJWTState = useRecoilValue(JWTState);
-    const [Adventurer, setAdventurer] = useState({ id: null, experience: 0, health: 0, name: "Adventurer", damage: 0, positionX: 0, positionY: 0 });
+    const [Adventurer, setAdventurer] = useState({ id: null, experience: 0, health: 0, name: "Adventurer", damage: 0, positionX: 0, positionY: 0, dungeonId: null });
     const [selectedView, setSelectedView] = useState("stats");
 
     let URI = useLocation();
     let history = useHistory();
 
-    const [connection, setConnection] = useState(null);
+    const [connection, setConnection] = useState(new HubConnectionBuilder()
+    .withUrl("https://localhost:5101/game", { accessTokenFactory: () => globalJWTState })
+    .configureLogging(LogLevel.Information)
+    .withAutomaticReconnect()
+    .build());
 
     ConnectToHub();
     GetAdventurer();
@@ -136,27 +140,24 @@ export function GamePlayComponent() {
     }
 
     async function ConnectToHub() {
-        if (connection == null && Adventurer.id != null)
+        if (connection.state == "Disconnected" && Adventurer.id != null)
         {
             try {
-                //create connection
-                const connection = new HubConnectionBuilder()
-                // .withUrl("https://localhost:5101/game")
-                .withUrl("https://localhost:5101/game", { accessTokenFactory: () => globalJWTState })
-                .configureLogging(LogLevel.Information)
-                .withAutomaticReconnect()
-                .build();
-    
-                setConnection(connection);
-                
-                //start connection
                 await connection.start();
-
+                cmd.Clear();
                 //invoke connection commands
-                // connection.on("ReceiveMessage", (message) => {
-                //     console.log(message);
-                // });
-                // await connection.invoke("JoinGame", Adventurer.id);
+                //general background commands
+                connection.on("RenewJWT", async(delay) => {
+                    await new Promise(r => setTimeout(r, delay));
+                    connection.invoke("UpdateJWT", globalJWTState);
+                });
+
+                //game commands
+                connection.on("ReceiveMessage", (message) => {
+                    cmd.DisplayMessage(message);
+                });
+
+                await connection.invoke("JoinGame", {adventurerId: Adventurer.id, dungeonId: Adventurer.dungeonId, JWTToken: globalJWTState});
             }
             catch (e) {
                 console.log("Error: " + e);
@@ -222,20 +223,7 @@ export function GamePlayComponent() {
 
     //game logic
     function SendCommand(command) {
-        AddToConsole(command);
-    }
-
-    function AddToConsole(message) {
-        const _console = document.getElementsByClassName("gameConsole")
-        if (message.length < 1) {
-            return;
-        }
-        if (_console[0].value == "") {
-            _console[0].value = message;
-        }
-        else {
-
-            _console[0].value = _console[0].value + "\n" + message;
-        }
+        // AddToConsole(command);
+        console.log(connection.state);
     }
 }

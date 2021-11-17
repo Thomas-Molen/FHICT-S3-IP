@@ -16,7 +16,7 @@ namespace textadventure_backend_entitymanager.Services
 
         public AdventurerService(IDbContextFactory<TextadventureDBContext> _contextFactory)
         {
-            this.contextFactory = _contextFactory;
+            contextFactory = _contextFactory;
         }
 
         public async Task Create(string name, int userId)
@@ -121,7 +121,8 @@ namespace textadventure_backend_entitymanager.Services
                     Damage = damage,
                     Experience = adventurer.Experience,
                     Health = adventurer.Health,
-                    Name = adventurer.Name
+                    Name = adventurer.Name,
+                    DungeonId = adventurer.DungeonId
                 };
 
                 return result;

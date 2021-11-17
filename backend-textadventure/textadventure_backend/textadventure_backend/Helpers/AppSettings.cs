@@ -8,5 +8,6 @@ namespace textadventure_backend.Helpers
     public class AppSettings
     {
         public string Secret { get; set; }
+        public string EnityManagerURL { get; set; }
     }
 }

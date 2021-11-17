@@ -7,9 +7,12 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 using textadventure_backend.Helpers;
 using textadventure_backend.Hubs;
+using textadventure_backend.Services;
+using textadventure_backend.Services.Interfaces;
 
 namespace textadventure_backend
 {
@@ -37,14 +40,21 @@ namespace textadventure_backend
 
             services.AddSignalR();
 
-            var appSettingsSection = Configuration.GetSection("AppSettings");
-            services.Configure<AppSettings>(appSettingsSection);
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+
+            services.AddSingleton<HttpClient>();
+            services.AddSingleton<IAdventurerService, AdventurerService>();
+
+            services.AddHttpContextAccessor();
+
+            services.AddHttpClient();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+            });
 
             // configure jwt authentication
-            var appSettings = appSettingsSection.Get<AppSettings>();
-
-            var key = System.Text.Encoding.ASCII.GetBytes(Configuration["AppSettings:Secret"]);
-
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -57,7 +67,7 @@ namespace textadventure_backend
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.ASCII.GetBytes(Configuration["AppSettings:Secret"])),
                     ValidateIssuer = false,
                     ValidateAudience = false,
                     // set clockskew to zero so tokens expire exactly at token expiration time (instead of 5 minutes later)
@@ -81,15 +91,6 @@ namespace textadventure_backend
                         return Task.CompletedTask;
                     }
                 };
-            });
-
-            services.AddHttpContextAccessor();
-
-            services.AddHttpClient();
-
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
             });
         }
 
