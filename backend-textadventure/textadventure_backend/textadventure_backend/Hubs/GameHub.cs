@@ -28,11 +28,10 @@ namespace textadventure_backend.Hubs
         public async Task JoinGame(JoinGameRequest request)
         {
             string dungeonGroup = request.DungeonId.ToString();
-            await UpdateJWT(request.JWTToken);
 
             try
             {
-                adventurer = await adventurerService.GetAdventurer(request.AdventurerId, JWTToken);
+                adventurer = await adventurerService.GetAdventurer(request.AdventurerId);
 
                 await Groups.AddToGroupAsync(Context.ConnectionId, dungeonGroup);
 
@@ -46,18 +45,6 @@ namespace textadventure_backend.Hubs
             {
                 throw new ArgumentException(ex.Message);
             }
-        }
-
-        public async Task UpdateJWT(string _JWTToken)
-        {
-            JWTToken = _JWTToken;
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var token = tokenHandler.ReadJwtToken(JWTToken);
-            var delay = long.Parse(token.Claims.Where(c => c.Type == "exp").FirstOrDefault().Value) - DateTimeOffset.Now.ToUnixTimeSeconds();
-
-            await Clients.Caller
-                    .SendAsync("RenewJWT", (int)delay * 1000);
         }
     }
 }

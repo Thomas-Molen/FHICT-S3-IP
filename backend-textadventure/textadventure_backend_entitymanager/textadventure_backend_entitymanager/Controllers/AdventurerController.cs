@@ -23,11 +23,12 @@ namespace textadventure_backend_entitymanager.Controllers
     {
         private readonly IAdventurerService adventurerService;
         private readonly JWTHelper JWT;
-
-        public AdventurerController(IAdventurerService _adventurerService, JWTHelper JWThelper)
+        private readonly AccessTokenHelper accessTokenHelper;
+        public AdventurerController(IAdventurerService _adventurerService, JWTHelper JWThelper, AccessTokenHelper _accessTokenHelper)
         {
             adventurerService = _adventurerService;
             JWT = JWThelper;
+            accessTokenHelper = _accessTokenHelper;
         }
 
         [HttpPost("create")]
@@ -97,6 +98,28 @@ namespace textadventure_backend_entitymanager.Controllers
             try
             {
                 var response = await adventurerService.GetLeaderboard();
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        //Game endpoints
+        [AllowAnonymous]
+        [HttpGet("get/{adventurerId}/{accessToken}")]
+        public async Task<IActionResult> GetAdventurer([FromRoute] string adventurerId, string accesstoken)
+        {
+            if (!accessTokenHelper.IsTokenValid(accesstoken))
+            {
+                return Unauthorized("Invalid accesstoken");
+            }
+
+            try
+            {
+                var response = await adventurerService.Find(Convert.ToInt32(adventurerId));
 
                 return Ok(response);
             }

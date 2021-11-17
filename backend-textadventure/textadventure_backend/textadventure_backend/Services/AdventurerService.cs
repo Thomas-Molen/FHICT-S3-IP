@@ -21,12 +21,10 @@ namespace textadventure_backend.Services
             appSettings = _appSettings.Value;
         }
 
-        public async Task<Adventurers> GetAdventurer(int adventurerId, string JWTToken)
+        public async Task<Adventurers> GetAdventurer(int adventurerId)
         {
-            using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, appSettings.EnityManagerURL + "Adventurer/get/" + adventurerId))
+            using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, appSettings.EnityManagerURL + "Adventurer/get/" + adventurerId + "/" + appSettings.GameAccessToken))
             {
-                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", JWTToken);
-
                 var response = await httpClient.SendAsync(requestMessage);
                 if (!response.IsSuccessStatusCode)
                 {

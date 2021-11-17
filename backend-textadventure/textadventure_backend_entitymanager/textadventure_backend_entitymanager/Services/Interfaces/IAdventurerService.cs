@@ -14,5 +14,6 @@ namespace textadventure_backend_entitymanager.Services.Interfaces
         Task<GetAdventurerResponse> Get(int userId, int adventurerId);
         Task Delete(int userId, int adventurerId);
         Task<ICollection<LeaderboardResponse>> GetLeaderboard();
+        Task<Adventurers> Find(int adventurerId);
     }
 }

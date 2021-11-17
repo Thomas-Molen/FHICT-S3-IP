@@ -12,10 +12,10 @@ namespace textadventure_backend_entitymanager.Models
         public int PositionX { get; set; }
         public int PositionY { get; set; }
         public string Event { get; set; }
-        public int NorthInteractionId { get; set; }
-        public int EastInteractionId { get; set; }
-        public int SouthInteractionId { get; set; }
-        public int WestInteractionId { get; set; }
+        public int? NorthInteractionId { get; set; }
+        public int? EastInteractionId { get; set; }
+        public int? SouthInteractionId { get; set; }
+        public int? WestInteractionId { get; set; }
 
         public virtual Dungeons Dungeon { get; set; }
         public virtual Interactions NorthInteraction { get; set; }

@@ -146,18 +146,11 @@ export function GamePlayComponent() {
                 await connection.start();
                 cmd.Clear();
                 //invoke connection commands
-                //general background commands
-                connection.on("RenewJWT", async(delay) => {
-                    await new Promise(r => setTimeout(r, delay));
-                    connection.invoke("UpdateJWT", globalJWTState);
-                });
-
-                //game commands
                 connection.on("ReceiveMessage", (message) => {
                     cmd.DisplayMessage(message);
                 });
 
-                await connection.invoke("JoinGame", {adventurerId: Adventurer.id, dungeonId: Adventurer.dungeonId, JWTToken: globalJWTState});
+                await connection.invoke("JoinGame", {adventurerId: Adventurer.id, dungeonId: Adventurer.dungeonId});
             }
             catch (e) {
                 console.log("Error: " + e);

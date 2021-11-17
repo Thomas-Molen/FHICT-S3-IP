@@ -8,6 +8,6 @@ namespace textadventure_backend.Services.Interfaces
 {
     public interface IAdventurerService
     {
-        Task<Adventurers> GetAdventurer(int adventurerId, string JWTToken);
+        Task<Adventurers> GetAdventurer(int adventurerId);
     }
 }

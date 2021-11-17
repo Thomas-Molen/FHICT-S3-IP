@@ -176,25 +176,29 @@ namespace textadventure_backend_entitymanager.Context
                    .WithMany(i => i.RoomNorth)
                    .HasForeignKey(r => r.NorthInteractionId)
                    .OnDelete(DeleteBehavior.ClientSetNull)
-                   .HasConstraintName("FK_Rooms_NorthInteractions");
+                   .HasConstraintName("FK_Rooms_NorthInteractions")
+                   .IsRequired(false);
 
                 entity.HasOne(r => r.EastInteraction)
                    .WithMany(i => i.RoomEast)
                    .HasForeignKey(r => r.EastInteractionId)
                    .OnDelete(DeleteBehavior.ClientSetNull)
-                   .HasConstraintName("FK_Rooms_EastInteractions");
+                   .HasConstraintName("FK_Rooms_EastInteractions")
+                   .IsRequired(false);
 
                 entity.HasOne(r => r.SouthInteraction)
                    .WithMany(i => i.RoomSouth)
                    .HasForeignKey(r => r.SouthInteractionId)
                    .OnDelete(DeleteBehavior.ClientSetNull)
-                   .HasConstraintName("FK_Rooms_SouthInteractions");
+                   .HasConstraintName("FK_Rooms_SouthInteractions")
+                   .IsRequired(false);
 
                 entity.HasOne(r => r.WestInteraction)
                    .WithMany(i => i.RoomWest)
                    .HasForeignKey(r => r.WestInteractionId)
                    .OnDelete(DeleteBehavior.ClientSetNull)
-                   .HasConstraintName("FK_Rooms_WestInteractions");
+                   .HasConstraintName("FK_Rooms_WestInteractions")
+                   .IsRequired(false);
             });
 
             modelBuilder.Entity<Interactions>(entity =>

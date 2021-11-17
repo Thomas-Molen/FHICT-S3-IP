@@ -130,6 +130,19 @@ namespace textadventure_backend_entitymanager.Services
             }
         }
 
+        public async Task<Adventurers> Find(int adventurerId)
+        {
+            using (var db = contextFactory.CreateDbContext())
+            {
+                var adventurer = await db.Adventurers.Include(a => a.AdventurerMaps).Include(a => a.Weapons).Include(a => a.Room).FirstOrDefaultAsync(a => a.Id == adventurerId);
+                if (adventurer == null)
+                {
+                    throw new ArgumentException("No adventurer found with given Id");
+                }
+                return adventurer;
+            }
+        }
+
         public async Task<ICollection<LeaderboardResponse>> GetLeaderboard()
         {
             using (var db = contextFactory.CreateDbContext())

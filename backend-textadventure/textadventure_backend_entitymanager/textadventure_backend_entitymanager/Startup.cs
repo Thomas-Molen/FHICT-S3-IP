@@ -36,7 +36,8 @@ namespace textadventure_backend_entitymanager
                 .AllowCredentials();
             }));
 
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(x =>
+                x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddDbContextFactory<TextadventureDBContext>(options =>
             {
@@ -48,6 +49,7 @@ namespace textadventure_backend_entitymanager
             services.AddSingleton<IUserService, UserService>();
             services.AddSingleton<IAdventurerService, AdventurerService>();
             services.AddSingleton<JWTHelper>();
+            services.AddSingleton<AccessTokenHelper>();
 
             services.AddHttpContextAccessor();
 

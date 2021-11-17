@@ -9,6 +9,5 @@ namespace textadventure_backend.Models
     {
         public int AdventurerId { get; set; }
         public int DungeonId { get; set; }
-        public string JWTToken { get; set; }
     }
 }
