@@ -142,17 +142,31 @@ export function GamePlayComponent() {
     async function ConnectToHub() {
         if (connection.state == "Disconnected" && Adventurer.id != null)
         {
+            cmd.DisplayMessage("Connecting to game servers...");
             try {
+                
                 await connection.start();
                 cmd.Clear();
+
+                //background setup
+                connection.onreconnecting(() => {
+                    cmd.DisplayMessage("Attempting to reconnect to the game server, \nthis might take a moment...");
+                });
+
+                connection.onreconnected(() => {
+                    window.location.reload();
+                });
+
                 //invoke connection commands
                 connection.on("ReceiveMessage", (message) => {
                     cmd.DisplayMessage(message);
                 });
 
-                await connection.invoke("JoinGame", {adventurerId: Adventurer.id, dungeonId: Adventurer.dungeonId});
+                await connection.invoke("JoinGame", Adventurer.id);
             }
             catch (e) {
+                cmd.Clear();
+                cmd.DisplayMessage("Failed to connect to game server. \nPlease check your internet connection and the status of our servers.");
                 console.log("Error: " + e);
             }
         }
@@ -215,8 +229,7 @@ export function GamePlayComponent() {
     }
 
     //game logic
-    function SendCommand(command) {
-        // AddToConsole(command);
-        console.log(connection.state);
+    async function SendCommand(command) {
+        await connection.invoke("SendCommand", command);
     }
 }

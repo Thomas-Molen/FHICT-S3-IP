@@ -1,13 +1,7 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Threading.Tasks;
-using textadventure_backend.Models;
-using textadventure_backend.Models.Entities;
 using textadventure_backend.Services.Interfaces;
 
 namespace textadventure_backend.Hubs
@@ -16,35 +10,50 @@ namespace textadventure_backend.Hubs
     public class GameHub : Hub
     {
         private readonly IAdventurerService adventurerService;
+        private readonly ISessionManager sessionManager;
 
-        private string JWTToken;
-        private Adventurers adventurer;
-
-        public GameHub(IAdventurerService _adventurerService)
+        public GameHub(IAdventurerService _adventurerService, ISessionManager _sessionManager)
         {
             adventurerService = _adventurerService;
+            sessionManager = _sessionManager;
         }
 
-        public async Task JoinGame(JoinGameRequest request)
+        public override async Task OnDisconnectedAsync(Exception exception)
         {
-            string dungeonGroup = request.DungeonId.ToString();
+            var Currentsession = sessionManager.GetSession(Context.ConnectionId);
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, Currentsession.Group);
+            sessionManager.RemoveSession(Context.ConnectionId);
+            await Clients.Group(Currentsession.Group)
+                .SendAsync("ReceiveMessage", Currentsession.Adventurer.Name + " Has vanished from the dungeon");
+            await base.OnDisconnectedAsync(exception);
+        }
 
+        public async Task JoinGame(int adventurerId)
+        {
             try
             {
-                adventurer = await adventurerService.GetAdventurer(request.AdventurerId);
+                await sessionManager.AddSession(Context.ConnectionId, adventurerId);
+                var currentSession = sessionManager.GetSession(Context.ConnectionId);
 
-                await Groups.AddToGroupAsync(Context.ConnectionId, dungeonGroup);
+                await Groups.AddToGroupAsync(Context.ConnectionId, currentSession.Group);
 
                 await Clients.Caller
-                    .SendAsync("ReceiveMessage", "Welcome " + adventurer.Name);
+                    .SendAsync("ReceiveMessage", "Welcome " + currentSession.Adventurer.Name);
 
-                await Clients.OthersInGroup(dungeonGroup)
-                    .SendAsync("ReceiveMessage", adventurer.Name + " Has entered the dungeon");
+                await Clients.OthersInGroup(currentSession.Group)
+                    .SendAsync("ReceiveMessage", currentSession.Adventurer.Name + " Has entered the dungeon");
             }
             catch (Exception ex)
             {
                 throw new ArgumentException(ex.Message);
             }
+        }
+
+        public async Task SendCommand(string message)
+        {
+            var currentSession = sessionManager.GetSession(Context.ConnectionId);
+            await Clients.Group(currentSession.Group)
+                .SendAsync("ReceiveMessage", currentSession.Adventurer.Name + " Said " + message);
         }
     }
 }
