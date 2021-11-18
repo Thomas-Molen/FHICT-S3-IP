@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using textadventure_backend_entitymanager.Context;
 using textadventure_backend_entitymanager.Models;
+using textadventure_backend_entitymanager.Models.Entities;
 using textadventure_backend_entitymanager.Models.Responses;
 using textadventure_backend_entitymanager.Services.Interfaces;
 
@@ -52,7 +53,11 @@ namespace textadventure_backend_entitymanager.Services
         {
             using (var db = contextFactory.CreateDbContext())
             {
-                var user = await db.Users.Include(u => u.Adventurers.Where(a => a.Id == adventurerId)).FirstOrDefaultAsync(u => u.Id == userId);
+                var user = await db.Users
+                    .OrderByDescending(x => x.Id)
+                    .Include(u => u.Adventurers
+                    .Where(a => a.Id == adventurerId))
+                    .FirstOrDefaultAsync(u => u.Id == userId);
                 var adventurer = user.Adventurers.FirstOrDefault();
 
                 if (adventurer == null)
@@ -69,7 +74,12 @@ namespace textadventure_backend_entitymanager.Services
         {
             using (var db = contextFactory.CreateDbContext())
             {
-                var user = await db.Users.Include(u => u.Adventurers).ThenInclude(a => a.Weapons.Where(w => w.Equiped)).FirstOrDefaultAsync(u => u.Id == userId);
+                var user = await db.Users
+                    .OrderByDescending(u => u.Id)
+                    .Include(u => u.Adventurers)
+                    .ThenInclude(a => a.Weapons
+                    .Where(w => w.Equiped))
+                    .FirstOrDefaultAsync(u => u.Id == userId);
 
                 var result = new List<GetAdventurersResponse>();
                 foreach (var adventurer in user.Adventurers)
@@ -101,6 +111,7 @@ namespace textadventure_backend_entitymanager.Services
             using (var db = contextFactory.CreateDbContext())
             {
                 var adventurer = await db.Adventurers
+                    .OrderByDescending(x => x.Id)
                     .Include(a => a.Weapons.Where(w => w.Equiped))
                     .FirstOrDefaultAsync(a => a.Id == adventurerId && a.User.Id == userId);
 
@@ -134,7 +145,12 @@ namespace textadventure_backend_entitymanager.Services
         {
             using (var db = contextFactory.CreateDbContext())
             {
-                var adventurer = await db.Adventurers.Include(a => a.AdventurerMaps).Include(a => a.Weapons).Include(a => a.Room).FirstOrDefaultAsync(a => a.Id == adventurerId);
+                var adventurer = await db.Adventurers
+                    .OrderByDescending(x => x.Id)
+                    .Include(a => a.AdventurerMaps)
+                    .Include(a => a.Weapons)
+                    .Include(a => a.Room)
+                    .FirstOrDefaultAsync(a => a.Id == adventurerId);
                 if (adventurer == null)
                 {
                     throw new ArgumentException("No adventurer found with given Id");

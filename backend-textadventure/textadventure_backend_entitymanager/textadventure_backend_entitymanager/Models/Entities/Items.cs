@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace textadventure_backend_entitymanager.Models
+namespace textadventure_backend_entitymanager.Models.Entities
 {
     public class Items : DefaultModel
     {

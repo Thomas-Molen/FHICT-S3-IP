@@ -11,11 +11,13 @@ namespace textadventure_backend.Hubs
     {
         private readonly IAdventurerService adventurerService;
         private readonly ISessionManager sessionManager;
+        private readonly IGameService gameService;
 
-        public GameHub(IAdventurerService _adventurerService, ISessionManager _sessionManager)
+        public GameHub(IAdventurerService _adventurerService, ISessionManager _sessionManager, IGameService _gameService)
         {
             adventurerService = _adventurerService;
             sessionManager = _sessionManager;
+            gameService = _gameService;
         }
 
         public override async Task OnDisconnectedAsync(Exception exception)
@@ -42,6 +44,8 @@ namespace textadventure_backend.Hubs
 
                 await Clients.OthersInGroup(currentSession.Group)
                     .SendAsync("ReceiveMessage", currentSession.Adventurer.Name + " Has entered the dungeon");
+
+                
             }
             catch (Exception ex)
             {
@@ -52,6 +56,16 @@ namespace textadventure_backend.Hubs
         public async Task SendCommand(string message)
         {
             var currentSession = sessionManager.GetSession(Context.ConnectionId);
+
+            //debug commands
+            switch (message)
+            {
+                case "generate-room":
+                    await gameService.EnterRoom(currentSession.Adventurer);
+                    return;
+                default:
+                    break;
+            }
             await Clients.Group(currentSession.Group)
                 .SendAsync("ReceiveMessage", currentSession.Adventurer.Name + " Said " + message);
         }

@@ -9,8 +9,8 @@ namespace textadventure_backend.Services.Interfaces
 {
     public interface ISessionManager
     {
-        public Task AddSession(string connectionId, int adventurerId);
-        public Session GetSession(string connectionId);
-        public void RemoveSession(string connectionId);
+        Task AddSession(string connectionId, int adventurerId);
+        Session GetSession(string connectionId);
+        void RemoveSession(string connectionId);
     }
 }

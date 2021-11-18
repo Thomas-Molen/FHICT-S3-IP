@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace textadventure_backend_entitymanager.Models
+namespace textadventure_backend_entitymanager.Models.Entities
 {
     public class NPCs : DefaultModel
     {
@@ -14,19 +14,9 @@ namespace textadventure_backend_entitymanager.Models
 
         public virtual Weapons Weapon { get; set; }
         public virtual Items Item { get; set; }
-        public virtual ICollection<Interactions> Interaction { get; set; }
 
         public NPCs()
         {
-            Interaction = new HashSet<Interactions>();
-        }
-
-        public NPCs(string conversation, int risk)
-        {
-            Interaction = new HashSet<Interactions>();
-
-            Conversation = conversation;
-            Risk = risk;
         }
     }
 }

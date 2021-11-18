@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
-namespace textadventure_backend_entitymanager.Models
+namespace textadventure_backend.Models.Entities
 {
     public class RefreshTokens
     {

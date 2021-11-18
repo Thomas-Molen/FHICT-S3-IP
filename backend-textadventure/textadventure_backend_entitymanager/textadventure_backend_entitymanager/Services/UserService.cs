@@ -9,6 +9,7 @@ using textadventure_backend_entitymanager.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using textadventure_backend_entitymanager.Models.Responses;
 using textadventure_backend_entitymanager.Models.Requests;
+using textadventure_backend_entitymanager.Models.Entities;
 
 namespace textadventure_backend_entitymanager.Services
 {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace textadventure_backend_entitymanager.Models
+namespace textadventure_backend_entitymanager.Models.Entities
 {
     public class Adventurers : DefaultModel
     {
