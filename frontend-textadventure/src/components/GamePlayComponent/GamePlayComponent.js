@@ -1,7 +1,7 @@
 import './GamePlayComponent.css'
 import { React, useState } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
-import { CreateAuthEntityManagerRequest, cmd} from '../../helpers';
+import { CreateAuthEntityManagerRequest, cmd } from '../../helpers';
 import { useRecoilValue } from 'recoil';
 import { JWTState } from '../../state';
 import { Icon } from '@iconify/react';
@@ -17,10 +17,10 @@ export function GamePlayComponent() {
     let history = useHistory();
 
     const [connection, setConnection] = useState(new HubConnectionBuilder()
-    .withUrl("https://localhost:5101/game", { accessTokenFactory: () => globalJWTState })
-    .configureLogging(LogLevel.Information)
-    .withAutomaticReconnect()
-    .build());
+        .withUrl("https://localhost:5101/game", { accessTokenFactory: () => globalJWTState })
+        .configureLogging(LogLevel.Information)
+        .withAutomaticReconnect()
+        .build());
 
     ConnectToHub();
     GetAdventurer();
@@ -28,8 +28,10 @@ export function GamePlayComponent() {
     return (
         <>
             <div className="gameBackground">
-                <div className="gameHeader offset-1 col">
-                    Welcome {Adventurer.name}
+                <div className="col-9">
+                    <div className="gameHeader offset-1 col ">
+                        Welcome {Adventurer.name}
+                    </div>
                 </div>
                 <div className="container-fluid">
                     <div className="row">
@@ -140,11 +142,10 @@ export function GamePlayComponent() {
     }
 
     async function ConnectToHub() {
-        if (connection.state == "Disconnected" && Adventurer.id != null)
-        {
+        if (connection.state == "Disconnected" && Adventurer.id != null) {
             cmd.DisplayMessage("Connecting to game servers...");
             try {
-                
+
                 await connection.start();
                 cmd.Clear();
 

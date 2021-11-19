@@ -8,6 +8,6 @@ namespace textadventure_backend.Services.Interfaces
 {
     public interface IGameService
     {
-        Task<string> EnterRoom(Adventurers adventurer);
+        Task<string> EnterRoom(Adventurers adventurer, string direction = null);
     }
 }

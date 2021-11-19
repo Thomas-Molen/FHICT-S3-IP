@@ -12,5 +12,6 @@ namespace textadventure_backend.Services.Interfaces
         Task AddSession(string connectionId, int adventurerId);
         Session GetSession(string connectionId);
         void RemoveSession(string connectionId);
+        Task<Adventurers> GetUpdatedAdventurer(string connectionId);
     }
 }

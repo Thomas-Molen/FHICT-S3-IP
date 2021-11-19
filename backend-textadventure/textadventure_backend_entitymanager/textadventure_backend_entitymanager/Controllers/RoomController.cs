@@ -38,9 +38,29 @@ namespace textadventure_backend_entitymanager.Controllers
 
             try
             {
-                var spawnRoom = await roomService.CreateSpawnRoom(createSpawnRequest.adventurerId);
+                var spawnRoom = await roomService.GenerateRoom(createSpawnRequest.adventurerId, isSpawn: true);
 
                 return Ok(spawnRoom);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("create-room/{accessToken}")]
+        public async Task<IActionResult> CreateRoom([FromRoute] string accesstoken, [FromBody] CreateRoomRequest createSpawnRequest)
+        {
+            if (!accessTokenHelper.IsTokenValid(accesstoken))
+            {
+                return Unauthorized("Invalid accesstoken");
+            }
+
+            try
+            {
+                var newRoom = await roomService.GenerateRoom(createSpawnRequest.adventurerId, createSpawnRequest.Direction.ToLower());
+
+                return Ok(newRoom);
             }
             catch (Exception ex)
             {

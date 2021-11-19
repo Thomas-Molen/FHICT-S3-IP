@@ -21,13 +21,25 @@ namespace textadventure_backend.Services
             appSettings = _appSettings.Value;
         }
 
-        public async Task<string> EnterRoom(Adventurers adventurer)
+        public async Task<string> EnterRoom(Adventurers adventurer, string direction = null)
         {
-            if (adventurer.Room == null || true)
+            if (adventurer.RoomId == null)
             {
                 using (var requestMessage = new HttpRequestMessage(HttpMethod.Post, appSettings.EnityManagerURL + "Room/create-spawn/" + appSettings.GameAccessToken))
                 {
                     requestMessage.Content = JsonContent.Create(new { adventurerId = adventurer.Id});
+                    var response = await httpClient.SendAsync(requestMessage);
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        throw new ArgumentException(response.ReasonPhrase);
+                    }
+                }
+            }
+            else
+            {
+                using (var requestMessage = new HttpRequestMessage(HttpMethod.Post, appSettings.EnityManagerURL + "Room/create-room/" + appSettings.GameAccessToken))
+                {
+                    requestMessage.Content = JsonContent.Create(new { adventurerId = adventurer.Id, direction = direction });
                     var response = await httpClient.SendAsync(requestMessage);
                     if (!response.IsSuccessStatusCode)
                     {

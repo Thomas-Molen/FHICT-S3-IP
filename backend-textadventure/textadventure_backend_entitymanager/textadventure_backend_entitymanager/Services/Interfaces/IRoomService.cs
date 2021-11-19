@@ -9,6 +9,6 @@ namespace textadventure_backend_entitymanager.Services.Interfaces
 {
     public interface IRoomService
     {
-        Task<Rooms> CreateSpawnRoom(int adventurerId);
+        Task<Rooms> GenerateRoom(int adventurerId, string direction = null, bool isSpawn = false);
     }
 }

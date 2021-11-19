@@ -23,45 +23,88 @@ namespace textadventure_backend_entitymanager.Services
             rng = new Random();
         }
 
-        public async Task<Rooms> CreateSpawnRoom(int adventurerId)
+        public async Task<Rooms> GenerateRoom(int adventurerId, string direction = null, bool isSpawn = false)
         {
             using (var db = contextFactory.CreateDbContext())
             {
+                var adventurer = await db.Adventurers
+                    .OrderByDescending(x => x.Id)
+                    .Include(a => a.Room)
+                    .FirstOrDefaultAsync(a => a.Id == adventurerId);
+
                 var dungeon = await db.Dungeons
                     .OrderByDescending(x => x.Id)
                     .Include(d => d.Adventurers)
                     .Include(d => d.Rooms)
-                    .FirstOrDefaultAsync(d => d.Id == adventurerId);
+                    .FirstOrDefaultAsync(d => d.Id == adventurer.DungeonId);
 
-                //there must be a better way to do this
-                int posX = 0;
-                int posY = 0;
-                while (posX == 0 || dungeon.Rooms.Any(r => r.PositionX == posX))
+                var newRoom = new Rooms
                 {
-                    posX = rng.Next(1, 10 * dungeon.Rooms.Count+1);
-                }
-                while (posY == 0 || dungeon.Rooms.Any(r => r.PositionY == posY))
-                {
-                    posY = rng.Next(1, 10 * dungeon.Rooms.Count+1);
-                }
-
-                var spawnRoom = new Rooms
-                {
-                    PositionX = posX,
-                    PositionY = posY,
-                    Event = Events.Chest.ToString(),
                     DungeonId = dungeon.Id,
                 };
-                spawnRoom = await CheckAdjacentRooms(spawnRoom);
 
-                await db.AddAsync(spawnRoom);
+                if (isSpawn)
+                {
+                    int posX = 0;
+                    int posY = 0;
+                    while (posX == 0 || dungeon.Rooms.Any(r => r.PositionX == posX))
+                    {
+                        posX = rng.Next(1, 10 * dungeon.Rooms.Count + 1);
+                    }
+                    while (posY == 0 || dungeon.Rooms.Any(r => r.PositionY == posY))
+                    {
+                        posY = rng.Next(1, 10 * dungeon.Rooms.Count + 1);
+                    }
+                    newRoom.PositionX = posX;
+                    newRoom.PositionY = posY;
+                    newRoom.Event = Events.Chest.ToString();
+                    newRoom = SetDirectionalInteractions(await CheckAdjacentRooms(newRoom), newRoom, true);
+                }
+                else
+                {
+                    int posX = adventurer.Room.PositionX;
+                    int posY = adventurer.Room.PositionY;
+
+                    if (direction == null)
+                    {
+                        throw new ArgumentException("No direction given");
+                    }
+
+                    switch (direction)
+                    {
+                        case "north":
+                            posY = adventurer.Room.PositionY - 1;
+                            break;
+                        case "east":
+                            posX = adventurer.Room.PositionX + 1;
+                            break;
+                        case "south":
+                            posY = adventurer.Room.PositionY + 1;
+                            break;
+                        case "west":
+                            posX = adventurer.Room.PositionX - 1;
+                            break;
+                        default:
+                            posX = adventurer.Room.PositionX + 1;
+                            break;
+                    }
+
+                    newRoom.PositionX = posX;
+                    newRoom.PositionY = posY;
+
+                    Array possbileEvents = typeof(Events).GetEnumValues();
+                    newRoom.Event = possbileEvents.GetValue(rng.Next(possbileEvents.Length)).ToString();
+                    newRoom = SetDirectionalInteractions(await CheckAdjacentRooms(newRoom), newRoom);
+                }
+
+                await db.AddAsync(newRoom);
                 await db.SaveChangesAsync();
-                await AddRoom(adventurerId, spawnRoom.Id);
-                return spawnRoom;
+                await AddRoomToPlayer(adventurerId, newRoom.Id);
+                return newRoom;
             }
         }
 
-        private async Task<Rooms> CheckAdjacentRooms(Rooms room)
+        private async Task<ICollection<AdjacentRooms>> CheckAdjacentRooms(Rooms room)
         {
             List<AdjacentRooms> adjacentRooms = new List<AdjacentRooms>();
             using (var db = contextFactory.CreateDbContext())
@@ -89,25 +132,41 @@ namespace textadventure_backend_entitymanager.Services
                     AdjacentRooms adjacentRoom = new AdjacentRooms { Room = roomBeingChecked, RelativePosition = (Directions)i };
                     adjacentRooms.Add(adjacentRoom);
                 }
-                return SetDirectionalInteractions(adjacentRooms, room);
+                return adjacentRooms;
             }
         }
 
-        private Rooms SetDirectionalInteractions(ICollection<AdjacentRooms> adjacentRooms, Rooms room)
+        private Rooms SetDirectionalInteractions(ICollection<AdjacentRooms> adjacentRooms, Rooms room, bool isSpawn = false)
         {
             foreach (var entry in adjacentRooms)
             {
+                //generate what interaction given roomside should get
                 DirectionalInteractions interaction = DirectionalInteractions.Wall;
-                if (DoesAdjacentRoomHaveDoor(entry, room) || (entry.Room == null && rng.Next(1, 4) > 1))
+                if (isSpawn)
                 {
-                    interaction = DirectionalInteractions.Door;
+                    if (DoesAdjacentRoomHaveDoor(entry, room) || (entry.Room == null))
+                    {
+                        interaction = DirectionalInteractions.Door;
+                    }
+                    else if (entry.Room != null)
+                    {
+                        interaction = DirectionalInteractions.WeakWall;
+                    }
                 }
-                else if (entry.Room != null)
+                else
                 {
-                    interaction = DirectionalInteractions.WeakWall;
+                    
+                    if (DoesAdjacentRoomHaveDoor(entry, room) || (entry.Room == null && rng.Next(1, 4) > 1))
+                    {
+                        interaction = DirectionalInteractions.Door;
+                    }
+                    else if (entry.Room != null)
+                    {
+                        interaction = DirectionalInteractions.WeakWall;
+                    }
                 }
 
-                //this might be able to be done easier
+                //Set wall's interactions depending on which direction the adjacent room is
                 switch (entry.RelativePosition)
                 {
                     case Directions.North:
@@ -168,7 +227,7 @@ namespace textadventure_backend_entitymanager.Services
             return false;
         }
 
-        private async Task AddRoom(int adventurerId, int roomId)
+        private async Task AddRoomToPlayer(int adventurerId, int roomId)
         {
             using (var db = contextFactory.CreateDbContext())
             {

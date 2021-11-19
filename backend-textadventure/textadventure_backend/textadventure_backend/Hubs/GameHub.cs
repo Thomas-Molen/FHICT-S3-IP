@@ -56,18 +56,18 @@ namespace textadventure_backend.Hubs
         public async Task SendCommand(string message)
         {
             var currentSession = sessionManager.GetSession(Context.ConnectionId);
-
             //debug commands
             switch (message)
             {
                 case "generate-room":
-                    await gameService.EnterRoom(currentSession.Adventurer);
-                    return;
+                    message = await gameService.EnterRoom(await sessionManager.GetUpdatedAdventurer(Context.ConnectionId), "east");
+                    break;
                 default:
+                    message = currentSession.Adventurer.Name + " Said " + message;
                     break;
             }
             await Clients.Group(currentSession.Group)
-                .SendAsync("ReceiveMessage", currentSession.Adventurer.Name + " Said " + message);
+                        .SendAsync("ReceiveMessage", message);
         }
     }
 }
