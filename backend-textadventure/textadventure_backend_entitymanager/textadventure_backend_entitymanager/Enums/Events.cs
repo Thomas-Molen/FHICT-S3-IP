@@ -8,10 +8,7 @@ namespace textadventure_backend_entitymanager.Enums
     public enum Events
     {
         Chest,
-        Ambush,
         Enemy,
-        Boss,
         Empty,
-        Trap
     }
 }

@@ -28,8 +28,8 @@ namespace textadventure_backend_entitymanager.Controllers
             accessTokenHelper = _accessTokenHelper;
         }
 
-        [HttpPost("create-spawn/{accessToken}")]
-        public async Task<IActionResult> CreateSpawn([FromRoute] string accesstoken, [FromBody] CreateSpawnRequest createSpawnRequest)
+        [HttpPost("enter/{accessToken}")]
+        public async Task<IActionResult> EnterRoom([FromRoute] string accesstoken, [FromBody] EnterRoomRequest createSpawnRequest)
         {
             if (!accessTokenHelper.IsTokenValid(accesstoken))
             {
@@ -38,9 +38,9 @@ namespace textadventure_backend_entitymanager.Controllers
 
             try
             {
-                var spawnRoom = await roomService.GenerateRoom(createSpawnRequest.adventurerId, isSpawn: true);
+                var result = await roomService.MoveToRoom(createSpawnRequest.AdventurerId, createSpawnRequest.Direction.ToLower());
 
-                return Ok(spawnRoom);
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -48,8 +48,8 @@ namespace textadventure_backend_entitymanager.Controllers
             }
         }
 
-        [HttpPost("create-room/{accessToken}")]
-        public async Task<IActionResult> CreateRoom([FromRoute] string accesstoken, [FromBody] CreateRoomRequest createSpawnRequest)
+        [HttpGet("load/{adventurerId}/{accessToken}")]
+        public async Task<IActionResult> LoadRoom([FromRoute] string accesstoken, string adventurerId)
         {
             if (!accessTokenHelper.IsTokenValid(accesstoken))
             {
@@ -58,9 +58,29 @@ namespace textadventure_backend_entitymanager.Controllers
 
             try
             {
-                var newRoom = await roomService.GenerateRoom(createSpawnRequest.adventurerId, createSpawnRequest.Direction.ToLower());
+                var result = await roomService.LoadRoom(Convert.ToInt32(adventurerId));
 
-                return Ok(newRoom);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("spawn/{adventurerId}/{accessToken}")]
+        public async Task<IActionResult> CreateSpawn([FromRoute] string accesstoken, string adventurerId)
+        {
+            if (!accessTokenHelper.IsTokenValid(accesstoken))
+            {
+                return Unauthorized("Invalid accesstoken");
+            }
+
+            try
+            {
+                var result = await roomService.CreateSpawn(Convert.ToInt32(adventurerId));
+
+                return Ok(result);
             }
             catch (Exception ex)
             {

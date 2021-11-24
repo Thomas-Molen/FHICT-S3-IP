@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using textadventure_backend.Models.Entities;
+using textadventure_backend.Models.Requests;
 
 namespace textadventure_backend.Services.Interfaces
 {
     public interface IGameService
     {
-        Task<string> EnterRoom(Adventurers adventurer, string direction = null);
+        Task<EnterRoomRequest> EnterRoom(Adventurers adventurer, string direction);
+        Task<LoadRoomRequest> LoadRoom(int adventurerId);
+        Task<EnterRoomRequest> GenerateSpawn(int adventurerId);
     }
 }

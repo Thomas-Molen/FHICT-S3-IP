@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
+using textadventure_backend.Models.Requests;
 using textadventure_backend.Services.Interfaces;
 
 namespace textadventure_backend.Hubs
@@ -45,7 +47,18 @@ namespace textadventure_backend.Hubs
                 await Clients.OthersInGroup(currentSession.Group)
                     .SendAsync("ReceiveMessage", currentSession.Adventurer.Name + " Has entered the dungeon");
 
-                
+                if (currentSession.Adventurer.RoomId == null)
+                {
+                    var generateSpawnResult = await gameService.GenerateSpawn(currentSession.Adventurer.Id);
+                    await Clients.Caller
+                        .SendAsync("ReceiveMessage", generateSpawnResult.Message);
+                }
+                else
+                {
+                    var loadResult = await gameService.LoadRoom(currentSession.Adventurer.Id);
+                    await Clients.Caller
+                        .SendAsync("ReceiveMessage", loadResult.Message);
+                }
             }
             catch (Exception ex)
             {
@@ -56,18 +69,51 @@ namespace textadventure_backend.Hubs
         public async Task SendCommand(string message)
         {
             var currentSession = sessionManager.GetSession(Context.ConnectionId);
-            //debug commands
-            switch (message)
+
+            //list of commands keywords to look out for
+            string[] commands = new string[] {"say", "go", "test", "look" };
+            string command = commands.FirstOrDefault<string>(s => message.Contains(s));
+            switch (command)
             {
-                case "generate-room":
-                    message = await gameService.EnterRoom(await sessionManager.GetUpdatedAdventurer(Context.ConnectionId), "east");
-                    break;
+                //tell something to all dungeon members
+                case "say":
+                    string sayResult = message.Replace("say", "");
+                    await Clients.OthersInGroup(currentSession.Group)
+                        .SendAsync("ReceiveMessage", currentSession.Adventurer.Name + " said " + sayResult);
+                    await Clients.Caller
+                        .SendAsync("ReceiveMessage", "sent " + sayResult);
+                    return;
+                //enter a new room
+                case "go":
+                    string direction = message.Replace("go ", "");
+
+                    var enterRoomResult = await gameService.EnterRoom(await sessionManager.GetUpdatedAdventurer(Context.ConnectionId), direction);
+                    await Clients.Caller
+                        .SendAsync("ReceiveMessage", enterRoomResult.Message);
+                    if (enterRoomResult.NewRoom)
+                    {
+                    var loadResult = await gameService.LoadRoom(currentSession.Adventurer.Id);
+                    await Clients.Caller
+                        .SendAsync("ReceiveMessage", loadResult.Message);
+                    }
+                    return;
+                //let the player look in a direction
+                case "look":
+                    var reloadResult = await gameService.LoadRoom(currentSession.Adventurer.Id);
+                    await Clients.Caller
+                        .SendAsync("ReceiveMessage", reloadResult.Message);
+                    return;
+                //debug command
+                case "test":
+                    await Clients.Caller
+                        .SendAsync("ReceiveMessage", "Testing message");
+                    return;
+
                 default:
-                    message = currentSession.Adventurer.Name + " Said " + message;
+                    await Clients.Caller
+                        .SendAsync("ReceiveMessage", "Given command not found, did you misspell it?");
                     break;
             }
-            await Clients.Group(currentSession.Group)
-                        .SendAsync("ReceiveMessage", message);
         }
     }
 }
