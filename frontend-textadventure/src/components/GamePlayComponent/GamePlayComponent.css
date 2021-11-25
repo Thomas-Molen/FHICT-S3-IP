@@ -104,3 +104,12 @@
 .statsInformationWindow {
     font-size: 40px;
 }
+
+.Inventory {
+    max-height: 250px;
+    font-size: 20px;
+}
+
+.EquipedItem{
+    color: rgb(114, 217, 224);
+}

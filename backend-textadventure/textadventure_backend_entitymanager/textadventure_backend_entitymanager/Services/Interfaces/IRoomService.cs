@@ -13,5 +13,6 @@ namespace textadventure_backend_entitymanager.Services.Interfaces
         Task<EnterRoomResponse> MoveToRoom(int adventurerId, string direction);
         Task<LoadRoomResponse> LoadRoom(int adventurerId);
         Task<EnterRoomResponse> CreateSpawn(int adventurerId);
+        Task CompleteRoom(int adventurerId);
     }
 }

@@ -201,17 +201,17 @@ namespace textadventure_backend_entitymanager.Context
                     .HasMaxLength(101)
                     .IsRequired();
 
-                entity.HasOne(npc => npc.Weapon)
-                   .WithMany(w => w.NPCs)
-                   .HasForeignKey(npc => npc.WeaponId)
-                   .OnDelete(DeleteBehavior.ClientSetNull)
-                   .HasConstraintName("FK_NPCs_Weapons");
+                //entity.HasOne(npc => npc.Weapon)
+                //   .WithMany(w => w.NPCs)
+                //   .HasForeignKey(npc => npc.WeaponId)
+                //   .OnDelete(DeleteBehavior.ClientSetNull)
+                //   .HasConstraintName("FK_NPCs_Weapons");
 
-                entity.HasOne(npc => npc.Item)
-                   .WithMany(it => it.NPCs)
-                   .HasForeignKey(npc => npc.ItemId)
-                   .OnDelete(DeleteBehavior.ClientSetNull)
-                   .HasConstraintName("FK_NPCs_Items");
+                //entity.HasOne(npc => npc.Item)
+                //   .WithMany(it => it.NPCs)
+                //   .HasForeignKey(npc => npc.ItemId)
+                //   .OnDelete(DeleteBehavior.ClientSetNull)
+                //   .HasConstraintName("FK_NPCs_Items");
             });
 
             modelBuilder.Entity<RefreshTokens>(entity =>

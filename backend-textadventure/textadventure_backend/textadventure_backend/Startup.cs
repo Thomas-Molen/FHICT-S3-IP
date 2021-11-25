@@ -46,6 +46,8 @@ namespace textadventure_backend
             services.AddSingleton<IAdventurerService, AdventurerService>();
             services.AddSingleton<ISessionManager, SessionManager>();
             services.AddSingleton<IGameService, GameService>();
+            services.AddSingleton<IWeaponService, WeaponService>();
+            services.AddSingleton<IRoomService, RoomService>();
 
             services.AddHttpContextAccessor();
 

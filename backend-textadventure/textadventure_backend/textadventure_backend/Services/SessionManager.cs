@@ -14,11 +14,15 @@ namespace textadventure_backend.Services
     public class SessionManager : ISessionManager
     {
         private readonly IAdventurerService adventurerService;
+        private readonly IWeaponService weaponService;
+        private readonly IRoomService roomService;
         private List<Session> sessions;
 
-        public SessionManager(IAdventurerService _adventurerService)
+        public SessionManager(IAdventurerService _adventurerService, IWeaponService _weaponService, IRoomService _roomService)
         {
             adventurerService = _adventurerService;
+            weaponService = _weaponService;
+            roomService = _roomService;
             sessions = new List<Session>();
         }
 
@@ -57,6 +61,27 @@ namespace textadventure_backend.Services
             var adventurer = await adventurerService.GetAdventurer(sessionToUpdate.Adventurer.Id);
             sessionToUpdate.Adventurer = adventurer;
             return adventurer;
+        }
+
+        public void UpdateRoom(string connectionId, SessionRoom room)
+        {
+            var sessionToUpdate = GetSessionFromConnectionId(connectionId);
+            sessionToUpdate.Room = room;
+        }
+
+        public void CompleteRoom(string connectionId)
+        {
+            var sessionToUpdate = GetSessionFromConnectionId(connectionId);
+            roomService.CompleteRoom(sessionToUpdate.Adventurer.Id);
+            sessionToUpdate.Room.EventCompleted = true;
+        }
+
+        public async Task<List<Weapons>> GetUpdatedWeapons(string connectionId)
+        {
+            var sessionToUpdate = GetSessionFromConnectionId(connectionId);
+            var weapons = await weaponService.GetWeapons(sessionToUpdate.Adventurer.Id);
+            sessionToUpdate.Weapons = weapons;
+            return weapons;
         }
 
         private Session GetSessionFromConnectionId(string connectionId)

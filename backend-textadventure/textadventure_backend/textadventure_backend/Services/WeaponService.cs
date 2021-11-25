@@ -11,26 +11,26 @@ using textadventure_backend.Services.Interfaces;
 
 namespace textadventure_backend.Services
 {
-    public class AdventurerService : IAdventurerService
+    public class WeaponService : IWeaponService
     {
         private readonly HttpClient httpClient;
         private readonly AppSettings appSettings;
-        public AdventurerService(HttpClient _httpClient, IOptions<AppSettings> _appSettings)
+        public WeaponService(HttpClient _httpClient, IOptions<AppSettings> _appSettings)
         {
             httpClient = _httpClient;
             appSettings = _appSettings.Value;
         }
 
-        public async Task<Adventurers> GetAdventurer(int adventurerId)
+        public async Task<List<Weapons>> GetWeapons(int adventurerId)
         {
-            using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"{appSettings.EnityManagerURL}Adventurer/get/{adventurerId}/{appSettings.GameAccessToken}"))
+            using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"{appSettings.EnityManagerURL}Weapon/get/{adventurerId}/{appSettings.GameAccessToken}"))
             {
                 var response = await httpClient.SendAsync(requestMessage);
                 if (!response.IsSuccessStatusCode)
                 {
                     throw new ArgumentException(response.ReasonPhrase);
                 }
-                return await response.Content.ReadAsAsync<Adventurers>();
+                return await response.Content.ReadAsAsync<List<Weapons>>();
             }
         }
     }

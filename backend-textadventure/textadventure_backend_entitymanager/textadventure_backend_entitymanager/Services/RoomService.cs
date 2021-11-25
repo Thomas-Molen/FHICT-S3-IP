@@ -38,7 +38,7 @@ namespace textadventure_backend_entitymanager.Services
 
                 var result = new LoadRoomResponse
                 {
-                    Message = adventurer.Name + " looks around and sees " + adventurer.Room.EventToString(),
+                    Message = $"You look around and see {adventurer.Room.EventToString(adventureMap.EventCompleted)}",
                     Event = adventurer.Room.Event,
                     EventCompleted = adventureMap.EventCompleted,
                     NorthInteraction = adventurer.Room.NorthInteraction,
@@ -63,7 +63,7 @@ namespace textadventure_backend_entitymanager.Services
                 {
                     return new EnterRoomResponse
                     {
-                        Message = adventurer.Name + " walked confidently towards the " + direction + " wall and... hit the wall ouch!",
+                        Message = $"You walked confidently towards the {direction} wall and... hit the wall ouch!",
                         NewRoom = false
                     };
                 }
@@ -85,7 +85,7 @@ namespace textadventure_backend_entitymanager.Services
 
                 return new EnterRoomResponse
                 {
-                    Message = adventurer.Name + " walked through the door to the " + direction + " and entered the room",
+                    Message = $"You walked through the door to the {direction} and entered the room",
                     NewRoom = true
                 };
             }
@@ -120,12 +120,32 @@ namespace textadventure_backend_entitymanager.Services
 
                 var result = new EnterRoomResponse
                 {
-                    Message = " You wake up in a dark room and slightly moist room, \n You look in your hand and see a dog tag saying " + adventurer.Name + 
-                        "\n You stand up and see some kind of chest infront of you",
+                    Message = $"You wake up in a dark room and slightly moist room, \n In your hand you see a dog tag saying {adventurer.Name}\nYou stand up and see some kind of chest infront of you",
+
                     NewRoom = true
                 };
                 
                 return result;
+            }
+        }
+
+        public async Task CompleteRoom(int adventurerId)
+        {
+            using (var db = contextFactory.CreateDbContext())
+            {
+                var adventurer = await db.Adventurers
+                    .OrderByDescending(x => x.Id)
+                    .FirstOrDefaultAsync(a => a.Id == adventurerId);
+                var map = await db.AdventurerMaps
+                    .OrderByDescending(x => x.Id)
+                    .FirstOrDefaultAsync(am => am.AdventurerId == adventurerId && am.RoomId == adventurer.RoomId);
+                if (map == null)
+                {
+                    throw new ArgumentException("Adventurer Seems to not be connected to the room trying to be completed");
+                }
+                map.EventCompleted = true;
+                db.Update(map);
+                await db.SaveChangesAsync();
             }
         }
 
@@ -189,14 +209,21 @@ namespace textadventure_backend_entitymanager.Services
             using (var db = contextFactory.CreateDbContext())
             {
                 adventurer.Room = room;
-                AdventurerMaps adventurerMap = new AdventurerMaps
-                {
-                    RoomId = room.Id
-                };
-                adventurer.AdventurerMaps.Add(adventurerMap);
-
                 db.Update(adventurer);
                 await db.SaveChangesAsync();
+
+                //logic to add room to adventurer's map if not already there
+                db.Entry(adventurer).Collection(a => a.AdventurerMaps).Query().Where(am => am.RoomId == room.Id).ToList();
+                if (adventurer.AdventurerMaps.Count < 1)
+                {
+                    AdventurerMaps adventurerMap = new AdventurerMaps
+                    {
+                        RoomId = room.Id
+                    };
+                    adventurer.AdventurerMaps.Add(adventurerMap);
+                    db.Update(adventurer);
+                    await db.SaveChangesAsync();
+                }
             }
         }
     }

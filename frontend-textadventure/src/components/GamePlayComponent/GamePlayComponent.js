@@ -12,6 +12,7 @@ export function GamePlayComponent() {
     const globalJWTState = useRecoilValue(JWTState);
     const [Adventurer, setAdventurer] = useState({ id: null, experience: 0, health: 0, name: "Adventurer", damage: 0, positionX: 0, positionY: 0, dungeonId: null });
     const [selectedView, setSelectedView] = useState("stats");
+    const [items, setItems] = useState([]);
 
     let URI = useLocation();
     let history = useHistory();
@@ -37,7 +38,7 @@ export function GamePlayComponent() {
                     <div className="row">
                         <div className="col-8">
                             <div className="offset-1 col">
-                                <textarea className="gameConsole" readOnly />
+                                <textarea className="gameConsole" id="gameConsole" readOnly />
                             </div>
                         </div>
                         <div className="col-4 d-flex">
@@ -84,13 +85,21 @@ export function GamePlayComponent() {
                                             </div>
                                         }
                                         {selectedView == "inventory" &&
-                                            <div className="row-fluid">
+                                            <div className="row-fluid Inventory overflow-auto">
                                                 <ReactTooltip />
-                                                INVENTORY
+                                                {items.map((item) =>
+                                                <div key={item.id} className="d-flex align-items-center">
+                                                    <div className={"ms-3 " + (item.equiped == true ? 'EquipedItem' : 'pointer')} onClick={() => EquipWeapon(item.id)}>
+                                                    {item.name}
+                                                    <Icon icon="mdi:sword" rotate={1} width="20" className="ms-3 me-0" />{item.attack}
+                                                    <Icon icon="ps:broken-link" rotate={1} width="20" className="ms-3 me-0" />{item.durability}
+                                                    </div>
+                                                </div>
+                                                )}
                                             </div>
                                         }
                                         {selectedView == "enemy" &&
-                                            <div className="row-fluid">
+                                            <div className="row">
                                                 <ReactTooltip />
                                                 ENEMY
                                             </div>
@@ -163,6 +172,18 @@ export function GamePlayComponent() {
                     cmd.DisplayMessage(message);
                 });
 
+                connection.on("ClearConsole", () => {
+                    cmd.Clear();
+                });
+
+                connection.on("UpdateInventory", (items) => {
+                    setItems(items);
+                });
+
+                connection.on("UpdateStats", (adventurer) => {
+                    setAdventurer(adventurer);
+                });
+
                 await connection.invoke("JoinGame", Adventurer.id);
             }
             catch (e) {
@@ -232,5 +253,9 @@ export function GamePlayComponent() {
     //game logic
     async function SendCommand(command) {
         await connection.invoke("SendCommand", command);
+    }
+
+    async function EquipWeapon(weaponId) {
+        await connection.invoke("EquipWeapon", weaponId)
     }
 }

@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 
 namespace textadventure_backend.Models.Requests
 {
-    public class EnterRoomRequest : BaseGameRequest
+    public class EquipWeaponRequest
     {
-        public bool NewRoom { get; set; }
+        public int AdventurerId { get; set; }
+        public int WeaponId { get; set; }
     }
 }

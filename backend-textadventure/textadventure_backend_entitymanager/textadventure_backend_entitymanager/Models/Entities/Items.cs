@@ -13,20 +13,11 @@ namespace textadventure_backend_entitymanager.Models.Entities
         public int AdventurerId { get; set; }
 
         public virtual Adventurers Adventurer { get; set; }
-        public virtual ICollection<NPCs> NPCs { get; set; }
+        //public virtual ICollection<NPCs> NPCs { get; set; }
 
         Items()
         {
-            NPCs = new HashSet<NPCs>();
-        }
-
-        Items(string name, string description, string content)
-        {
-            NPCs = new HashSet<NPCs>();
-
-            Name = name;
-            Description = description;
-            Content = content;
+            //NPCs = new HashSet<NPCs>();
         }
     }
 }

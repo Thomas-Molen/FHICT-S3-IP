@@ -14,11 +14,27 @@ namespace textadventure_backend_entitymanager.Models.Entities
         public bool Equiped { get; set; } = false;
 
         public virtual Adventurers Adventurer { get; set; }
-        public virtual ICollection<NPCs> NPCs { get; set; }
+        //public virtual ICollection<NPCs> NPCs { get; set; }
 
         Weapons()
         {
-            NPCs = new HashSet<NPCs>();
+            //NPCs = new HashSet<NPCs>();
+        }
+
+        public Weapons(int exp, int adventurerId)
+        {
+            Random rng = new Random();
+            
+            string[] prefixs = new string[] { "Weak", "Damaged", "Reinforce", "Magical", "Wicked", "Warped", "Devine", "Fiery", "Gleaming", "Massive", "Small", "Frail", "Dirty", "Shiny" };
+            string[] weapons = new string[] { "Dagger", "Sword", "Katana", "Spear", "Rod", "Scythe", "Fork", "Katar", "Rod" };
+            string prefix = prefixs.GetValue(rng.Next(prefixs.Length)).ToString();
+            string weapon = weapons.GetValue(rng.Next(weapons.Length)).ToString();
+
+            Name = $"{prefix} {weapon}";
+            Attack = rng.Next(1, 10) * (int)(Math.Ceiling((double)(exp / 100)) + 1);
+            Durability = rng.Next(10, 101);
+            AdventurerId = adventurerId;
+            Equiped = false;
         }
     }
 }

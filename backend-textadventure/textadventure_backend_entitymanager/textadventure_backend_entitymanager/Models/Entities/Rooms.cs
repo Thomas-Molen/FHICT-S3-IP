@@ -30,6 +30,9 @@ namespace textadventure_backend_entitymanager.Models.Entities
 
         public Rooms(int dungeonId, Vector2 position, ICollection<AdjacentRooms> adjacentRooms)
         {
+            Adventurers = new HashSet<Adventurers>();
+            AdventurerMaps = new HashSet<AdventurerMaps>();
+
             DungeonId = dungeonId;
             PositionX = (int)position.X;
             PositionY = (int)position.Y;
@@ -43,6 +46,9 @@ namespace textadventure_backend_entitymanager.Models.Entities
 
         public Rooms(int dungeonId, Vector2 position, ICollection<AdjacentRooms> adjacentRooms, Events _event)
         {
+            Adventurers = new HashSet<Adventurers>();
+            AdventurerMaps = new HashSet<AdventurerMaps>();
+
             DungeonId = dungeonId;
             PositionX = (int)position.X;
             PositionY = (int)position.Y;
@@ -119,19 +125,36 @@ namespace textadventure_backend_entitymanager.Models.Entities
             return false;
         }
 
-        public string EventToString()
+        public string EventToString(bool eventCompleted = false)
         {
-            switch (Enum.Parse(typeof(Events), Event))
+            if (eventCompleted)
             {
-                case Events.Chest:
-                    return "a treasure chest! There might be some good loot in there";
-                case Events.Enemy:
-                    return "a monster weilding some kind of weapon";
-                case Events.Empty:
-                    return "nothing... how strange";
-                default:
-                    return "actually nothing hmmm, maybe a bug maybe a feature who knows!";
+                switch (Enum.Parse(typeof(Events), Event))
+                {
+                    case Events.Chest:
+                        return "an already opened chest, seems like you have already been here";
+                    case Events.Enemy:
+                        return "a slain enemy, bring backs memories of your past victory";
+                    case Events.Empty:
+                        return "an empty room that you seem to remember having been to before. It is unsettling";
+                    default:
+                        return "actually nothing hmmm, maybe a bug maybe a feature who knows!";
+                }
             }
+            else
+            {
+                switch (Enum.Parse(typeof(Events), Event))
+                {
+                    case Events.Chest:
+                        return "a treasure chest! There might be some good loot in there";
+                    case Events.Enemy:
+                        return "a monster weilding some kind of weapon";
+                    case Events.Empty:
+                        return "nothing... how strange";
+                    default:
+                        return "actually nothing hmmm, maybe a bug maybe a feature who knows!";
+                }
+            }    
         }
     }
 }

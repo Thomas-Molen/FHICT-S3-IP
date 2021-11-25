@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using textadventure_backend.Models;
 using textadventure_backend.Models.Requests;
+using textadventure_backend.Models.Responses;
 using textadventure_backend.Services.Interfaces;
 
 namespace textadventure_backend.Hubs
@@ -28,7 +30,7 @@ namespace textadventure_backend.Hubs
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, Currentsession.Group);
             sessionManager.RemoveSession(Context.ConnectionId);
             await Clients.Group(Currentsession.Group)
-                .SendAsync("ReceiveMessage", Currentsession.Adventurer.Name + " Has vanished from the dungeon");
+                .SendAsync("ReceiveMessage", $"{Currentsession.Adventurer.Name} Has vanished from the dungeon");
             await base.OnDisconnectedAsync(exception);
         }
 
@@ -42,23 +44,30 @@ namespace textadventure_backend.Hubs
                 await Groups.AddToGroupAsync(Context.ConnectionId, currentSession.Group);
 
                 await Clients.Caller
-                    .SendAsync("ReceiveMessage", "Welcome " + currentSession.Adventurer.Name);
+                    .SendAsync("ReceiveMessage", $"Welcome {currentSession.Adventurer.Name}");
 
                 await Clients.OthersInGroup(currentSession.Group)
-                    .SendAsync("ReceiveMessage", currentSession.Adventurer.Name + " Has entered the dungeon");
+                    .SendAsync("ReceiveMessage", $"{currentSession.Adventurer.Name} Has entered the dungeon");
 
                 if (currentSession.Adventurer.RoomId == null)
                 {
                     var generateSpawnResult = await gameService.GenerateSpawn(currentSession.Adventurer.Id);
+                    var loadResult = await gameService.LoadRoom(currentSession.Adventurer.Id);
+                    sessionManager.UpdateRoom(Context.ConnectionId, CreateSessionRoom(loadResult));
                     await Clients.Caller
                         .SendAsync("ReceiveMessage", generateSpawnResult.Message);
                 }
                 else
                 {
                     var loadResult = await gameService.LoadRoom(currentSession.Adventurer.Id);
+                    sessionManager.UpdateRoom(Context.ConnectionId, CreateSessionRoom(loadResult));
                     await Clients.Caller
                         .SendAsync("ReceiveMessage", loadResult.Message);
                 }
+
+                var weapons = await sessionManager.GetUpdatedWeapons(Context.ConnectionId);
+                await Clients.Caller
+                    .SendAsync("UpdateInventory", weapons.ToArray());
             }
             catch (Exception ex)
             {
@@ -71,49 +80,160 @@ namespace textadventure_backend.Hubs
             var currentSession = sessionManager.GetSession(Context.ConnectionId);
 
             //list of commands keywords to look out for
-            string[] commands = new string[] {"say", "go", "test", "look" };
-            string command = commands.FirstOrDefault<string>(s => message.Contains(s));
-            switch (command)
+            string[] _commands = gameService.GetCommands(currentSession.Room.Event, currentSession.Room.EventCompleted);
+            string _command = _commands.FirstOrDefault<string>(s => message.Contains(s));
+
+            //list of direction keywords to look out for
+            string[] _directions = new string[] { "north", "east", "south", "west" };
+            string _direction = _directions.FirstOrDefault<string>(s => message.Contains(s));
+            switch (_command)
             {
-                //tell something to all dungeon members
+                //basic functionality commands
+                case "help":
+                    await Clients.Caller
+                        .SendAsync("ReceiveMessage", "Available commands: " + string.Join(", ", _commands));
+                    return;
+                case "test":
+                    await Clients.Caller
+                        .SendAsync("ReceiveMessage", "Test message");
+                    return;
+                case "clear":
+                    await Clients.Caller
+                        .SendAsync("ClearConsole");
+                    return;
                 case "say":
-                    string sayResult = message.Replace("say", "");
+                    string sayResult = message.Replace("say ", "");
                     await Clients.OthersInGroup(currentSession.Group)
                         .SendAsync("ReceiveMessage", currentSession.Adventurer.Name + " said " + sayResult);
                     await Clients.Caller
                         .SendAsync("ReceiveMessage", "sent " + sayResult);
                     return;
-                //enter a new room
+                //game logic
                 case "go":
-                    string direction = message.Replace("go ", "");
-
-                    var enterRoomResult = await gameService.EnterRoom(await sessionManager.GetUpdatedAdventurer(Context.ConnectionId), direction);
+                    var enterRoomResult = new EnterRoomRequest();
+                    //force given direction into a properly formatted direction
+                    switch (_direction)
+                    {
+                        case "north":
+                            enterRoomResult = await gameService.EnterRoom(await sessionManager.GetUpdatedAdventurer(Context.ConnectionId), _direction);
+                            break;
+                        case "east":
+                            enterRoomResult = await gameService.EnterRoom(await sessionManager.GetUpdatedAdventurer(Context.ConnectionId), _direction);
+                            break;
+                        case "south":
+                            enterRoomResult = await gameService.EnterRoom(await sessionManager.GetUpdatedAdventurer(Context.ConnectionId), _direction);
+                            break;
+                        case "west":
+                            enterRoomResult = await gameService.EnterRoom(await sessionManager.GetUpdatedAdventurer(Context.ConnectionId), _direction);
+                            break;
+                        default:
+                            await Clients.Caller
+                                .SendAsync("ReceiveMessage", $"Could not read direction did you spell the command right? \n Direction read: {message.Replace("go", "")}");
+                            return;
+                    }
+                    
                     await Clients.Caller
                         .SendAsync("ReceiveMessage", enterRoomResult.Message);
                     if (enterRoomResult.NewRoom)
                     {
-                    var loadResult = await gameService.LoadRoom(currentSession.Adventurer.Id);
-                    await Clients.Caller
-                        .SendAsync("ReceiveMessage", loadResult.Message);
+                        var loadResult = await gameService.LoadRoom(currentSession.Adventurer.Id);
+                        sessionManager.UpdateRoom(Context.ConnectionId, CreateSessionRoom(loadResult));
+                        await Clients.Caller
+                            .SendAsync("ReceiveMessage", loadResult.Message);
                     }
                     return;
                 //let the player look in a direction
                 case "look":
-                    var reloadResult = await gameService.LoadRoom(currentSession.Adventurer.Id);
-                    await Clients.Caller
-                        .SendAsync("ReceiveMessage", reloadResult.Message);
+                    switch (_direction)
+                    {
+                        case "north":
+                            await Clients.Caller
+                                .SendAsync("ReceiveMessage", $"You look to the {_direction} and see a {currentSession.Room.NorthInteraction}");
+                            break;
+                        case "east":
+                            await Clients.Caller
+                                .SendAsync("ReceiveMessage", $"You look to the {_direction} and see a {currentSession.Room.EastInteraction}");
+                            break;
+                        case "south":
+                            await Clients.Caller
+                                .SendAsync("ReceiveMessage", $"You look to the {_direction} and see a {currentSession.Room.SouthInteraction}");
+                            break;
+                        case "west":
+                            await Clients.Caller
+                                .SendAsync("ReceiveMessage", $"You look to the {_direction} and see a {currentSession.Room.WestInteraction}");
+                            break;
+                        default:
+                            var reloadResult = await gameService.LoadRoom(currentSession.Adventurer.Id);
+                            sessionManager.UpdateRoom(Context.ConnectionId, CreateSessionRoom(reloadResult));
+                            await Clients.Caller
+                                .SendAsync("ReceiveMessage", reloadResult.Message);
+                            return;
+                    }
                     return;
-                //debug command
-                case "test":
+                //situation specific commands
+                case "open":
+                    var openResult = await gameService.OpenChest(currentSession.Adventurer.Id);
                     await Clients.Caller
-                        .SendAsync("ReceiveMessage", "Testing message");
+                        .SendAsync("ReceiveMessage", $"{openResult.Message}");
+
+                    var weapons = await sessionManager.GetUpdatedWeapons(Context.ConnectionId);
+                    await Clients.Caller
+                        .SendAsync("UpdateInventory", weapons.ToArray());
+
+                    sessionManager.CompleteRoom(Context.ConnectionId);
                     return;
 
+                //response when no keywords are found
                 default:
                     await Clients.Caller
-                        .SendAsync("ReceiveMessage", "Given command not found, did you misspell it?");
+                        .SendAsync("ReceiveMessage", $"Given command not found, did you misspell it? \n Command given: {message}");
                     break;
             }
+        }
+
+        public async Task EquipWeapon(int weaponId)
+        {
+            var currentSession = sessionManager.GetSession(Context.ConnectionId);
+
+            var weaponToPutAway = currentSession.Adventurer.Weapons.ToList().Find(w => w.Equiped);
+            if (weaponToPutAway.Id == weaponId)
+            {
+                return;
+            }
+
+            await gameService.EquipWeapon(currentSession.Adventurer.Id, weaponId);
+            var weaponToEquip = currentSession.Adventurer.Weapons.ToList().Find(w => w.Id == weaponId);
+
+            var adventurer = await sessionManager.GetUpdatedAdventurer(Context.ConnectionId);
+            var weapons = await sessionManager.GetUpdatedWeapons(Context.ConnectionId);
+            await Clients.Caller
+                        .SendAsync("UpdateInventory", weapons.ToArray());
+            await Clients.Caller
+                        .SendAsync("UpdateStats", new GetAdventurerResponse
+                        {
+                            DungeonId = adventurer.DungeonId,
+                            Id = adventurer.Id,
+                            Name = adventurer.Name,
+                            Damage = weaponToEquip.Attack,
+                            Experience = adventurer.Experience,
+                            Health = adventurer.Health
+                        });
+
+            await Clients.Caller
+                    .SendAsync("ReceiveMessage", $"You put away your {weaponToPutAway.Name} and grab your {weaponToEquip.Name}");
+        }
+
+        private SessionRoom CreateSessionRoom(LoadRoomRequest loadResult)
+        {
+            return new SessionRoom
+            {
+                Event = loadResult.Event,
+                EventCompleted = loadResult.EventCompleted,
+                NorthInteraction = loadResult.NorthInteraction,
+                EastInteraction = loadResult.EastInteraction,
+                SouthInteraction = loadResult.SouthInteraction,
+                WestInteraction = loadResult.WestInteraction
+            };
         }
     }
 }

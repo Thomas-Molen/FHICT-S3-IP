@@ -11,5 +11,8 @@ namespace textadventure_backend.Models
         public Adventurers Adventurer { get; set; }
         public string ConnectionId { get; set; }
         public string Group { get; set; }
+        
+        public SessionRoom Room { get; set; }
+        public List<Weapons> Weapons { get; set; }
     }
 }

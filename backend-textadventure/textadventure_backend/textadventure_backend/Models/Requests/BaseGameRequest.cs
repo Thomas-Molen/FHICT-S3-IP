@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace textadventure_backend.Models.Requests
 {
-    public class EnterRoomRequest : BaseGameRequest
+    public class BaseGameRequest
     {
-        public bool NewRoom { get; set; }
+        public string Message { get; set; }
     }
 }

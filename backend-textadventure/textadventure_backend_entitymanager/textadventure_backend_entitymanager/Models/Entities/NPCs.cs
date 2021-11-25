@@ -12,8 +12,8 @@ namespace textadventure_backend_entitymanager.Models.Entities
         public int WeaponId { get; set; }
         public int ItemId { get; set; }
 
-        public virtual Weapons Weapon { get; set; }
-        public virtual Items Item { get; set; }
+        //public virtual Weapons Weapon { get; set; }
+        //public virtual Items Item { get; set; }
 
         public NPCs()
         {

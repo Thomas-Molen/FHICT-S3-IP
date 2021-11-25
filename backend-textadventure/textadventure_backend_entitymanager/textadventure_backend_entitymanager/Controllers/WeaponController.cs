@@ -18,18 +18,18 @@ namespace textadventure_backend_entitymanager.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class RoomController : ControllerBase
+    public class WeaponController : ControllerBase
     {
-        private readonly IRoomService roomService;
+        private readonly IWeaponService weaponService;
         private readonly AccessTokenHelper accessTokenHelper;
-        public RoomController(IRoomService _roomService, AccessTokenHelper _accessTokenHelper)
+        public WeaponController(IWeaponService _weaponService, AccessTokenHelper _accessTokenHelper)
         {
-            roomService = _roomService;
+            weaponService = _weaponService;
             accessTokenHelper = _accessTokenHelper;
         }
 
-        [HttpPost("enter/{accessToken}")]
-        public async Task<IActionResult> EnterRoom([FromRoute] string accesstoken, [FromBody] EnterRoomRequest createSpawnRequest)
+        [HttpGet("generate/{adventurerId}/{accessToken}")]
+        public async Task<IActionResult> GenerateWeapon([FromRoute] string accesstoken, string adventurerId)
         {
             if (!accessTokenHelper.IsTokenValid(accesstoken))
             {
@@ -38,7 +38,7 @@ namespace textadventure_backend_entitymanager.Controllers
 
             try
             {
-                var result = await roomService.MoveToRoom(createSpawnRequest.AdventurerId, createSpawnRequest.Direction.ToLower());
+                var result = await weaponService.GenerateWeapon(Convert.ToInt32(adventurerId));
 
                 return Ok(result);
             }
@@ -48,8 +48,8 @@ namespace textadventure_backend_entitymanager.Controllers
             }
         }
 
-        [HttpGet("load/{adventurerId}/{accessToken}")]
-        public async Task<IActionResult> LoadRoom([FromRoute] string accesstoken, string adventurerId)
+        [HttpGet("get/{adventurerId}/{accessToken}")]
+        public async Task<IActionResult> GetAllWeapons([FromRoute] string accesstoken, string adventurerId)
         {
             if (!accessTokenHelper.IsTokenValid(accesstoken))
             {
@@ -58,7 +58,7 @@ namespace textadventure_backend_entitymanager.Controllers
 
             try
             {
-                var result = await roomService.LoadRoom(Convert.ToInt32(adventurerId));
+                var result = await weaponService.GetAllWeapons(Convert.ToInt32(adventurerId));
 
                 return Ok(result);
             }
@@ -68,8 +68,8 @@ namespace textadventure_backend_entitymanager.Controllers
             }
         }
 
-        [HttpGet("spawn/{adventurerId}/{accessToken}")]
-        public async Task<IActionResult> CreateSpawn([FromRoute] string accesstoken, string adventurerId)
+        [HttpPost("equip/{accessToken}")]
+        public async Task<IActionResult> GetAllWeapons([FromRoute] string accesstoken, [FromBody]EquipWeaponRequest request)
         {
             if (!accessTokenHelper.IsTokenValid(accesstoken))
             {
@@ -78,27 +78,7 @@ namespace textadventure_backend_entitymanager.Controllers
 
             try
             {
-                var result = await roomService.CreateSpawn(Convert.ToInt32(adventurerId));
-
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpPost("complete/{adventurerId}/{accessToken}")]
-        public async Task<IActionResult> CompleteRoom([FromRoute] string accesstoken, string adventurerId)
-        {
-            if (!accessTokenHelper.IsTokenValid(accesstoken))
-            {
-                return Unauthorized("Invalid accesstoken");
-            }
-
-            try
-            {
-                await roomService.CompleteRoom(Convert.ToInt32(adventurerId));
+                await weaponService.EquipWeapon(request.AdventurerId, request.WeaponId);
 
                 return Ok();
             }

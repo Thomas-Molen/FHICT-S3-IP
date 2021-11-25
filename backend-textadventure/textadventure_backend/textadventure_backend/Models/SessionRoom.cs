@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using textadventure_backend.Models.Entities;
 
-namespace textadventure_backend.Models.Requests
+namespace textadventure_backend.Models
 {
-    public class LoadRoomRequest : BaseGameRequest
+    public class SessionRoom
     {
         public string Event { get; set; } = "empty";
         public bool EventCompleted { get; set; } = false;

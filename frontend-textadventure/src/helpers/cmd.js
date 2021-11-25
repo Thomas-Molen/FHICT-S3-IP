@@ -9,12 +9,20 @@ export const cmd = {
             _console[0].value = message;
         }
         else {
-
-            _console[0].value = _console[0].value + "\n" + message;
+            _console[0].value = _console[0].value + "\n";
+            let wordsToDisplay = message.split(" ");
+            wordsToDisplay.forEach(function (word, index) {
+                setTimeout(function() {
+                    _console[0].value = _console[0].value + word + " "
+                }, index * 50);
+                });
+            _console[0].scrollTop = _console[0].scrollHeight;
         }
+        
     },
 
     Clear: function() {
         _console[0].value = "";
+        _console[0].scrollTop = _console[0].scrollHeight;
     }
 }
