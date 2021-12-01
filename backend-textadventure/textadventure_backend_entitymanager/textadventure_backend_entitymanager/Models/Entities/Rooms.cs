@@ -148,7 +148,7 @@ namespace textadventure_backend_entitymanager.Models.Entities
                     case Events.Chest:
                         return "a treasure chest! There might be some good loot in there";
                     case Events.Enemy:
-                        return "a monster weilding some kind of weapon";
+                        return "a monster wielding some kind of weapon";
                     case Events.Empty:
                         return "nothing... how strange";
                     default:

@@ -13,6 +13,7 @@ export function GamePlayComponent() {
     const [Adventurer, setAdventurer] = useState({ id: null, experience: 0, health: 0, name: "Adventurer", damage: 0, positionX: 0, positionY: 0, dungeonId: null });
     const [selectedView, setSelectedView] = useState("stats");
     const [items, setItems] = useState([]);
+    const [loadingInventory, setLoadingInventory] = useState(false);
 
     let URI = useLocation();
     let history = useHistory();
@@ -85,16 +86,16 @@ export function GamePlayComponent() {
                                             </div>
                                         }
                                         {selectedView == "inventory" &&
-                                            <div className="row-fluid Inventory overflow-auto">
+                                            <div className={"row-fluid Inventory overflow-auto " + (loadingInventory ? "disabled" : "")}>
                                                 <ReactTooltip />
                                                 {items.map((item) =>
-                                                <div key={item.id} className="d-flex align-items-center">
-                                                    <div className={"ms-3 " + (item.equiped == true ? 'EquipedItem' : 'pointer')} onClick={() => EquipWeapon(item.id)}>
-                                                    {item.name}
-                                                    <Icon icon="mdi:sword" rotate={1} width="20" className="ms-3 me-0" />{item.attack}
-                                                    <Icon icon="ps:broken-link" rotate={1} width="20" className="ms-3 me-0" />{item.durability}
+                                                    <div key={item.id} className="d-flex align-items-center">
+                                                        <div className={"ms-3 " + (item.equiped == true ? 'EquipedItem' : 'pointer')} onClick={() => EquipWeapon(item.id)}>
+                                                            {item.name}
+                                                            <Icon icon="mdi:sword" rotate={1} width="20" className="ms-3 me-0" />{item.attack}
+                                                            <Icon icon="ps:broken-link" rotate={1} width="20" className="ms-3 me-0" />{item.durability}
+                                                        </div>
                                                     </div>
-                                                </div>
                                                 )}
                                             </div>
                                         }
@@ -107,8 +108,7 @@ export function GamePlayComponent() {
                                     </div>
                                 </div>
                                 {/* minimap */}
-                                <div className="MiniMap characterStats" data-tip="Minimap">
-
+                                <div className="MiniMap characterStats d-flex" data-tip="Minimap">
                                 </div>
 
                             </div>
@@ -117,7 +117,7 @@ export function GamePlayComponent() {
                     <div className="row">
                         <div className="col-8">
                             <div className="offset-1 col">
-                                <textarea className="gameInput" rows="1" onChange={(e) => GameInputOnChange(e)} onKeyPress={(e) => CheckForEnterKey(e)}>
+                                <textarea className="gameInput" rows="1" onChange={(e) => GameInputOnChange(e)} onKeyPress={(e) => CheckForEnterKey(e)} autoFocus={true}>
 
                                 </textarea>
                                 <Icon icon="akar-icons:send" width="28" className="sendCommandIcon float-end EmptyConsoleInputIcon" onClick={(e) => ClickSendButton(e)} />
@@ -256,6 +256,8 @@ export function GamePlayComponent() {
     }
 
     async function EquipWeapon(weaponId) {
+        setLoadingInventory(true);
         await connection.invoke("EquipWeapon", weaponId)
+        setLoadingInventory(false);
     }
 }
