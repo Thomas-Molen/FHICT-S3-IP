@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 using textadventure_backend.Helpers;
 using textadventure_backend.Hubs;
 using textadventure_backend.Services;
-using textadventure_backend.Services.Interfaces;
 
 namespace textadventure_backend
 {
@@ -43,11 +42,12 @@ namespace textadventure_backend
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
 
             services.AddSingleton<HttpClient>();
-            services.AddSingleton<IAdventurerService, AdventurerService>();
-            services.AddSingleton<ISessionManager, SessionManager>();
-            services.AddSingleton<IGameService, GameService>();
-            services.AddSingleton<IWeaponService, WeaponService>();
-            services.AddSingleton<IRoomService, RoomService>();
+            services.AddSingleton<AdventurerService>();
+            services.AddSingleton<SessionManager>();
+            services.AddSingleton<GameService>();
+            services.AddSingleton<WeaponService>();
+            services.AddSingleton<RoomService>();
+            services.AddSingleton<GameplayService>();
 
             services.AddHttpContextAccessor();
 

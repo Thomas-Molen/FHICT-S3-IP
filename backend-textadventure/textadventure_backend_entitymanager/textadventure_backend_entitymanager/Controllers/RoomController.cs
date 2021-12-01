@@ -1,34 +1,29 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using Microsoft.Net.Http.Headers;
 using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Threading.Tasks;
-using textadventure_backend_entitymanager.Context;
 using textadventure_backend_entitymanager.Helpers;
-using textadventure_backend_entitymanager.Models;
 using textadventure_backend_entitymanager.Models.Requests;
-using textadventure_backend_entitymanager.Services.Interfaces;
+using textadventure_backend_entitymanager.Services;
 
 namespace textadventure_backend_entitymanager.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class RoomController : ControllerBase
     {
-        private readonly IRoomService roomService;
+        private readonly RoomService roomService;
         private readonly AccessTokenHelper accessTokenHelper;
-        public RoomController(IRoomService _roomService, AccessTokenHelper _accessTokenHelper)
+        public RoomController(RoomService _roomService, AccessTokenHelper _accessTokenHelper)
         {
             roomService = _roomService;
             accessTokenHelper = _accessTokenHelper;
         }
 
-        [HttpPost("enter/{accessToken}")]
+        //Game endpoints
+        [AllowAnonymous]
+        [HttpPost("move-to/{accessToken}")]
         public async Task<IActionResult> EnterRoom([FromRoute] string accesstoken, [FromBody] EnterRoomRequest createSpawnRequest)
         {
             if (!accessTokenHelper.IsTokenValid(accesstoken))
@@ -48,8 +43,9 @@ namespace textadventure_backend_entitymanager.Controllers
             }
         }
 
-        [HttpGet("load/{adventurerId}/{accessToken}")]
-        public async Task<IActionResult> LoadRoom([FromRoute] string accesstoken, string adventurerId)
+        [AllowAnonymous]
+        [HttpPost("spawn/{adventurerId}/{accessToken}")]
+        public async Task<IActionResult> CreateSpawn([FromRoute] string accesstoken, int adventurerId)
         {
             if (!accessTokenHelper.IsTokenValid(accesstoken))
             {
@@ -58,9 +54,9 @@ namespace textadventure_backend_entitymanager.Controllers
 
             try
             {
-                var result = await roomService.LoadRoom(Convert.ToInt32(adventurerId));
+                await roomService.CreateSpawn(adventurerId);
 
-                return Ok(result);
+                return Ok();
             }
             catch (Exception ex)
             {
@@ -68,26 +64,7 @@ namespace textadventure_backend_entitymanager.Controllers
             }
         }
 
-        [HttpGet("spawn/{adventurerId}/{accessToken}")]
-        public async Task<IActionResult> CreateSpawn([FromRoute] string accesstoken, string adventurerId)
-        {
-            if (!accessTokenHelper.IsTokenValid(accesstoken))
-            {
-                return Unauthorized("Invalid accesstoken");
-            }
-
-            try
-            {
-                var result = await roomService.CreateSpawn(Convert.ToInt32(adventurerId));
-
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
+        [AllowAnonymous]
         [HttpPost("complete/{adventurerId}/{accessToken}")]
         public async Task<IActionResult> CompleteRoom([FromRoute] string accesstoken, string adventurerId)
         {
@@ -101,6 +78,27 @@ namespace textadventure_backend_entitymanager.Controllers
                 await roomService.CompleteRoom(Convert.ToInt32(adventurerId));
 
                 return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpGet("get/{roomId}/{accessToken}")]
+        public async Task<IActionResult> GetRoom([FromRoute] int roomId, string accesstoken)
+        {
+            if (!accessTokenHelper.IsTokenValid(accesstoken))
+            {
+                return Unauthorized("Invalid accesstoken");
+            }
+
+            try
+            {
+                var response = await roomService.Find(roomId);
+
+                return Ok(response);
             }
             catch (Exception ex)
             {

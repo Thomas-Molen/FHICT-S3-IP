@@ -1,16 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using textadventure_backend_entitymanager.Context;
 using textadventure_backend_entitymanager.Models.Entities;
 using textadventure_backend_entitymanager.Models.Responses;
-using textadventure_backend_entitymanager.Services.Interfaces;
 
 namespace textadventure_backend_entitymanager.Services
 {
-    public class WeaponService : IWeaponService
+    public class WeaponService
     {
         private readonly IDbContextFactory<TextadventureDBContext> contextFactory;
 
@@ -19,7 +17,7 @@ namespace textadventure_backend_entitymanager.Services
             contextFactory = _contextFactory;
         }
 
-        public async Task<OpenChestResponse> GenerateWeapon(int adventurerId)
+        public async Task<Weapons> GenerateWeapon(int adventurerId)
         {
             using (var db = contextFactory.CreateDbContext())
             {
@@ -31,11 +29,7 @@ namespace textadventure_backend_entitymanager.Services
                 await db.AddAsync(weapon);
                 await db.SaveChangesAsync();
 
-                return new OpenChestResponse
-                {
-                    Message = $"You open the chest and find a {weapon.Name}",
-                    weapon = weapon
-                };
+                return weapon;
             }
         }
 

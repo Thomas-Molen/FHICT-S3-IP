@@ -13,21 +13,22 @@ String.prototype.insert = function (index, string) {
 
 export const cmd = {
     DisplayMessage: function (message) {
-        if (message.length < 1) {
-            return;
+        if (_console[0] == undefined || message.length < 1)
+        {
+            return;   
         }
+
         if (_console[0].value == "") {
             _console[0].value = message;
         }
+
         else {
             //setup the line that will be written to
             _console[0].value = _console[0].value + "\n";
             let startOfLine = _console[0].value.length;
             _console[0].value = _console[0].value.insert(startOfLine, " ".repeat(message.length + 1));
-            console.log(_console[0].value)
 
             let wordsToDisplay = message.split(" ");
-            console.log(wordsToDisplay);
             wordsToDisplay.forEach(function (word, index) {
                 setTimeout(function () {
                     _console[0].value = _console[0].value.destructiveInsert(startOfLine, word + " ");
@@ -40,6 +41,10 @@ export const cmd = {
     },
 
     Clear: function () {
+        if (_console[0] == undefined)
+        {
+            return;
+        }
         _console[0].value = "";
         _console[0].scrollTop = _console[0].scrollHeight;
     }

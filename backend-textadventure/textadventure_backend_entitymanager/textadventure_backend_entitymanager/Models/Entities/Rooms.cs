@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
@@ -17,6 +18,9 @@ namespace textadventure_backend_entitymanager.Models.Entities
         public string EastInteraction { get; set; } = "Wall";
         public string SouthInteraction { get; set; } = "Wall";
         public string WestInteraction { get; set; } = "Wall";
+        
+        [NotMapped]
+        public bool EventCompleted { get; set; }
 
         public virtual Dungeons Dungeon { get; set; }
         public virtual ICollection<Adventurers> Adventurers { get; set; }
@@ -123,38 +127,6 @@ namespace textadventure_backend_entitymanager.Models.Entities
                     break;
             }
             return false;
-        }
-
-        public string EventToString(bool eventCompleted = false)
-        {
-            if (eventCompleted)
-            {
-                switch (Enum.Parse(typeof(Events), Event))
-                {
-                    case Events.Chest:
-                        return "an already opened chest, seems like you have already been here";
-                    case Events.Enemy:
-                        return "a slain enemy, bring backs memories of your past victory";
-                    case Events.Empty:
-                        return "an empty room that you seem to remember having been to before. It is unsettling";
-                    default:
-                        return "actually nothing hmmm, maybe a bug maybe a feature who knows!";
-                }
-            }
-            else
-            {
-                switch (Enum.Parse(typeof(Events), Event))
-                {
-                    case Events.Chest:
-                        return "a treasure chest! There might be some good loot in there";
-                    case Events.Enemy:
-                        return "a monster wielding some kind of weapon";
-                    case Events.Empty:
-                        return "nothing... how strange";
-                    default:
-                        return "actually nothing hmmm, maybe a bug maybe a feature who knows!";
-                }
-            }    
         }
     }
 }

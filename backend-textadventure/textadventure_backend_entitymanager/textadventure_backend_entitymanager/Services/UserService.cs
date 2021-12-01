@@ -1,19 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using System;
 using System.Threading.Tasks;
 using textadventure_backend_entitymanager.Context;
 using textadventure_backend_entitymanager.Helpers;
-using textadventure_backend_entitymanager.Models;
-using textadventure_backend_entitymanager.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
-using textadventure_backend_entitymanager.Models.Responses;
-using textadventure_backend_entitymanager.Models.Requests;
 using textadventure_backend_entitymanager.Models.Entities;
+using textadventure_backend_entitymanager.Models.Requests;
+using textadventure_backend_entitymanager.Models.Responses;
 
 namespace textadventure_backend_entitymanager.Services
 {
-    public class UserService :  IUserService
+    public class UserService
     {
         private readonly IDbContextFactory<TextadventureDBContext> contextFactory;
         private readonly JWTHelper JWT;

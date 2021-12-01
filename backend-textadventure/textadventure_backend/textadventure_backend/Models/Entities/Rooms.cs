@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
+using textadventure_backend.Enums;
 
 namespace textadventure_backend.Models.Entities
 {
@@ -16,6 +17,7 @@ namespace textadventure_backend.Models.Entities
         public string EastInteraction { get; set; } = "Wall";
         public string SouthInteraction { get; set; } = "Wall";
         public string WestInteraction { get; set; } = "Wall";
+        public bool EventCompleted { get; set; } = false;
 
         public virtual Dungeons Dungeon { get; set; }
         public virtual ICollection<Adventurers> Adventurers { get; set; }
@@ -25,23 +27,6 @@ namespace textadventure_backend.Models.Entities
         {
             Adventurers = new HashSet<Adventurers>();
             AdventurerMaps = new HashSet<AdventurerMaps>();
-        }
-
-        public Rooms(Vector2 position, string _event)
-        {
-            Adventurers = new HashSet<Adventurers>();
-            AdventurerMaps = new HashSet<AdventurerMaps>();
-
-            PositionX = (int)position.X;
-            PositionY = (int)position.Y;
-            Event = _event;
-        }
-
-        public Rooms(int positionX, int positionY, string _event)
-        {
-            PositionX = positionX;
-            PositionY = positionY;
-            Event = _event;
         }
     }
 }

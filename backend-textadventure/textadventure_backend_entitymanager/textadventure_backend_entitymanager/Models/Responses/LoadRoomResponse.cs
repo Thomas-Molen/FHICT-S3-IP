@@ -8,7 +8,6 @@ namespace textadventure_backend_entitymanager.Models.Responses
 {
     public class LoadRoomResponse
     {
-        public string Message { get; set; }
         public string Event { get; set; } = "empty";
         public bool EventCompleted { get; set; } = false;
         public string NorthInteraction { get; set; } = "Wall";

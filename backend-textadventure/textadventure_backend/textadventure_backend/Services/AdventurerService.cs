@@ -1,17 +1,13 @@
 ﻿using Microsoft.Extensions.Options;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using textadventure_backend.Helpers;
 using textadventure_backend.Models.Entities;
-using textadventure_backend.Services.Interfaces;
 
 namespace textadventure_backend.Services
 {
-    public class AdventurerService : IAdventurerService
+    public class AdventurerService
     {
         private readonly HttpClient httpClient;
         private readonly AppSettings appSettings;

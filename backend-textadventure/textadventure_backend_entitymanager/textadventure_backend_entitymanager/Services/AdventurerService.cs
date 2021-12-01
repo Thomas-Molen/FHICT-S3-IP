@@ -4,14 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using textadventure_backend_entitymanager.Context;
-using textadventure_backend_entitymanager.Models;
 using textadventure_backend_entitymanager.Models.Entities;
 using textadventure_backend_entitymanager.Models.Responses;
-using textadventure_backend_entitymanager.Services.Interfaces;
 
 namespace textadventure_backend_entitymanager.Services
 {
-    public class AdventurerService : IAdventurerService
+    public class AdventurerService
     {
         private readonly IDbContextFactory<TextadventureDBContext> contextFactory;
 
@@ -148,7 +146,8 @@ namespace textadventure_backend_entitymanager.Services
                 var adventurer = await db.Adventurers
                     .OrderByDescending(x => x.Id)
                     .Include(a => a.AdventurerMaps)
-                    .Include(a => a.Weapons)
+                    .Include(a => a.Weapons
+                        .Where(w => w.Durability > 0))
                     .Include(a => a.Room)
                     .FirstOrDefaultAsync(a => a.Id == adventurerId);
                 if (adventurer == null)

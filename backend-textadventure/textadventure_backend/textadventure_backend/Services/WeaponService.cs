@@ -1,17 +1,17 @@
 ﻿using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 using textadventure_backend.Helpers;
 using textadventure_backend.Models.Entities;
-using textadventure_backend.Services.Interfaces;
+using textadventure_backend.Models.Requests;
 
 namespace textadventure_backend.Services
 {
-    public class WeaponService : IWeaponService
+    public class WeaponService
     {
         private readonly HttpClient httpClient;
         private readonly AppSettings appSettings;
@@ -31,6 +31,33 @@ namespace textadventure_backend.Services
                     throw new ArgumentException(response.ReasonPhrase);
                 }
                 return await response.Content.ReadAsAsync<List<Weapons>>();
+            }
+        }
+
+        public async Task<Weapons> CreateWeapon(int adventurerId)
+        {
+            using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"{appSettings.EnityManagerURL}Weapon/generate/{adventurerId}/{appSettings.GameAccessToken}"))
+            {
+                var response = await httpClient.SendAsync(requestMessage);
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new ArgumentException(response.ReasonPhrase);
+                }
+                return JsonConvert.DeserializeObject<Weapons>(response.Content.ReadAsStringAsync().Result);
+            }
+        }
+
+        public async Task SetWeapon(int adventurerId, int weaponId)
+        {
+            using (var requestMessage = new HttpRequestMessage(HttpMethod.Post, $"{appSettings.EnityManagerURL}Weapon/equip/{appSettings.GameAccessToken}"))
+            {
+                var requestBody = JsonConvert.SerializeObject(new EquipWeaponRequest { AdventurerId = adventurerId, WeaponId = weaponId });
+                requestMessage.Content = new StringContent(requestBody, Encoding.UTF8, "application/json");
+                var response = await httpClient.SendAsync(requestMessage);
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new ArgumentException(response.ReasonPhrase);
+                }
             }
         }
     }

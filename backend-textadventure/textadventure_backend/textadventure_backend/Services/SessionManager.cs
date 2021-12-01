@@ -1,52 +1,30 @@
-﻿using Microsoft.Extensions.Options;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
-using textadventure_backend.Helpers;
 using textadventure_backend.Models;
 using textadventure_backend.Models.Entities;
-using textadventure_backend.Services.Interfaces;
+using textadventure_backend.Models.Session;
 
 namespace textadventure_backend.Services
 {
-    public class SessionManager : ISessionManager
+    public class SessionManager
     {
-        private readonly IAdventurerService adventurerService;
-        private readonly IWeaponService weaponService;
-        private readonly IRoomService roomService;
         private List<Session> sessions;
 
-        public SessionManager(IAdventurerService _adventurerService, IWeaponService _weaponService, IRoomService _roomService)
+        public SessionManager(AdventurerService _adventurerService, WeaponService _weaponService, RoomService _roomService)
         {
-            adventurerService = _adventurerService;
-            weaponService = _weaponService;
-            roomService = _roomService;
             sessions = new List<Session>();
         }
 
-        public async Task AddSession(string connectionId, int adventurerId)
+        public void AddSession(string connectionId, SessionAdventurer adventurer, string group)
         {
-            var adventurer = await adventurerService.GetAdventurer(adventurerId);
-            if (adventurer == null)
-            {
-                throw new ArgumentException("No adventurer found with given Id");
-            }
-
             Session sessionToAdd = new Session
             {
                 Adventurer = adventurer,
                 ConnectionId = connectionId,
-                Group = adventurer.DungeonId.ToString()
+                Group = group
             };
             sessions.Add(sessionToAdd);
-        }
-
-        public Session GetSession(string connectionId)
-        {
-            var sessionToGet = GetSessionFromConnectionId(connectionId);
-            return sessionToGet;
         }
 
         public void RemoveSession(string connectionId)
@@ -55,33 +33,29 @@ namespace textadventure_backend.Services
             sessions.Remove(sessionToRemove);
         }
 
-        public async Task<Adventurers> GetUpdatedAdventurer(string connectionId)
+        public Session GetSession(string connectionId)
         {
-            var sessionToUpdate = GetSessionFromConnectionId(connectionId);
-            var adventurer = await adventurerService.GetAdventurer(sessionToUpdate.Adventurer.Id);
-            sessionToUpdate.Adventurer = adventurer;
-            return adventurer;
+            var sessionToGet = GetSessionFromConnectionId(connectionId);
+            return sessionToGet;
         }
 
-        public void UpdateRoom(string connectionId, SessionRoom room)
+        public void UpdateSessionRoom(string connectionId, Rooms room)
+        {
+            var sessionToUpdate = GetSessionFromConnectionId(connectionId);
+            sessionToUpdate.Room = new SessionRoom
+            {
+                Event = room.Event,
+                EventCompleted = room.EventCompleted,
+                NorthInteraction = room.NorthInteraction,
+                EastInteraction = room.EastInteraction,
+                SouthInteraction = room.SouthInteraction,
+                WestInteraction = room.WestInteraction
+            };
+        }
+        public void UpdateSessionRoom(string connectionId, SessionRoom room)
         {
             var sessionToUpdate = GetSessionFromConnectionId(connectionId);
             sessionToUpdate.Room = room;
-        }
-
-        public void CompleteRoom(string connectionId)
-        {
-            var sessionToUpdate = GetSessionFromConnectionId(connectionId);
-            roomService.CompleteRoom(sessionToUpdate.Adventurer.Id);
-            sessionToUpdate.Room.EventCompleted = true;
-        }
-
-        public async Task<List<Weapons>> GetUpdatedWeapons(string connectionId)
-        {
-            var sessionToUpdate = GetSessionFromConnectionId(connectionId);
-            var weapons = await weaponService.GetWeapons(sessionToUpdate.Adventurer.Id);
-            sessionToUpdate.Weapons = weapons;
-            return weapons;
         }
 
         private Session GetSessionFromConnectionId(string connectionId)

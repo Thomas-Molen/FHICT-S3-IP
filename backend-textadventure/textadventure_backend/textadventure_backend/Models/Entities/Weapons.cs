@@ -8,7 +8,7 @@ namespace textadventure_backend.Models.Entities
     public class Weapons : DefaultModel
     {
         public string Name { get; set; }
-        public int Attack { get; set; }
+        public int? Attack { get; set; }
         public int Durability { get; set; } = 100;
         public int AdventurerId { get; set; }
         public bool Equiped { get; set; } = false;

@@ -33,5 +33,14 @@ namespace textadventure_backend.Models.Entities
             Weapons = new HashSet<Weapons>();
             Items = new HashSet<Items>();
         }
+
+        public bool IsRoomCompleted(int roomId)
+        {
+            if (AdventurerMaps.FirstOrDefault(am => am.EventCompleted == true && am.RoomId == roomId) != null)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

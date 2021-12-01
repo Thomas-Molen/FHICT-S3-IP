@@ -9,11 +9,10 @@ using textadventure_backend_entitymanager.Enums;
 using textadventure_backend_entitymanager.Models;
 using textadventure_backend_entitymanager.Models.Entities;
 using textadventure_backend_entitymanager.Models.Responses;
-using textadventure_backend_entitymanager.Services.Interfaces;
 
 namespace textadventure_backend_entitymanager.Services
 {
-    public class RoomService : IRoomService
+    public class RoomService
     {
         private readonly IDbContextFactory<TextadventureDBContext> contextFactory;
         private readonly Random rng;
@@ -24,33 +23,7 @@ namespace textadventure_backend_entitymanager.Services
             rng = new Random();
         }
 
-        public async Task<LoadRoomResponse> LoadRoom(int adventurerId)
-        {
-            using (var db = contextFactory.CreateDbContext())
-            {
-                var adventurer = await db.Adventurers
-                    .OrderByDescending(x => x.Id)
-                    .Include(a => a.Room)
-                    .Include(a => a.AdventurerMaps)
-                    .FirstOrDefaultAsync(a => a.Id == adventurerId);
-
-                var adventureMap = adventurer.AdventurerMaps.FirstOrDefault(am => am.RoomId == adventurer.RoomId);
-
-                var result = new LoadRoomResponse
-                {
-                    Message = $"You look around and see {adventurer.Room.EventToString(adventureMap.EventCompleted)}",
-                    Event = adventurer.Room.Event,
-                    EventCompleted = adventureMap.EventCompleted,
-                    NorthInteraction = adventurer.Room.NorthInteraction,
-                    EastInteraction = adventurer.Room.EastInteraction,
-                    SouthInteraction = adventurer.Room.SouthInteraction,
-                    WestInteraction = adventurer.Room.WestInteraction
-                };
-                return result;
-            }
-        }
-
-        public async Task<EnterRoomResponse> MoveToRoom(int adventurerId, string direction)
+        public async Task<bool> MoveToRoom(int adventurerId, string direction)
         {
             using (var db = contextFactory.CreateDbContext())
             {
@@ -61,11 +34,7 @@ namespace textadventure_backend_entitymanager.Services
 
                 if (!adventurer.Room.DirectionHasDoor(direction))
                 {
-                    return new EnterRoomResponse
-                    {
-                        Message = $"You walked confidently towards the {direction} wall and... hit the wall ouch!",
-                        NewRoom = false
-                    };
+                    return false;
                 }
 
                 //get new room to load
@@ -83,15 +52,11 @@ namespace textadventure_backend_entitymanager.Services
                 }
                 await AddRoomToPlayer(adventurer, room);
 
-                return new EnterRoomResponse
-                {
-                    Message = $"You walked through the door to the {direction} and entered the room",
-                    NewRoom = true
-                };
+                return true;
             }
         }
 
-        public async Task<EnterRoomResponse> CreateSpawn(int adventurerId)
+        public async Task CreateSpawn(int adventurerId)
         {
             using (var db = contextFactory.CreateDbContext())
             {
@@ -117,15 +82,6 @@ namespace textadventure_backend_entitymanager.Services
                 await db.AddAsync(spawnRoom);
                 await db.SaveChangesAsync();
                 await AddRoomToPlayer(adventurer, spawnRoom);
-
-                var result = new EnterRoomResponse
-                {
-                    Message = $"You wake up in a dark room and slightly moist room, \n In your hand you see a dog tag saying {adventurer.Name}\nYou stand up and see some kind of chest infront of you",
-
-                    NewRoom = true
-                };
-                
-                return result;
             }
         }
 
@@ -146,6 +102,22 @@ namespace textadventure_backend_entitymanager.Services
                 map.EventCompleted = true;
                 db.Update(map);
                 await db.SaveChangesAsync();
+            }
+        }
+
+        public async Task<Rooms> Find(int roomId)
+        {
+            using (var db = contextFactory.CreateDbContext())
+            {
+                var room = await db.Rooms
+                    .OrderByDescending(x => x.Id)
+                    .FirstOrDefaultAsync(a => a.Id == roomId);
+                if (room == null)
+                {
+                    throw new ArgumentException("No room found with given Id");
+                }
+
+                return room;
             }
         }
 

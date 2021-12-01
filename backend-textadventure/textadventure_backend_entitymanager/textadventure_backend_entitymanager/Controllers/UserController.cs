@@ -1,12 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using textadventure_backend_entitymanager.Models;
 using textadventure_backend_entitymanager.Models.Requests;
-using textadventure_backend_entitymanager.Services.Interfaces;
+using textadventure_backend_entitymanager.Services;
 
 namespace textadventure_backend_entitymanager.Controllers
 {
@@ -14,9 +11,9 @@ namespace textadventure_backend_entitymanager.Controllers
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly IUserService userService;
+        private readonly UserService userService;
 
-        public UserController(IUserService _userService)
+        public UserController(UserService _userService)
         {
             userService = _userService;
         }
