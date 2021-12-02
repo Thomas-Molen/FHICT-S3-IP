@@ -1,11 +1,11 @@
 import './NavBarComponent.css'
 import React, { useState } from 'react';
 import { SignUpComponent } from '..';
-import { userState } from '../../state';
-import { useRecoilState } from 'recoil';
+import { userAtom } from '../../state';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 export function NavBarComponent() {
-    const [globalUserState] = useRecoilState(userState);
+    const user = useRecoilValue(userAtom);
     const [isSignUpOpen, setIsSignUpOpen] = useState(false);
     return (
         <>
@@ -24,7 +24,7 @@ export function NavBarComponent() {
                             <p className="TAannouncement">Welcome to the 0.1 launch. Sign in and play for free!</p>
                         </div>
                         <div className="col-xl-3 col-12 text-end">
-                            {globalUserState.user_id == null ?
+                            {user.id == null ?
                                 <>
                                     <button type="button" className="btn btn-dark btn-lg signUpButton" onClick={() => setIsSignUpOpen(!isSignUpOpen)}>SIGN IN</button>
                                     <div className="text-start">

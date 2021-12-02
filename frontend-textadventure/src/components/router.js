@@ -2,14 +2,14 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { IntroductionComponent, SocialMediaComponent, GameHomeComponent, InformationComponent, LeaderboardComponent, FooterComponent, NavBarComponent, GamePlayComponent } from '../components';
-import { userState } from '../state';
+import { userAtom } from '../state';
 
 const Routes = () => {
-    const [globalUserState] = useRecoilState(userState);
+    const [user] = useRecoilState(userAtom);
     return (
         <main>
             <Switch>
-                {globalUserState.user_id != null &&
+                {user.id != null &&
                 <Route path='/game'>
                     <NavBarComponent />
                     <GamePlayComponent />

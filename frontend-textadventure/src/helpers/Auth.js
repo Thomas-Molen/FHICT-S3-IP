@@ -1,21 +1,25 @@
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import { JWTState, userState } from '../state'
+import { JWTAtom, userAtom } from '../state'
 import jwt_decode from "jwt-decode";
-import { CreateEntityManagerRequest } from './APIConnectionHelper';
+import { UseFetchWrapper } from '../helpers';
+import { useEffect } from 'react';
 
 export function useAuthHook() {
-    const [globalJWTState, setGlobalJWTState] = useRecoilState(JWTState);
-    const setGlobalUserState = useSetRecoilState(userState)
+    const fetchWrapper = UseFetchWrapper();
+    const [JWTToken, setJWTToken] = useRecoilState(JWTAtom);
+    const setUser = useSetRecoilState(userAtom)
     
-    RefreshJWT();
-    RenewExpiredJWT();
+    useEffect(() => {
+        RefreshJWT();
+        RenewExpiredJWT();
+    }, [])
     
     async function RefreshJWT() {
-        if (globalJWTState == "empty" || new Date() >= new Date(jwt_decode(globalJWTState).exp * 1000)) {
-            await CreateEntityManagerRequest('POST', 'User/renew-token')
+        if (JWTToken == "empty" || new Date() >= new Date(jwt_decode(JWTToken).exp * 1000)) {
+            fetchWrapper.post('User/renew-token')
                 .then(data => {
-                    setGlobalJWTState(data.token);
-                    setGlobalUserState({ user_id: data.id, username: data.username, email: data.email, admin: data.admin });
+                    setJWTToken(data.token);
+                    setUser({ id: data.id, username: data.username, email: data.email, admin: data.admin });
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -24,9 +28,9 @@ export function useAuthHook() {
     }
     
     async function RenewExpiredJWT() {
-        if (globalJWTState !== "empty") {
+        if (JWTToken !== "empty") {
             let currentTime = new Date();
-            let expTime = new Date(jwt_decode(globalJWTState).exp * 1000);
+            let expTime = new Date(jwt_decode(JWTToken).exp * 1000);
             let timeDif = (expTime.getTime() - currentTime.getTime());
     
             await new Promise(r => setTimeout(r, timeDif));

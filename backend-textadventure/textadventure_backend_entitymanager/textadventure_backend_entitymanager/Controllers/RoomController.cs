@@ -24,7 +24,7 @@ namespace textadventure_backend_entitymanager.Controllers
         //Game endpoints
         [AllowAnonymous]
         [HttpPost("move-to/{accessToken}")]
-        public async Task<IActionResult> EnterRoom([FromRoute] string accesstoken, [FromBody] EnterRoomRequest createSpawnRequest)
+        public async Task<IActionResult> EnterRoom([FromRoute] string accesstoken, [FromBody] EnterRoomRequest enterRoomRequest)
         {
             if (!accessTokenHelper.IsTokenValid(accesstoken))
             {
@@ -33,7 +33,7 @@ namespace textadventure_backend_entitymanager.Controllers
 
             try
             {
-                var result = await roomService.MoveToRoom(createSpawnRequest.AdventurerId, createSpawnRequest.Direction.ToLower());
+                var result = await roomService.MoveToRoom(enterRoomRequest.AdventurerId, enterRoomRequest.Direction.ToLower());
 
                 return Ok(result);
             }

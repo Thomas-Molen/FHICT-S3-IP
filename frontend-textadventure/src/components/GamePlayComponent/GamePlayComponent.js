@@ -2,15 +2,15 @@ import './GamePlayComponent.css'
 import { React, useEffect } from 'react';
 import useState from 'react-usestateref';
 import { useLocation, useHistory } from 'react-router-dom';
-import { CreateAuthEntityManagerRequest, cmd } from '../../helpers';
+import { cmd } from '../../helpers';
 import { useRecoilValue } from 'recoil';
-import { JWTState } from '../../state';
+import { JWTAtom } from '../../state';
 import { Icon } from '@iconify/react';
 import ReactTooltip from 'react-tooltip';
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 
 export function GamePlayComponent() {
-    const globalJWTState = useRecoilValue(JWTState);
+    const JWTToken = useRecoilValue(JWTAtom);
     const [adventurer, setAdventurer, adventurerRef] = useState({ id: null, experience: 0, health: 0, name: "Adventurer", damage: 0, roomsCleared: 0 });
     const [selectedView, setSelectedView] = useState("stats");
     const [items, setItems] = useState([]);
@@ -20,7 +20,7 @@ export function GamePlayComponent() {
     let URI = useLocation();
 
     const [connection, setConnection] = useState(new HubConnectionBuilder()
-        .withUrl("https://localhost:5101/game", { accessTokenFactory: () => globalJWTState })
+        .withUrl("https://localhost:5101/game", { accessTokenFactory: () => JWTToken })
         .configureLogging(LogLevel.Information)
         .withAutomaticReconnect()
         .build());

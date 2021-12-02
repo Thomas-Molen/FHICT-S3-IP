@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using textadventure_backend_entitymanager.Context;
 using textadventure_backend_entitymanager.Helpers;
@@ -24,7 +25,7 @@ namespace textadventure_backend_entitymanager.Services
         {
             using (var db = contextFactory.CreateDbContext())
             {
-                if (await db.Users.FirstOrDefaultAsync(u => u.Email == request.email) != null)
+                if (await db.Users.OrderByDescending(x => x.Id).FirstOrDefaultAsync(u => u.Email == request.email) != null)
                 {
                     throw new ArgumentException("This email has already been used");
                 }
@@ -50,7 +51,7 @@ namespace textadventure_backend_entitymanager.Services
         {
             using (var db = contextFactory.CreateDbContext())
             {
-                Users user = await db.Users.Include(u => u.RefreshTokens).FirstOrDefaultAsync(u => u.Email == request.email);
+                Users user = await db.Users.OrderByDescending(x => x.Id).Include(u => u.RefreshTokens).FirstOrDefaultAsync(u => u.Email == request.email);
 
                 if (user == null)
                 {

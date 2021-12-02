@@ -2,14 +2,15 @@ import './GameHomeComponent.css'
 import { React, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button } from 'react-bootstrap'
-import { JWTState, userState } from '../../state';
+import { JWTAtom, userAtom } from '../../state';
 import { useRecoilValue } from 'recoil';
 import { Icon } from '@iconify/react';
-import { CreateAuthEntityManagerRequest } from '../../helpers';
+import { UseFetchWrapper } from '../../helpers';
 
 export function GameHomeComponent() {
-    const globalUserState = useRecoilValue(userState);
-    const globalJWTState = useRecoilValue(JWTState);
+    const user = useRecoilValue(userAtom);
+    const JWTToken = useRecoilValue(JWTAtom);
+    const fetchWrapper = UseFetchWrapper();
 
     const [isSelectingAdventurers, setIsSelectingAdventurers] = useState(false);
     const [adventurers, setAdventurers] = useState([]);
@@ -25,7 +26,7 @@ export function GameHomeComponent() {
                     <h1 className="gameHomeHeaderText">START YOUR ADVENTURE</h1>
                 </div>
                 <div className="d-flex justify-content-center">
-                    {globalUserState.user_id == null ?
+                    {user.id == null ?
                         <Button variant="light" className="gameHomeButton" disabled><p className="mb-0">C:\ Start</p></Button>
                         :
                         <Button variant="light" className="gameHomeButton" onClick={() => GetAdventurers()}><p className="mb-0">C:\ Start</p></Button>
@@ -115,8 +116,8 @@ export function GameHomeComponent() {
     }
 
     function GetAdventurers() {
-        CreateAuthEntityManagerRequest('GET', 'Adventurer/get', globalJWTState)
-            .then(data => {
+        fetchWrapper.get('Adventurer/get')
+            .then((data) => {
                 setAdventurers(data);
                 setIsSelectingAdventurers(true);
             })
@@ -138,8 +139,8 @@ export function GameHomeComponent() {
             selectedButton = selectedButton.parentElement;
         }
         selectedButton.remove();
-        CreateAuthEntityManagerRequest('DELETE', 'Adventurer/delete', globalJWTState, { "adventurerId": adventurerId })
-            .then(function () {
+        fetchWrapper.delete('Adventurer/delete', { "adventurerId": adventurerId })
+            .then(() => {
                 GetAdventurers();
             })
             .catch(error => {
@@ -149,8 +150,8 @@ export function GameHomeComponent() {
 
     function CreateAdventurer(selectedButton) {
         setCreatingAdventurer(true);
-        CreateAuthEntityManagerRequest('POST', 'Adventurer/create', globalJWTState, { "name": selectedButton.parentElement.querySelector('input').value })
-            .then(function () {
+        fetchWrapper.post('Adventurer/create', { "name": selectedButton.parentElement.querySelector('input').value })
+            .then(() => {
                 GetAdventurers();
                 setSettingAdventurerName(false);
                 setCreatingAdventurer(false);
