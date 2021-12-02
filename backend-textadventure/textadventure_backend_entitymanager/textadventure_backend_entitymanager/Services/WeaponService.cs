@@ -24,7 +24,8 @@ namespace textadventure_backend_entitymanager.Services
                 var adventurer = await db.Adventurers
                     .OrderByDescending(x => x.Id)
                     .FirstOrDefaultAsync(a => a.Id == adventurerId);
-                var weapon = new Weapons(adventurer.Experience, adventurerId);
+                var weapon = new Weapons(adventurer.Experience);
+                weapon.AdventurerId = adventurerId;
 
                 await db.AddAsync(weapon);
                 await db.SaveChangesAsync();

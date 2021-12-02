@@ -8,7 +8,7 @@ namespace textadventure_backend_entitymanager.Models.Entities
 {
     public class Adventurers : DefaultModel
     {
-        public int Experience { get; set; } = 0;
+        public int Experience { get; set; } = 1;
         public int Health { get; set; } = 20;
 
         public string Name { get; set; } = "Adventurer";

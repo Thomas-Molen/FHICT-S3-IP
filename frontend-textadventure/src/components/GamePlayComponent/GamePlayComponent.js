@@ -12,10 +12,11 @@ import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 export function GamePlayComponent() {
     const JWTToken = useRecoilValue(JWTAtom);
     const [adventurer, setAdventurer, adventurerRef] = useState({ id: null, experience: 0, health: 0, name: "Adventurer", damage: 0, roomsCleared: 0 });
+    const [enemy, setEnemy, enemyRef] = useState({ difficulty: 1, name: "Enemy", weapon: "Weapon", health: 0 });
     const [selectedView, setSelectedView] = useState("stats");
     const [items, setItems] = useState([]);
     const [loadingInventory, setLoadingInventory] = useState(false);
-    
+
 
     let URI = useLocation();
 
@@ -27,7 +28,7 @@ export function GamePlayComponent() {
 
     useEffect(() => {
         ConnectToHub();
-    },[])
+    }, [])
 
     return (
         <>
@@ -63,7 +64,7 @@ export function GamePlayComponent() {
                                                     <ReactTooltip />
                                                     <div className="d-flex align-items-center">
                                                         <div data-tip="Level">
-                                                            <Icon icon="mdi:chevron-double-up" width="50" color="white" />{adventurer.experience / 100}
+                                                            <Icon icon="mdi:chevron-double-up" width="50" color="white" />{adventurer.experience / 10}
                                                         </div>
                                                     </div>
                                                     <div className="d-flex align-items-center">
@@ -102,10 +103,34 @@ export function GamePlayComponent() {
                                             </div>
                                         }
                                         {selectedView == "enemy" &&
-                                            <div className="row" onClick={() => console.log(adventurer)}>
-                                                <ReactTooltip />
-                                                ENEMY
-                                            </div>
+                                            <>
+                                                <div className="row">
+                                                    <div className="col">
+                                                        <ReactTooltip />
+                                                        <div className="d-flex align-items-center">
+                                                            <div data-tip="Difficulty">
+                                                                <Icon icon={"" + (enemy.difficulty < 2 ? "fad:xlrplug" : (enemy.difficulty < 3 ? "ri:skull-line" : "ri:skull-2-line"))} width="50" color="white" className="me-1" />
+                                                                <div className="d-inline">
+                                                                    {enemy.name}
+                                                                </div>
+                                                            </div>
+                                                            <div data-tip="Health">
+                                                                <Icon icon="akar-icons:heart" width="35" color="white" className="ms-5 me-2" />{enemy.health}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div className="row">
+                                                    <div className="col">
+                                                        <div className="d-flex align-items-center">
+                                                            <div data-tip="Weapon">
+                                                                <Icon icon="mdi:sword" rotate={1} width="40" color="white" className="ms-1 me-2" />{enemy.weapon}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </>
                                         }
                                     </div>
                                 </div>
@@ -165,9 +190,15 @@ export function GamePlayComponent() {
                 connection.on("UpdateAdventurer", (adventurer) => {
                     setAdventurer(adventurer);
                 });
-
                 connection.on("UpdateAttack", (attack) => {
-                    setAdventurer({ ...adventurerRef.current, damage: attack});
+                    setAdventurer({ ...adventurerRef.current, damage: attack });
+                });
+
+                connection.on("UpdateEnemy", (enemy) => {
+                    setEnemy(enemy);
+                });
+                connection.on("UpdateEnemyHealth", (health) => {
+                    setAdventurer({ ...enemyRef.current, health: health });
                 });
                 await connection.invoke("Join", parseInt(URI.search.replace("?user=", "")));
             }

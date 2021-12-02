@@ -44,6 +44,7 @@ namespace textadventure_backend.Services
             var sessionToUpdate = GetSessionFromConnectionId(connectionId);
             sessionToUpdate.Room = new SessionRoom
             {
+                Id = room.Id,
                 Event = room.Event,
                 EventCompleted = room.EventCompleted,
                 NorthInteraction = room.NorthInteraction,

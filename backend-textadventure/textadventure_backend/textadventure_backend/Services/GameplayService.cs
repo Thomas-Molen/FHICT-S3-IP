@@ -17,14 +17,16 @@ namespace textadventure_backend.Services
         private readonly RoomService roomService;
         private readonly WeaponService weaponService;
         private readonly AdventurerService adventurerService;
+        private readonly EnemyService enemyService;
 
-        public GameplayService(SessionManager _sessionManager, IHubContext<GameHub> _hubContext, RoomService _roomService, WeaponService _weaponService, AdventurerService _adventurerService)
+        public GameplayService(SessionManager _sessionManager, IHubContext<GameHub> _hubContext, RoomService _roomService, WeaponService _weaponService, AdventurerService _adventurerService, EnemyService _enemyService)
         {
             sessionManager = _sessionManager;
             hubContext = _hubContext;
             roomService = _roomService;
             weaponService = _weaponService;
             adventurerService = _adventurerService;
+            enemyService = _enemyService;
         }
 
         private string[] GetWorldCommands(string Event, bool EventCompleted)
@@ -227,12 +229,31 @@ namespace textadventure_backend.Services
                     await hubContext.Clients.Client(connectionId)
                                 .SendAsync("ReceiveMessage", $"You Open the chest and find a {weapon.Name}");
                     return;
+                case "observe":
+                    if (session.Enemy == null || session.Enemy.RoomId != session.Room.Id)
+                    {
+                        var enemy = await enemyService.CreateEnemy(session.Adventurer.Id, session.Room.Id);
+                        session.Enemy = enemy;
+                    }
+
+                    await hubContext.Clients.Client(connectionId)
+                            .SendAsync("UpdateEnemy", new
+                            {
+                                difficulty = session.Enemy.Difficulty,
+                                name = session.Enemy.Name,
+                                weapon = session.Enemy.Weapon.Name,
+                                health = session.Enemy.Health,
+                            });
+
+                    await hubContext.Clients.Client(connectionId)
+                                .SendAsync("ReceiveMessage", $"You take a moment to observe the weird looking creature in the room...\n It seems to be some kind of a {session.Enemy.Name}");
+                    return;
 
                 //response when no keywords are found
                 default:
                     await hubContext.Clients.Client(connectionId)
                         .SendAsync("ReceiveMessage", $"Given command not found, did you misspell it? \n Command given: {message}");
-                    break;
+                    return;
             }
         }
 

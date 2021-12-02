@@ -10,7 +10,7 @@ namespace textadventure_backend.Models.Session
     {
         public string ConnectionId { get; set; }
         public string Group { get; set; }
-
+        public Enemy Enemy { get; set; } = null;
         public SessionAdventurer Adventurer { get; set; }
         public SessionRoom Room { get; set; }
         public Weapons Weapon { get; set; }

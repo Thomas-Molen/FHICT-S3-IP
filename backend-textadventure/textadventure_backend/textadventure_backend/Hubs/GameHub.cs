@@ -1,12 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
-using textadventure_backend.Models;
-using textadventure_backend.Models.Requests;
-using textadventure_backend.Models.Responses;
-using textadventure_backend.Models.Session;
 using textadventure_backend.Services;
 
 namespace textadventure_backend.Hubs
