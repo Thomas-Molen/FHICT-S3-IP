@@ -58,7 +58,10 @@ namespace textadventure_backend_entitymanager.Services
 
                 var currentlyEquipedWeapon = adventurer.Weapons.ToList().Find(w => w.Equiped);
                 var weaponToEquip = adventurer.Weapons.ToList().Find(w => w.Id == weaponId);
-                currentlyEquipedWeapon.Equiped = false;
+                if (currentlyEquipedWeapon != null)
+                {
+                    currentlyEquipedWeapon.Equiped = false;
+                }
                 weaponToEquip.Equiped = true;
 
                 db.Update(adventurer);

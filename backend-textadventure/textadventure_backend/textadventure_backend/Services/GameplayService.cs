@@ -99,7 +99,7 @@ namespace textadventure_backend.Services
 
 
             //send the player's stats and weapons
-            int damage = adventurer.Weapons.FirstOrDefault(w => w.Equiped).Attack ?? 0;
+            int damage = adventurer.Weapons.FirstOrDefault(w => w.Equiped)?.Attack ?? 0;
             await hubContext.Clients.Client(connectionId)
                     .SendAsync(
                         "UpdateAdventurer", 
