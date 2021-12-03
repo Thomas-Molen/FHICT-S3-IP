@@ -20,7 +20,7 @@ namespace textadventure_backend.Models.Session
         {
             if (EventCompleted)
             {
-                switch (Enum.Parse(typeof(Events), Event))
+                switch (Enum.Parse(typeof(Events), Event.ToString()))
                 {
                     case Events.Chest:
                         return "an already opened chest, seems like you have already been here";
@@ -34,7 +34,7 @@ namespace textadventure_backend.Models.Session
             }
             else
             {
-                switch (Enum.Parse(typeof(Events), Event))
+                switch (Enum.Parse(typeof(Events), Event.ToString()))
                 {
                     case Events.Chest:
                         return "a treasure chest! There might be some good loot in there";
