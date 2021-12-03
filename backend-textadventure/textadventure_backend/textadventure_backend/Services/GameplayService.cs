@@ -94,8 +94,8 @@ namespace textadventure_backend.Services
             sessionManager.UpdateSessionRoom(connectionId, room);
             var session = sessionManager.GetSession(connectionId);
 
-            //await hubContext.Clients.Client(connectionId)
-            //        .SendAsync("ReceiveMessage", $"You look around and see {session.Room.EventToString(room.EventCompleted)}");
+            await hubContext.Clients.Client(connectionId)
+                    .SendAsync("ReceiveMessage", $"You look around and see {session.Room.EventToString(room.EventCompleted)}");
 
 
             //send the player's stats and weapons
