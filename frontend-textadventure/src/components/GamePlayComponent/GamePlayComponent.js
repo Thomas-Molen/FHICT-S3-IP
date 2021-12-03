@@ -21,7 +21,7 @@ export function GamePlayComponent() {
     let URI = useLocation();
 
     const [connection, setConnection] = useState(new HubConnectionBuilder()
-        .withUrl(process.env.REACT_APP_ENTITY_MANAGER + "game", { accessTokenFactory: () => JWTToken })
+        .withUrl(process.env.REACT_APP_GAME_MANAGER + "game", { accessTokenFactory: () => JWTToken })
         .configureLogging(LogLevel.Information)
         .withAutomaticReconnect()
         .build());
