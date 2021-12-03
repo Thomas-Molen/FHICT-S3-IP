@@ -9,11 +9,11 @@ namespace textadventure_backend.Services
 {
     public class SessionManager
     {
-        private List<Session> sessions;
+        private List<Session> Sessions;
 
         public SessionManager(AdventurerService _adventurerService, WeaponService _weaponService, RoomService _roomService)
         {
-            sessions = new List<Session>();
+            Sessions = new List<Session>();
         }
 
         public void AddSession(string connectionId, SessionAdventurer adventurer, string group)
@@ -24,13 +24,13 @@ namespace textadventure_backend.Services
                 ConnectionId = connectionId,
                 Group = group
             };
-            sessions.Add(sessionToAdd);
+            Sessions.Add(sessionToAdd);
         }
 
         public void RemoveSession(string connectionId)
         {
             var sessionToRemove = GetSessionFromConnectionId(connectionId);
-            sessions.Remove(sessionToRemove);
+            Sessions.Remove(sessionToRemove);
         }
 
         public Session GetSession(string connectionId)
@@ -61,7 +61,7 @@ namespace textadventure_backend.Services
 
         private Session GetSessionFromConnectionId(string connectionId)
         {
-            var session = sessions.Find(s => s.ConnectionId == connectionId);
+            var session = Sessions.Find(s => s.ConnectionId == connectionId);
             if (session == null)
             {
                 throw new ArgumentException("No active adventurer connected to given connectionId");
