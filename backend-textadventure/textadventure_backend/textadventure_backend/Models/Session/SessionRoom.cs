@@ -20,13 +20,13 @@ namespace textadventure_backend.Models.Session
         {
             if (EventCompleted)
             {
-                switch (Enum.Parse(typeof(Events), Event.ToString()))
+                switch (Event)
                 {
-                    case Events.Chest:
+                    case "chest":
                         return "an already opened chest, seems like you have already been here";
-                    case Events.Enemy:
+                    case "enemy":
                         return "a slain enemy, brings back memories of your past victory";
-                    case Events.Empty:
+                    case "empty":
                         return "an empty room that you seem to remember having been to before. It is unsettling";
                     default:
                         return "actually nothing hmmm, maybe a bug maybe a feature who knows!";
@@ -34,13 +34,13 @@ namespace textadventure_backend.Models.Session
             }
             else
             {
-                switch (Enum.Parse(typeof(Events), Event.ToString()))
+                switch (Event)
                 {
-                    case Events.Chest:
+                    case "chest":
                         return "a treasure chest! There might be some good loot in there";
-                    case Events.Enemy:
+                    case "enemy":
                         return "a monster wielding some kind of weapon";
-                    case Events.Empty:
+                    case "empty":
                         return "nothing... how strange";
                     default:
                         return "actually nothing hmmm, maybe a bug maybe a feature who knows!";
