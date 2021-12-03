@@ -1,11 +1,10 @@
 /* Scroll bar */
-
 ::-webkit-scrollbar-track {
     background: #252525;
 }
 
 .gameBackground {
-    background-image: url("../../Assets/GamePageBG.svg");
+    background-image: url("../../assets/GamePageBG.svg");
     min-height: 120vh;
     background-position: left;
     background-repeat: no-repeat;
@@ -104,4 +103,13 @@
 
 .statsInformationWindow {
     font-size: 40px;
+}
+
+.Inventory {
+    max-height: 250px;
+    font-size: 20px;
+}
+
+.EquipedItem{
+    color: rgb(114, 217, 224);
 }

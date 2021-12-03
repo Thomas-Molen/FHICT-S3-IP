@@ -1,6 +1,6 @@
   .introductionBackground{
-    background-image: url("../../Assets/IntroductionPageBG.svg");
-      height: 535px;
+    background-image: url("../../assets/IntroductionPageBG.svg");
+      min-height: 535px;
       background-position: middle;
       background-repeat: no-repeat;
       background-size: cover;
@@ -36,7 +36,7 @@
   color: #E7E7E7;
 }
 
-@media (max-width: 930px) 
+@media (max-width: 800px) 
 {
   .introductionText
     {

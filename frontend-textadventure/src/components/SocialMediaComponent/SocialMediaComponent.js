@@ -13,13 +13,13 @@ export function SocialMediaComponent() {
                 <button className="btn btn-outline-dark rounded-circle socialmediaButton">
                     <i className="fa fa-twitter fa-4x"></i>        
                 </button>
-                <button className="btn btn-outline-dark rounded-circle socialmediaButton">
+                <button className="btn btn-outline-dark rounded-circle socialmediaButton desktopSocialMediaButton">
                     <i className="fa fa-instagram fa-4x"></i>        
                 </button>
-                <button className="btn btn-outline-dark rounded-circle socialmediaButton desktopSocialMediaButton">
+                <button className="btn btn-outline-dark rounded-circle socialmediaButton" onClick={() => window.open("https://www.linkedin.com/in/thomas-van-der-molen-6427a7181/")}>
                     <i className="fa fa-linkedin fa-4x"></i>        
                 </button>
-                <button className="btn btn-outline-dark rounded-circle socialmediaButton">
+                <button className="btn btn-outline-dark rounded-circle socialmediaButton" onClick={() => window.open("https://github.com/Thomas-Molen/FHICT-S3-IP")}>
                     <i className="fa fa-github fa-4x"></i>        
                 </button>
             </div>

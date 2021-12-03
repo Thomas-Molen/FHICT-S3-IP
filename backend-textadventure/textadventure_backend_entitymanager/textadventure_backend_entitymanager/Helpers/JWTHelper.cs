@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using textadventure_backend_entitymanager.Context;
 using textadventure_backend_entitymanager.Models;
+using textadventure_backend_entitymanager.Models.Entities;
 using textadventure_backend_entitymanager.Models.Responses;
 
 namespace textadventure_backend_entitymanager.Helpers

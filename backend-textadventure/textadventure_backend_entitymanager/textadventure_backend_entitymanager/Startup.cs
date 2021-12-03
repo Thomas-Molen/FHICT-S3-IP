@@ -11,7 +11,6 @@ using System;
 using textadventure_backend_entitymanager.Context;
 using textadventure_backend_entitymanager.Helpers;
 using textadventure_backend_entitymanager.Services;
-using textadventure_backend_entitymanager.Services.Interfaces;
 
 namespace textadventure_backend_entitymanager
 {
@@ -35,16 +34,37 @@ namespace textadventure_backend_entitymanager
                 .AllowCredentials();
             }));
 
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(x =>
+                x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
-            var appSettingsSection = Configuration.GetSection("AppSettings");
-            services.Configure<AppSettings>(appSettingsSection);
+            services.AddDbContextFactory<TextadventureDBContext>(options =>
+            {
+                options.UseMySql(
+                    Configuration.GetConnectionString("SQL_DB"), 
+                    ServerVersion.AutoDetect(Configuration.GetConnectionString("SQL_DB")), 
+                    o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
+            });
+
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+
+            services.AddSingleton<UserService>();
+            services.AddSingleton<AdventurerService>();
+            services.AddSingleton<EnemyService>();
+            services.AddSingleton<RoomService>();
+            services.AddSingleton<WeaponService>();
+            services.AddSingleton<JWTHelper>();
+            services.AddSingleton<AccessTokenHelper>();
+
+            services.AddHttpContextAccessor();
+
+            services.AddHttpClient();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+            });
 
             // configure jwt authentication
-            var appSettings = appSettingsSection.Get<AppSettings>();
-
-            var key = System.Text.Encoding.ASCII.GetBytes(Configuration["AppSettings:Secret"]);
-
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -57,30 +77,12 @@ namespace textadventure_backend_entitymanager
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.ASCII.GetBytes(Configuration["AppSettings:Secret"])),
                     ValidateIssuer = false,
                     ValidateAudience = false,
                     // set clockskew to zero so tokens expire exactly at token expiration time (instead of 5 minutes later)
                     ClockSkew = TimeSpan.Zero
                 };
-            });
-
-            services.AddDbContextFactory<TextadventureDBContext>(options =>
-            {
-                options.UseMySql(Configuration.GetConnectionString("SQL_DB"), ServerVersion.AutoDetect(Configuration.GetConnectionString("SQL_DB")));
-            });
-
-            services.AddSingleton<IUserService, UserService>();
-            services.AddSingleton<IAdventurerService, AdventurerService>();
-            services.AddSingleton<JWTHelper>();
-
-            services.AddHttpContextAccessor();
-
-            services.AddHttpClient();
-
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
             });
         }
 

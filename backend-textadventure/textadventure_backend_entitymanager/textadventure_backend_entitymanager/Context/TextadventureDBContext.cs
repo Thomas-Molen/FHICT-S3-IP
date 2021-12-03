@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using textadventure_backend_entitymanager.Models;
+using textadventure_backend_entitymanager.Models.Entities;
 
 namespace textadventure_backend_entitymanager.Context
 {
@@ -22,7 +23,6 @@ namespace textadventure_backend_entitymanager.Context
         public virtual DbSet<Items> Items { get; set; }
         public virtual DbSet<Dungeons> Dungeons { get; set; }
         public virtual DbSet<Rooms> Rooms { get; set; }
-        public virtual DbSet<Interactions> Interactions { get; set; }
         public virtual DbSet<NPCs> NPCs { get; set; }
         public virtual DbSet<RefreshTokens> RefreshTokens { get; set; }
 
@@ -166,51 +166,27 @@ namespace textadventure_backend_entitymanager.Context
                     .HasMaxLength(100)
                     .IsRequired();
 
+                entity.Property(model => model.NorthInteraction).HasColumnName("north")
+                    .HasMaxLength(100)
+                    .IsRequired();
+
+                entity.Property(model => model.EastInteraction).HasColumnName("east")
+                    .HasMaxLength(100)
+                    .IsRequired();
+
+                entity.Property(model => model.SouthInteraction).HasColumnName("south")
+                    .HasMaxLength(100)
+                    .IsRequired();
+
+                entity.Property(model => model.WestInteraction).HasColumnName("west")
+                    .HasMaxLength(100)
+                    .IsRequired();
+
                 entity.HasOne(r => r.Dungeon)
                    .WithMany(d => d.Rooms)
                    .HasForeignKey(r => r.DungeonId)
                    .OnDelete(DeleteBehavior.ClientSetNull)
                    .HasConstraintName("FK_Rooms_Dungeons");
-
-                entity.HasOne(r => r.NorthInteraction)
-                   .WithMany(i => i.RoomNorth)
-                   .HasForeignKey(r => r.NorthInteractionId)
-                   .OnDelete(DeleteBehavior.ClientSetNull)
-                   .HasConstraintName("FK_Rooms_NorthInteractions");
-
-                entity.HasOne(r => r.EastInteraction)
-                   .WithMany(i => i.RoomEast)
-                   .HasForeignKey(r => r.EastInteractionId)
-                   .OnDelete(DeleteBehavior.ClientSetNull)
-                   .HasConstraintName("FK_Rooms_EastInteractions");
-
-                entity.HasOne(r => r.SouthInteraction)
-                   .WithMany(i => i.RoomSouth)
-                   .HasForeignKey(r => r.SouthInteractionId)
-                   .OnDelete(DeleteBehavior.ClientSetNull)
-                   .HasConstraintName("FK_Rooms_SouthInteractions");
-
-                entity.HasOne(r => r.WestInteraction)
-                   .WithMany(i => i.RoomWest)
-                   .HasForeignKey(r => r.WestInteractionId)
-                   .OnDelete(DeleteBehavior.ClientSetNull)
-                   .HasConstraintName("FK_Rooms_WestInteractions");
-            });
-
-            modelBuilder.Entity<Interactions>(entity =>
-            {
-                entity.Property(model => model.Id).HasColumnName("id");
-
-                entity.Property(model => model.Type).HasColumnName("type")
-                    .HasMaxLength(100)
-                    .IsRequired();
-
-                entity.HasOne(i => i.NPC)
-                   .WithMany(npc => npc.Interaction)
-                   .HasForeignKey(i => i.NPCId)
-                   .OnDelete(DeleteBehavior.ClientSetNull)
-                   .HasConstraintName("FK_Interactions_NPCs")
-                   .IsRequired(false);
             });
 
             modelBuilder.Entity<NPCs>(entity =>
@@ -225,17 +201,17 @@ namespace textadventure_backend_entitymanager.Context
                     .HasMaxLength(101)
                     .IsRequired();
 
-                entity.HasOne(npc => npc.Weapon)
-                   .WithMany(w => w.NPCs)
-                   .HasForeignKey(npc => npc.WeaponId)
-                   .OnDelete(DeleteBehavior.ClientSetNull)
-                   .HasConstraintName("FK_NPCs_Weapons");
+                //entity.HasOne(npc => npc.Weapon)
+                //   .WithMany(w => w.NPCs)
+                //   .HasForeignKey(npc => npc.WeaponId)
+                //   .OnDelete(DeleteBehavior.ClientSetNull)
+                //   .HasConstraintName("FK_NPCs_Weapons");
 
-                entity.HasOne(npc => npc.Item)
-                   .WithMany(it => it.NPCs)
-                   .HasForeignKey(npc => npc.ItemId)
-                   .OnDelete(DeleteBehavior.ClientSetNull)
-                   .HasConstraintName("FK_NPCs_Items");
+                //entity.HasOne(npc => npc.Item)
+                //   .WithMany(it => it.NPCs)
+                //   .HasForeignKey(npc => npc.ItemId)
+                //   .OnDelete(DeleteBehavior.ClientSetNull)
+                //   .HasConstraintName("FK_NPCs_Items");
             });
 
             modelBuilder.Entity<RefreshTokens>(entity =>

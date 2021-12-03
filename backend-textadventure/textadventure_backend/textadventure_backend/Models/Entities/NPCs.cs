@@ -14,11 +14,9 @@ namespace textadventure_backend.Models.Entities
 
         public virtual Weapons Weapon { get; set; }
         public virtual Items Item { get; set; }
-        public virtual ICollection<Interactions> Interaction { get; set; }
 
         public NPCs()
         {
-            Interaction = new HashSet<Interactions>();
         }
     }
 }

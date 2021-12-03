@@ -1,5 +1,5 @@
 .leaderboardBackground {
-    background-image: url("../../Assets/LeaderboardPageBG.svg");
+    background-image: url("../../assets/LeaderboardPageBG.svg");
     min-height: 130vh;
     background-position: left;
     background-repeat: no-repeat;
@@ -24,7 +24,7 @@
 }
 
 .LeaderboardTable{
-    max-width: 1000px;
+    width: 1000px;
     font-size: 20px;
     margin-bottom: 80px;
 }

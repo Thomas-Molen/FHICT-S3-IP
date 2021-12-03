@@ -1,18 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
 using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Threading.Tasks;
-using textadventure_backend_entitymanager.Context;
 using textadventure_backend_entitymanager.Helpers;
-using textadventure_backend_entitymanager.Models;
 using textadventure_backend_entitymanager.Models.Requests;
-using textadventure_backend_entitymanager.Services.Interfaces;
+using textadventure_backend_entitymanager.Services;
 
 namespace textadventure_backend_entitymanager.Controllers
 {
@@ -21,13 +15,14 @@ namespace textadventure_backend_entitymanager.Controllers
     [Route("api/[controller]")]
     public class AdventurerController : ControllerBase
     {
-        private readonly IAdventurerService adventurerService;
+        private readonly AdventurerService adventurerService;
         private readonly JWTHelper JWT;
-
-        public AdventurerController(IAdventurerService _adventurerService, JWTHelper JWThelper)
+        private readonly AccessTokenHelper accessTokenHelper;
+        public AdventurerController(AdventurerService _adventurerService, JWTHelper JWThelper, AccessTokenHelper _accessTokenHelper)
         {
             adventurerService = _adventurerService;
             JWT = JWThelper;
+            accessTokenHelper = _accessTokenHelper;
         }
 
         [HttpPost("create")]
@@ -97,6 +92,28 @@ namespace textadventure_backend_entitymanager.Controllers
             try
             {
                 var response = await adventurerService.GetLeaderboard();
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        //Game endpoints
+        [AllowAnonymous]
+        [HttpGet("get/{adventurerId}/{accessToken}")]
+        public async Task<IActionResult> GetAdventurer([FromRoute] int adventurerId, string accesstoken)
+        {
+            if (!accessTokenHelper.IsTokenValid(accesstoken))
+            {
+                return Unauthorized("Invalid accesstoken");
+            }
+
+            try
+            {
+                var response = await adventurerService.Find(adventurerId);
 
                 return Ok(response);
             }

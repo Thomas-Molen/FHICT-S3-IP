@@ -95,29 +95,6 @@ namespace textadventure_backend_entitymanager.Migrations
                     b.ToTable("Dungeons");
                 });
 
-            modelBuilder.Entity("textadventure_backend_entitymanager.Models.Interactions", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("id");
-
-                    b.Property<int?>("NPCId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("type");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NPCId");
-
-                    b.ToTable("Interactions");
-                });
-
             modelBuilder.Entity("textadventure_backend_entitymanager.Models.Items", b =>
                 {
                     b.Property<int>("Id")
@@ -234,8 +211,11 @@ namespace textadventure_backend_entitymanager.Migrations
                     b.Property<int>("DungeonId")
                         .HasColumnType("int");
 
-                    b.Property<int>("EastInteractionId")
-                        .HasColumnType("int");
+                    b.Property<string>("EastInteraction")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("east");
 
                     b.Property<string>("Event")
                         .IsRequired()
@@ -243,8 +223,11 @@ namespace textadventure_backend_entitymanager.Migrations
                         .HasColumnType("varchar(100)")
                         .HasColumnName("event");
 
-                    b.Property<int>("NorthInteractionId")
-                        .HasColumnType("int");
+                    b.Property<string>("NorthInteraction")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("north");
 
                     b.Property<int>("PositionX")
                         .HasColumnType("int")
@@ -254,23 +237,21 @@ namespace textadventure_backend_entitymanager.Migrations
                         .HasColumnType("int")
                         .HasColumnName("position_y");
 
-                    b.Property<int>("SouthInteractionId")
-                        .HasColumnType("int");
+                    b.Property<string>("SouthInteraction")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("south");
 
-                    b.Property<int>("WestInteractionId")
-                        .HasColumnType("int");
+                    b.Property<string>("WestInteraction")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("west");
 
                     b.HasKey("Id");
 
                     b.HasIndex("DungeonId");
-
-                    b.HasIndex("EastInteractionId");
-
-                    b.HasIndex("NorthInteractionId");
-
-                    b.HasIndex("SouthInteractionId");
-
-                    b.HasIndex("WestInteractionId");
 
                     b.ToTable("Rooms");
                 });
@@ -392,16 +373,6 @@ namespace textadventure_backend_entitymanager.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("textadventure_backend_entitymanager.Models.Interactions", b =>
-                {
-                    b.HasOne("textadventure_backend_entitymanager.Models.NPCs", "NPC")
-                        .WithMany("Interaction")
-                        .HasForeignKey("NPCId")
-                        .HasConstraintName("FK_Interactions_NPCs");
-
-                    b.Navigation("NPC");
-                });
-
             modelBuilder.Entity("textadventure_backend_entitymanager.Models.Items", b =>
                 {
                     b.HasOne("textadventure_backend_entitymanager.Models.Adventurers", "Adventurer")
@@ -451,39 +422,7 @@ namespace textadventure_backend_entitymanager.Migrations
                         .HasConstraintName("FK_Rooms_Dungeons")
                         .IsRequired();
 
-                    b.HasOne("textadventure_backend_entitymanager.Models.Interactions", "EastInteraction")
-                        .WithMany("RoomEast")
-                        .HasForeignKey("EastInteractionId")
-                        .HasConstraintName("FK_Rooms_EastInteractions")
-                        .IsRequired();
-
-                    b.HasOne("textadventure_backend_entitymanager.Models.Interactions", "NorthInteraction")
-                        .WithMany("RoomNorth")
-                        .HasForeignKey("NorthInteractionId")
-                        .HasConstraintName("FK_Rooms_NorthInteractions")
-                        .IsRequired();
-
-                    b.HasOne("textadventure_backend_entitymanager.Models.Interactions", "SouthInteraction")
-                        .WithMany("RoomSouth")
-                        .HasForeignKey("SouthInteractionId")
-                        .HasConstraintName("FK_Rooms_SouthInteractions")
-                        .IsRequired();
-
-                    b.HasOne("textadventure_backend_entitymanager.Models.Interactions", "WestInteraction")
-                        .WithMany("RoomWest")
-                        .HasForeignKey("WestInteractionId")
-                        .HasConstraintName("FK_Rooms_WestInteractions")
-                        .IsRequired();
-
                     b.Navigation("Dungeon");
-
-                    b.Navigation("EastInteraction");
-
-                    b.Navigation("NorthInteraction");
-
-                    b.Navigation("SouthInteraction");
-
-                    b.Navigation("WestInteraction");
                 });
 
             modelBuilder.Entity("textadventure_backend_entitymanager.Models.Weapons", b =>
@@ -513,25 +452,9 @@ namespace textadventure_backend_entitymanager.Migrations
                     b.Navigation("Rooms");
                 });
 
-            modelBuilder.Entity("textadventure_backend_entitymanager.Models.Interactions", b =>
-                {
-                    b.Navigation("RoomEast");
-
-                    b.Navigation("RoomNorth");
-
-                    b.Navigation("RoomSouth");
-
-                    b.Navigation("RoomWest");
-                });
-
             modelBuilder.Entity("textadventure_backend_entitymanager.Models.Items", b =>
                 {
                     b.Navigation("NPCs");
-                });
-
-            modelBuilder.Entity("textadventure_backend_entitymanager.Models.NPCs", b =>
-                {
-                    b.Navigation("Interaction");
                 });
 
             modelBuilder.Entity("textadventure_backend_entitymanager.Models.Rooms", b =>

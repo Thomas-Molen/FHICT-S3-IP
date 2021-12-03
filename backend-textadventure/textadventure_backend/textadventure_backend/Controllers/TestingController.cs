@@ -14,7 +14,6 @@ namespace textadventure_backend.Controllers
         {
         }
 
-        [AllowAnonymous]
         [HttpGet]
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public async Task<string> test()

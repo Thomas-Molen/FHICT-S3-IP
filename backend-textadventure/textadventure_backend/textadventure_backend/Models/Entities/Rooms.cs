@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
+using textadventure_backend.Enums;
 
 namespace textadventure_backend.Models.Entities
 {
@@ -12,17 +13,13 @@ namespace textadventure_backend.Models.Entities
         public int PositionX { get; set; }
         public int PositionY { get; set; }
         public string Event { get; set; }
-        public int NorthInteractionId { get; set; }
-        public int EastInteractionId { get; set; }
-        public int SouthInteractionId { get; set; }
-        public int WestInteractionId { get; set; }
+        public string NorthInteraction { get; set; } = "Wall";
+        public string EastInteraction { get; set; } = "Wall";
+        public string SouthInteraction { get; set; } = "Wall";
+        public string WestInteraction { get; set; } = "Wall";
+        public bool EventCompleted { get; set; } = false;
 
         public virtual Dungeons Dungeon { get; set; }
-        public virtual Interactions NorthInteraction { get; set; }
-        public virtual Interactions EastInteraction { get; set; }
-        public virtual Interactions SouthInteraction { get; set; }
-        public virtual Interactions WestInteraction { get; set; }
-
         public virtual ICollection<Adventurers> Adventurers { get; set; }
         public virtual ICollection<AdventurerMaps> AdventurerMaps { get; set; }
 

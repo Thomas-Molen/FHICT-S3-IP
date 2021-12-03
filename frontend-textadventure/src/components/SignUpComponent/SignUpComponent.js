@@ -1,12 +1,13 @@
 import './SignUpComponent.css'
 import { React, useState } from 'react';
-import { JWTState, userState } from '../../state';
-import { CreateEntityManagerRequest } from '../../actions/APIConnectionHelper'
+import { JWTAtom, userAtom } from '../../state';
+import { UseFetchWrapper } from '../../helpers'
 import { useSetRecoilState } from 'recoil';
 
 export function SignUpComponent({ isOpen }) {
-    const setGlobalJWTState = useSetRecoilState(JWTState);
-    const setGlobalUserState = useSetRecoilState(userState);
+    const fetchWrapper = UseFetchWrapper();
+    const setJWTToken = useSetRecoilState(JWTAtom);
+    const setUser = useSetRecoilState(userAtom);
 
     const [isLogin, setIsLogin] = useState(true);
     const [isRegistering, setIsRegistering] = useState(false);
@@ -54,10 +55,10 @@ export function SignUpComponent({ isOpen }) {
 
     async function Login() {
         setIsLoggingIn(true);
-        await CreateEntityManagerRequest('POST', 'User/login', { email: email, password: loginPassword })
+        fetchWrapper.post('User/login', {email: email, password: loginPassword})
             .then(data => {
-                setGlobalJWTState(data.token);
-                setGlobalUserState({ user_id: data.id, username: data.username, email: data.email, admin: data.admin });
+                setJWTToken(data.token);
+                setUser({ id: data.id, username: data.username, email: data.email, admin: data.admin });
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -108,10 +109,10 @@ export function SignUpComponent({ isOpen }) {
     async function Register() {
         if (checkPassword) {
             setIsRegistering(true);
-            await CreateEntityManagerRequest('POST', 'User/register', { email: email, username: username, password: registerPassword })
+            fetchWrapper.post('User/register', { email: email, username: username, password: registerPassword })
                 .then(data => {
-                    setGlobalJWTState(data.token);
-                    setGlobalUserState({ user_id: data.id, username: data.username, email: data.email, admin: data.admin });
+                    setJWTToken(data.token);
+                    setUser({ id: data.id, username: data.username, email: data.email, admin: data.admin });
                     setIsRegistering(false);
                 })
                 .catch(error => {

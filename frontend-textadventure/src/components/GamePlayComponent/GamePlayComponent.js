@@ -1,27 +1,42 @@
 import './GamePlayComponent.css'
-import { React, useState } from 'react';
+import { React, useEffect } from 'react';
+import useState from 'react-usestateref';
 import { useLocation, useHistory } from 'react-router-dom';
-import { CreateAuthEntityManagerRequest } from '../../actions/APIConnectionHelper';
+import { cmd } from '../../helpers';
 import { useRecoilValue } from 'recoil';
-import { JWTState } from '../../state';
+import { JWTAtom } from '../../state';
 import { Icon } from '@iconify/react';
 import ReactTooltip from 'react-tooltip';
-
+import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 
 export function GamePlayComponent() {
-    const globalJWTState = useRecoilValue(JWTState);
-
-    const [Adventurer, setAdventurer] = useState({ id: null, experience: 0, health: 0, name: "Adventurer", damage: 0, positionX: 0, positionY: 0 });
+    const JWTToken = useRecoilValue(JWTAtom);
+    const [adventurer, setAdventurer, adventurerRef] = useState({ id: null, experience: 0, health: 0, name: "Adventurer", damage: 0, roomsCleared: 0 });
+    const [enemy, setEnemy, enemyRef] = useState({ difficulty: 1, name: "Enemy", weapon: "Weapon", health: 0 });
     const [selectedView, setSelectedView] = useState("stats");
+    const [items, setItems] = useState([]);
+    const [loadingInventory, setLoadingInventory] = useState(false);
+
+
     let URI = useLocation();
-    let history = useHistory();
-    GetAdventurer();
+
+    const [connection, setConnection] = useState(new HubConnectionBuilder()
+        .withUrl("https://localhost:5101/game", { accessTokenFactory: () => JWTToken })
+        .configureLogging(LogLevel.Information)
+        .withAutomaticReconnect()
+        .build());
+
+    useEffect(() => {
+        ConnectToHub();
+    }, [])
 
     return (
         <>
             <div className="gameBackground">
-                <div className="gameHeader offset-1 col">
-                    Welcome {Adventurer.name}
+                <div className="col-9">
+                    <div className="gameHeader offset-1 col ">
+                        Welcome {adventurer.name}
+                    </div>
                 </div>
                 <div className="container-fluid">
                     <div className="row">
@@ -49,17 +64,17 @@ export function GamePlayComponent() {
                                                     <ReactTooltip />
                                                     <div className="d-flex align-items-center">
                                                         <div data-tip="Level">
-                                                            <Icon icon="mdi:chevron-double-up" width="50" color="white" />{Adventurer.experience / 100}
+                                                            <Icon icon="mdi:chevron-double-up" width="50" color="white" />{adventurer.experience / 10}
                                                         </div>
                                                     </div>
                                                     <div className="d-flex align-items-center">
                                                         <div data-tip="Health">
-                                                            <Icon icon="akar-icons:heart" width="35" color="white" className="ms-2 me-2" />{Adventurer.health}
+                                                            <Icon icon="akar-icons:heart" width="35" color="white" className="ms-2 me-2" />{adventurer.health}
                                                         </div>
                                                     </div>
                                                     <div className="d-flex align-items-center">
                                                         <div data-tip="Attack power from equipped weapon">
-                                                            <Icon icon="mdi:sword" rotate={1} width="40" color="white" className="ms-1 me-1" />{Adventurer.damage}
+                                                            <Icon icon="mdi:sword" rotate={1} width="40" color="white" className="ms-1 me-1" />{adventurer.damage}
                                                         </div>
                                                     </div>
 
@@ -67,29 +82,60 @@ export function GamePlayComponent() {
                                                 <div className="col">
                                                     <div className="d-flex align-items-center">
                                                         <div data-tip="Successfully cleared rooms">
-                                                            <Icon icon="ic:baseline-meeting-room" width="50" color="white" className="me-1" />{0}
+                                                            <Icon icon="ic:baseline-meeting-room" width="50" color="white" className="me-1" />{adventurer.roomsCleared}
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         }
                                         {selectedView == "inventory" &&
-                                            <div className="row-fluid">
+                                            <div className={"row-fluid Inventory overflow-auto " + (loadingInventory ? "disabled" : "")}>
                                                 <ReactTooltip />
-                                                INVENTORY
+                                                {items.map((item) =>
+                                                    <div key={item.id} className="d-flex align-items-center">
+                                                        <div className={"ms-3 " + (item.equiped == true ? 'EquipedItem' : 'pointer')} onClick={() => EquipWeapon(item.id)}>
+                                                            {item.name}
+                                                            <Icon icon="mdi:sword" rotate={1} width="20" className="ms-3 me-0" />{item.attack}
+                                                            <Icon icon="ps:broken-link" rotate={1} width="20" className="ms-3 me-0" />{item.durability}
+                                                        </div>
+                                                    </div>
+                                                )}
                                             </div>
                                         }
                                         {selectedView == "enemy" &&
-                                            <div className="row-fluid">
-                                                <ReactTooltip />
-                                                ENEMY
-                                            </div>
+                                            <>
+                                                <div className="row">
+                                                    <div className="col">
+                                                        <ReactTooltip />
+                                                        <div className="d-flex align-items-center">
+                                                            <div data-tip="Difficulty">
+                                                                <Icon icon={"" + (enemy.difficulty < 2 ? "fad:xlrplug" : (enemy.difficulty < 3 ? "ri:skull-line" : "ri:skull-2-line"))} width="50" color="white" className="me-1" />
+                                                                <div className="d-inline">
+                                                                    {enemy.name}
+                                                                </div>
+                                                            </div>
+                                                            <div data-tip="Health">
+                                                                <Icon icon="akar-icons:heart" width="35" color="white" className="ms-5 me-2" />{enemy.health}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div className="row">
+                                                    <div className="col">
+                                                        <div className="d-flex align-items-center">
+                                                            <div data-tip="Weapon">
+                                                                <Icon icon="mdi:sword" rotate={1} width="40" color="white" className="ms-1 me-2" />{enemy.weapon}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </>
                                         }
                                     </div>
                                 </div>
                                 {/* minimap */}
-                                <div className="MiniMap characterStats" data-tip="Minimap">
-
+                                <div className="MiniMap characterStats d-flex" data-tip="Minimap">
                                 </div>
 
                             </div>
@@ -98,7 +144,7 @@ export function GamePlayComponent() {
                     <div className="row">
                         <div className="col-8">
                             <div className="offset-1 col">
-                                <textarea className="gameInput" rows="1" onChange={(e) => GameInputOnChange(e)} onKeyPress={(e) => CheckForEnterKey(e)}>
+                                <textarea className="gameInput" rows="1" onChange={(e) => GameInputOnChange(e)} onKeyPress={(e) => CheckForEnterKey(e)} autoFocus={true}>
 
                                 </textarea>
                                 <Icon icon="akar-icons:send" width="28" className="sendCommandIcon float-end EmptyConsoleInputIcon" onClick={(e) => ClickSendButton(e)} />
@@ -111,23 +157,56 @@ export function GamePlayComponent() {
     )
 
     //startup
-    function GetAdventurer() {
-        const adventurerId = parseInt(URI.search.replace("?user=", ""));
-        if (isNaN(adventurerId)) {
-            history.replace("/");
-        }
-        if (Adventurer == undefined || Adventurer.id == null) {
+    async function ConnectToHub() {
+        if (connection.state == "Disconnected") {
             window.scrollTo(0, 0);
-            CreateAuthEntityManagerRequest('GET', 'Adventurer/get/' + adventurerId, globalJWTState)
-                .then(data => {
-                    if (data == undefined || data == null) {
-                        history.replace("/");
-                    }
-                    setAdventurer(data);
-                })
-                .catch(error => {
-                    console.error('Error:', error);
+            cmd.DisplayMessage("Connecting to game servers...");
+            try {
+                await connection.start();
+                cmd.Clear();
+
+                //background setup
+                connection.onreconnecting(() => {
+                    cmd.DisplayMessage("Attempting to reconnect to the game server, \nthis might take a moment...");
                 });
+
+                connection.onreconnected(() => {
+                    window.location.reload();
+                });
+
+                //invoke connection commands
+                connection.on("ReceiveMessage", (message) => {
+                    cmd.DisplayMessage(message);
+                });
+
+                connection.on("ClearConsole", () => {
+                    cmd.Clear();
+                });
+
+                connection.on("UpdateWeapons", (items) => {
+                    setItems(items);
+                });
+
+                connection.on("UpdateAdventurer", (adventurer) => {
+                    setAdventurer(adventurer);
+                });
+                connection.on("UpdateAttack", (attack) => {
+                    setAdventurer({ ...adventurerRef.current, damage: attack });
+                });
+
+                connection.on("UpdateEnemy", (enemy) => {
+                    setEnemy(enemy);
+                });
+                connection.on("UpdateEnemyHealth", (health) => {
+                    setAdventurer({ ...enemyRef.current, health: health });
+                });
+                await connection.invoke("Join", parseInt(URI.search.replace("?user=", "")));
+            }
+            catch (e) {
+                cmd.Clear();
+                cmd.DisplayMessage("Failed to connect to game server. \nPlease check your internet connection and the status of our servers.");
+                console.log("Error: " + e);
+            }
         }
     }
 
@@ -188,21 +267,13 @@ export function GamePlayComponent() {
     }
 
     //game logic
-    function SendCommand(command) {
-        AddToConsole(command);
+    async function SendCommand(command) {
+        await connection.invoke("SendCommand", command);
     }
 
-    function AddToConsole(message) {
-        const _console = document.getElementsByClassName("gameConsole")
-        if (message.length < 1) {
-            return;
-        }
-        if (_console[0].value == "") {
-            _console[0].value = message;
-        }
-        else {
-
-            _console[0].value = _console[0].value + "\n" + message;
-        }
+    async function EquipWeapon(weaponId) {
+        setLoadingInventory(true);
+        await connection.invoke("EquipWeapon", weaponId)
+        setLoadingInventory(false);
     }
 }

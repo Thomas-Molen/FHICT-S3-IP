@@ -19,5 +19,14 @@ namespace textadventure_backend.Models.Entities
         {
             NPCs = new HashSet<NPCs>();
         }
+
+        Items(string name, string description, string content)
+        {
+            NPCs = new HashSet<NPCs>();
+
+            Name = name;
+            Description = description;
+            Content = content;
+        }
     }
 }

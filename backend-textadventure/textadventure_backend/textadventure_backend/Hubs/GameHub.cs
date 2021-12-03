@@ -1,24 +1,51 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.SignalR;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using textadventure_backend.Models;
+using textadventure_backend.Services;
 
 namespace textadventure_backend.Hubs
 {
+    [Authorize]
     public class GameHub : Hub
     {
-        public GameHub()
-        {
+        private readonly GameplayService gameplayService;
 
+        public GameHub(GameplayService _gameplayService)
+        {
+            gameplayService = _gameplayService;
         }
 
-        public async Task JoinGame(StartGameConnection startGameConnection)
+        public override async Task OnDisconnectedAsync(Exception exception)
         {
-            await Groups.AddToGroupAsync(Context.ConnectionId, "room");
+            await gameplayService.RemovePlayer(Context.ConnectionId);
+            
+            await base.OnDisconnectedAsync(exception);
+        }
 
-            await Clients.Group("room").SendAsync("ReceiveMessage", $"{startGameConnection.User} has started game");
+        [HubMethodName("Join")]
+        public async Task JoinGame(int adventurerId)
+        {
+            try
+            {
+                await gameplayService.AddPlayer(Context.ConnectionId, adventurerId);
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException(ex.Message);
+            }
+        }
+
+        [HubMethodName("SendCommand")]
+        public async Task ReceiveCommand(string message)
+        {
+            await gameplayService.ExecuteCommand(message, Context.ConnectionId);
+        }
+
+        [HubMethodName("EquipWeapon")]
+        public async Task EquipWeapon(int weaponId)
+        {
+            await gameplayService.EquipWeapon(Context.ConnectionId, weaponId);
         }
     }
 }
