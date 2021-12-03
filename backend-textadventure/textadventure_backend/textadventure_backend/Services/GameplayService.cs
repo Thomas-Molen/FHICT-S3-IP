@@ -95,7 +95,7 @@ namespace textadventure_backend.Services
             var session = sessionManager.GetSession(connectionId);
 
             await hubContext.Clients.Client(connectionId)
-                    .SendAsync("ReceiveMessage", $"You look around and see {session.Room.EventToString(room.EventCompleted)}");
+                    .SendAsync("ReceiveMessage", $"You look around and see {session.Room}");
 
 
             //send the player's stats and weapons
@@ -182,7 +182,7 @@ namespace textadventure_backend.Services
                             sessionManager.UpdateSessionRoom(connectionId, newRoom);
 
                             await hubContext.Clients.Client(connectionId)
-                                .SendAsync("ReceiveMessage", $"You look around and see {session.Room.EventToString(newRoom.EventCompleted)}");
+                                .SendAsync("ReceiveMessage", $"You look around and see {session.Room}");
                             break;
                         default:
                             await hubContext.Clients.Client(connectionId)
@@ -212,7 +212,7 @@ namespace textadventure_backend.Services
                             break;
                         default:
                             await hubContext.Clients.Client(connectionId)
-                                .SendAsync("ReceiveMessage", $"You see {session.Room.EventToString(session.Room.EventCompleted)}");
+                                .SendAsync("ReceiveMessage", $"You see {session.Room}");
                             return;
                     }
                     return;

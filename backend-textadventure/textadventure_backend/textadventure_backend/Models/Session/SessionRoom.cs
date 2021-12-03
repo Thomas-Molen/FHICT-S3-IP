@@ -16,9 +16,9 @@ namespace textadventure_backend.Models.Session
         public string SouthInteraction { get; set; } = "Wall";
         public string WestInteraction { get; set; } = "Wall";
 
-        public string EventToString(bool eventCompleted = false)
+        public override string ToString()
         {
-            if (eventCompleted)
+            if (EventCompleted)
             {
                 switch (Enum.Parse(typeof(Events), Event))
                 {
