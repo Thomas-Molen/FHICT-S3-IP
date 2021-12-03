@@ -1,5 +1,5 @@
 .navbarBackground {
-    background-image: url("../../Assets/NavBarBG.svg");
+    background-image: url("../../assets/NavBarBG.svg");
     height: 65px;
     background-position: left;
     background-repeat: no-repeat;
@@ -11,7 +11,7 @@
     position: absolute;
     top: 15px;
     left: 15px;
-    content: url("../../Assets/Logo.svg");
+    content: url("../../assets/Logo.svg");
     height: 75px;
   }
   
