@@ -145,6 +145,7 @@ namespace textadventure_backend.Services
 
             var weapons = await weaponService.GetWeapons(session.Adventurer.Id);
             var weaponBeingEquiped = weapons.FirstOrDefault(w => w.Id == weaponId);
+            session.Weapon = weaponBeingEquiped;
 
             await hubContext.Clients.Client(connectionId)
                 .SendAsync("UpdateWeapons", weapons);
