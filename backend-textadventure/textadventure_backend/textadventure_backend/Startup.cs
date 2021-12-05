@@ -48,6 +48,8 @@ namespace textadventure_backend
             services.AddSingleton<WeaponService>();
             services.AddSingleton<RoomService>();
             services.AddSingleton<GameplayService>();
+            services.AddSingleton<CommandService>();
+            services.AddSingleton<CombatService>();
 
             services.AddHttpContextAccessor();
 

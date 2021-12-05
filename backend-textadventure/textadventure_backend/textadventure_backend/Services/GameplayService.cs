@@ -17,46 +17,16 @@ namespace textadventure_backend.Services
         private readonly RoomService roomService;
         private readonly WeaponService weaponService;
         private readonly AdventurerService adventurerService;
-        private readonly EnemyService enemyService;
+        private readonly CommandService commandService;
 
-        public GameplayService(SessionManager _sessionManager, IHubContext<GameHub> _hubContext, RoomService _roomService, WeaponService _weaponService, AdventurerService _adventurerService, EnemyService _enemyService)
+        public GameplayService(SessionManager _sessionManager, IHubContext<GameHub> _hubContext, RoomService _roomService, WeaponService _weaponService, AdventurerService _adventurerService, EnemyService _enemyService, CommandService _commandService)
         {
             sessionManager = _sessionManager;
             hubContext = _hubContext;
             roomService = _roomService;
             weaponService = _weaponService;
             adventurerService = _adventurerService;
-            enemyService = _enemyService;
-        }
-
-        private string[] GetWorldCommands(string Event, bool EventCompleted)
-        {
-            List<string> result = new List<string> { "help", "say", "go", "look", "clear", "test" };
-            if (!EventCompleted)
-            {
-                switch (Event.ToLower())
-                {
-                    case "empty":
-                        result.Add("rest");
-                        break;
-                    case "enemy":
-                        result.Add("fight");
-                        result.Add("observe");
-                        break;
-                    case "chest":
-                        result.Add("open");
-                        break;
-                    default:
-                        break;
-                }
-            }
-            return result.ToArray();
-        }
-
-        private string[] GetCombatCommands()
-        {
-            List<string> result = new List<string> { "attack", "run", "test" };
-            return result.ToArray();
+            commandService = _commandService;
         }
 
         public async Task AddPlayer(string connectionId, int adventurerId)
@@ -65,7 +35,14 @@ namespace textadventure_backend.Services
             var adventurer = await adventurerService.GetAdventurer(adventurerId);
             string group = adventurer.DungeonId.ToString();
 
-            sessionManager.AddSession(connectionId, new SessionAdventurer {Id = adventurerId, Name = adventurer.Name }, group);
+            sessionManager.AddSession(connectionId, new SessionAdventurer {
+                Id = adventurerId,
+                Name = adventurer.Name, 
+                Damage = adventurer.Weapons.FirstOrDefault(w => w.Equiped)?.Attack ?? 0, 
+                Health = adventurer.Health,
+                Experience = adventurer.Experience}, 
+                group);
+
             await hubContext.Groups.AddToGroupAsync(connectionId, group);
 
             await hubContext.Clients.Client(connectionId)
@@ -94,8 +71,11 @@ namespace textadventure_backend.Services
             sessionManager.UpdateSessionRoom(connectionId, room);
             var session = sessionManager.GetSession(connectionId);
 
-            await hubContext.Clients.Client(connectionId)
+            if (session.Adventurer.Health > 0)
+            {
+                await hubContext.Clients.Client(connectionId)
                     .SendAsync("ReceiveMessage", $"You look around and see {session.Room}");
+            }
 
 
             //send the player's stats and weapons
@@ -104,11 +84,11 @@ namespace textadventure_backend.Services
                     .SendAsync(
                         "UpdateAdventurer", 
                         new { id = adventurerId, 
-                            experience = adventurer.Experience, 
-                            health = adventurer.Health, 
-                            name = adventurer.Name, 
-                            damage = damage, 
-                            roomsCleared = adventurer.AdventurerMaps.Where(am => am.EventCompleted).ToList().Count}
+                            experience = session.Adventurer.Experience, 
+                            health = session.Adventurer.Health, 
+                            name = session.Adventurer.Name, 
+                            damage = session.Adventurer.Damage, 
+                            roomsCleared = adventurer.AdventurerMaps.ToList().Count}
                     );
 
             await hubContext.Clients.Client(connectionId)
@@ -128,138 +108,38 @@ namespace textadventure_backend.Services
         public async Task ExecuteCommand(string message, string connectionId)
         {
             var session = sessionManager.GetSession(connectionId);
+            if (session.Adventurer.Health < 1)
+            {
+                session.State = Enums.States.Dead;
+            }
 
             //list of commands keywords to look out for
-            string[] commands = GetWorldCommands(session.Room.Event, session.Room.EventCompleted);
-
-            //list of direction keywords to look out for
-            string direction = new string[] { "north", "east", "south", "west" }.FirstOrDefault<string>(s => message.Contains(s));
-            switch (commands.FirstOrDefault<string>(s => message.Contains(s)))
+            switch (session.State)
             {
-                //basic functionality commands
-                case "help":
+                case Enums.States.Exploring:
+                    await commandService.HandleExploringCommands(connectionId, message);
+                    break;
+                case Enums.States.Fighting:
+                    await commandService.HandleFightingCommands(connectionId, message);
+                    break;
+                case Enums.States.Dead:
                     await hubContext.Clients.Client(connectionId)
-                        .SendAsync("ReceiveMessage", "Available commands: " + string.Join(", ", commands));
-                    return;
-                case "test":
-                    await hubContext.Clients.Client(connectionId)
-                        .SendAsync("ReceiveMessage", "Test message");
-                    return;
-                case "clear":
-                    await hubContext.Clients.Client(connectionId)
-                        .SendAsync("ClearConsole");
-                    return;
-                case "say":
-                    string sayResult = message.Replace("say ", "");
-                    await hubContext.Clients.GroupExcept(session.Group, connectionId)
-                        .SendAsync("ReceiveMessage", session.Adventurer.Name + " said " + sayResult);
-                    await hubContext.Clients.Client(connectionId)
-                        .SendAsync("ReceiveMessage", "sent " + sayResult);
-                    return;
-                //game logic
-                
-                //try to move the player in a direction
-                case "go":
-                    //force given direction into a properly formatted direction
-                    switch (direction)
-                    {
-                        case "north":
-                        case "east":
-                        case "south":
-                        case "west":
-                            if(!await roomService.MoveTo(session.Adventurer.Id, direction))
-                            {
-                                await hubContext.Clients.Client(connectionId)
-                                    .SendAsync("ReceiveMessage", $"With full confidence you walk through the door on the {direction} and... hit the wall \n guess there was no door there to begin with.");
-                                break;
-                            }
-                            await hubContext.Clients.Client(connectionId)
-                                .SendAsync("ReceiveMessage", $"You decide to go through the door to the {direction}");
-
-                            var adventurer = await adventurerService.GetAdventurer(session.Adventurer.Id);
-                            var newRoom = await roomService.GetRoom(Convert.ToInt32(adventurer.RoomId));
-                            newRoom.EventCompleted = adventurer.IsRoomCompleted(newRoom.Id);
-                            sessionManager.UpdateSessionRoom(connectionId, newRoom);
-
-                            await hubContext.Clients.Client(connectionId)
-                                .SendAsync("ReceiveMessage", $"You look around and see {session.Room}");
-                            break;
-                        default:
-                            await hubContext.Clients.Client(connectionId)
-                                .SendAsync("ReceiveMessage", $"Could not read direction did you spell the command right? \n Direction read: {message.Replace("go", "")}");
-                            return;
-                    }
-                    return;
-                //let the player look in a direction
-                case "look":
-                    switch (direction)
-                    {
-                        case "north":
-                            await hubContext.Clients.Client(connectionId)
-                                .SendAsync("ReceiveMessage", $"You look to the {direction} and see a {session.Room.NorthInteraction}");
-                            break;
-                        case "east":
-                            await hubContext.Clients.Client(connectionId)
-                                .SendAsync("ReceiveMessage", $"You look to the {direction} and see a {session.Room.EastInteraction}");
-                            break;
-                        case "south":
-                            await hubContext.Clients.Client(connectionId)
-                                .SendAsync("ReceiveMessage", $"You look to the {direction} and see a {session.Room.SouthInteraction}");
-                            break;
-                        case "west":
-                            await hubContext.Clients.Client(connectionId)
-                                .SendAsync("ReceiveMessage", $"You look to the {direction} and see a {session.Room.WestInteraction}");
-                            break;
-                        default:
-                            await hubContext.Clients.Client(connectionId)
-                                .SendAsync("ReceiveMessage", $"You see {session.Room}");
-                            return;
-                    }
-                    return;
-
-                //situation specific commands
-                case "open":
-                    var weapon = await weaponService.CreateWeapon(session.Adventurer.Id);
-                    await hubContext.Clients.Client(connectionId)
-                        .SendAsync("UpdateWeapons", await weaponService.GetWeapons(session.Adventurer.Id));
-
-                    await roomService.CompleteRoom(session.Adventurer.Id);
-                    session.Room.EventCompleted = true;
-
-                    await hubContext.Clients.Client(connectionId)
-                                .SendAsync("ReceiveMessage", $"You Open the chest and find a {weapon.Name}");
-                    return;
-                case "observe":
-                    if (session.Enemy == null || session.Enemy.RoomId != session.Room.Id)
-                    {
-                        var enemy = await enemyService.CreateEnemy(session.Adventurer.Id, session.Room.Id);
-                        session.Enemy = enemy;
-                    }
-
-                    await hubContext.Clients.Client(connectionId)
-                            .SendAsync("UpdateEnemy", new
-                            {
-                                difficulty = session.Enemy.Difficulty,
-                                name = session.Enemy.Name,
-                                weapon = session.Enemy.Weapon.Name,
-                                health = session.Enemy.Health,
-                            });
-
-                    await hubContext.Clients.Client(connectionId)
-                                .SendAsync("ReceiveMessage", $"You take a moment to observe the weird looking creature in the room...\n It seems to be some kind of a {session.Enemy.Name}");
-                    return;
-
-                //response when no keywords are found
+                    .SendAsync("ReceiveMessage", $"You are unable to move due to your fatal wounds...");
+                    break;
                 default:
                     await hubContext.Clients.Client(connectionId)
-                        .SendAsync("ReceiveMessage", $"Given command not found, did you misspell it? \n Command given: {message}");
-                    return;
+                    .SendAsync("ReceiveMessage", $"Something wen horribly wrong.. please contact the support \n error code: 001");
+                    break;
             }
         }
 
         public async Task EquipWeapon(string connectionId, int weaponId)
         {
             var session = sessionManager.GetSession(connectionId);
+            if (session.State == Enums.States.Dead)
+            {
+                return;
+            }
 
             await weaponService.SetWeapon(session.Adventurer.Id, weaponId);
 
@@ -270,7 +150,7 @@ namespace textadventure_backend.Services
                 .SendAsync("UpdateWeapons", weapons);
 
             await hubContext.Clients.Client(connectionId)
-                        .SendAsync("UpdateAttack", weaponBeingEquiped.Attack);
+                    .SendAsync("UpdateAttack", weaponBeingEquiped.Attack);
 
             await hubContext.Clients.Client(connectionId)
                     .SendAsync("ReceiveMessage", $"You put away your weapon and grab your {weaponBeingEquiped.Name}");

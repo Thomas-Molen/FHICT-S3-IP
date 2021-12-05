@@ -91,7 +91,7 @@ namespace textadventure_backend_entitymanager.Services
                     var adventurerToAdd = new GetAdventurersResponse
                     {
                         Id = adventurer.Id,
-                        Level = (int)(adventurer.Experience / 100),
+                        Level = (int)(adventurer.Experience / 10),
                         Name = adventurer.Name,
                         Health = adventurer.Health,
                         Damage = damage
@@ -158,6 +158,51 @@ namespace textadventure_backend_entitymanager.Services
             }
         }
 
+        public async Task SetHealth(int adventurerId, int health)
+        {
+            using (var db = contextFactory.CreateDbContext())
+            {
+                var adventurer = await db.Adventurers
+                    .OrderByDescending(x => x.Id)
+                    .FirstOrDefaultAsync(a => a.Id == adventurerId);
+
+                if (adventurer == null)
+                {
+                    throw new ArgumentException("No adventurer found with given Id");
+                }
+
+                if (health < 0)
+                {
+                    health = 0;
+                }
+
+                adventurer.Health = health;
+
+                db.Update(adventurer);
+                await db.SaveChangesAsync();
+            }
+        }
+
+        public async Task SetExperience(int adventurerId, int experience)
+        {
+            using (var db = contextFactory.CreateDbContext())
+            {
+                var adventurer = await db.Adventurers
+                    .OrderByDescending(x => x.Id)
+                    .FirstOrDefaultAsync(a => a.Id == adventurerId);
+
+                if (adventurer == null)
+                {
+                    throw new ArgumentException("No adventurer found with given Id");
+                }
+
+                adventurer.Experience = experience;
+
+                db.Update(adventurer);
+                await db.SaveChangesAsync();
+            }
+        }
+
         public async Task<ICollection<LeaderboardResponse>> GetLeaderboard()
         {
             using (var db = contextFactory.CreateDbContext())
@@ -179,7 +224,7 @@ namespace textadventure_backend_entitymanager.Services
                         Position = position++,
                         User = adventurer.User.Username,
                         Adventurer = adventurer.Name,
-                        Level = (int)(adventurer.Experience / 100),
+                        Level = (int)(adventurer.Experience / 10),
                         Rooms = adventurer.AdventurerMaps.Count,
                         Damage = damage,
                         Health = adventurer.Health

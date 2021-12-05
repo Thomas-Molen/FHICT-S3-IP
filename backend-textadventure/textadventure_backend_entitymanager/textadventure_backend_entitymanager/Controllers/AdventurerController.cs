@@ -122,5 +122,47 @@ namespace textadventure_backend_entitymanager.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [AllowAnonymous]
+        [HttpPost("set-health/{adventurerId}/{health}/{accessToken}")]
+        public async Task<IActionResult> SetAdventurerHealth([FromRoute] int adventurerId, int health, string accesstoken)
+        {
+            if (!accessTokenHelper.IsTokenValid(accesstoken))
+            {
+                return Unauthorized("Invalid accesstoken");
+            }
+
+            try
+            {
+                await adventurerService.SetHealth(adventurerId, health);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpPost("set-experience/{adventurerId}/{experience}/{accessToken}")]
+        public async Task<IActionResult> SetAdventurerExperience([FromRoute] int adventurerId, int experience, string accesstoken)
+        {
+            if (!accessTokenHelper.IsTokenValid(accesstoken))
+            {
+                return Unauthorized("Invalid accesstoken");
+            }
+
+            try
+            {
+                await adventurerService.SetExperience(adventurerId, experience);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

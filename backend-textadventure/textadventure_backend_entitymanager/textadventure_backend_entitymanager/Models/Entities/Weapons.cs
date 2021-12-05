@@ -31,7 +31,7 @@ namespace textadventure_backend_entitymanager.Models.Entities
             string weapon = weapons.GetValue(rng.Next(weapons.Length)).ToString();
 
             Name = $"{prefix} {weapon}";
-            Attack = rng.Next(1, 10) * (int)(Math.Ceiling((double)(exp / 100)) + 1);
+            Attack = rng.Next(1, 10) * (int)(Math.Ceiling((double)(exp / 10)) + 1);
             Durability = rng.Next(10, 101);
             Equiped = false;
         }

@@ -29,5 +29,29 @@ namespace textadventure_backend.Services
                 return await response.Content.ReadAsAsync<Adventurers>();
             }
         }
+
+        public async Task SetHealth(int adventurerId, int health)
+        {
+            using (var requestMessage = new HttpRequestMessage(HttpMethod.Post, $"{appSettings.EnityManagerURL}Adventurer/set-health/{adventurerId}/{health}/{appSettings.GameAccessToken}"))
+            {
+                var response = await httpClient.SendAsync(requestMessage);
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new ArgumentException(response.ReasonPhrase);
+                }
+            }
+        }
+
+        public async Task SetExperience(int adventurerId, int experience)
+        {
+            using (var requestMessage = new HttpRequestMessage(HttpMethod.Post, $"{appSettings.EnityManagerURL}Adventurer/set-experience/{adventurerId}/{experience}/{appSettings.GameAccessToken}"))
+            {
+                var response = await httpClient.SendAsync(requestMessage);
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new ArgumentException(response.ReasonPhrase);
+                }
+            }
+        }
     }
 }

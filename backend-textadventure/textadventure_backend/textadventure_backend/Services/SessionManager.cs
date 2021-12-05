@@ -9,9 +9,9 @@ namespace textadventure_backend.Services
 {
     public class SessionManager
     {
-        private List<Session> Sessions;
+        private readonly List<Session> Sessions;
 
-        public SessionManager(AdventurerService _adventurerService, WeaponService _weaponService, RoomService _roomService)
+        public SessionManager()
         {
             Sessions = new List<Session>();
         }

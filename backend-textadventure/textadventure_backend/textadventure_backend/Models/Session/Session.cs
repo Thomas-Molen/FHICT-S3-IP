@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using textadventure_backend.Enums;
 using textadventure_backend.Models.Entities;
 
 namespace textadventure_backend.Models.Session
@@ -14,5 +15,6 @@ namespace textadventure_backend.Models.Session
         public SessionAdventurer Adventurer { get; set; }
         public SessionRoom Room { get; set; }
         public Weapons Weapon { get; set; }
+        public States State { get; set; } = States.Exploring;
     }
 }

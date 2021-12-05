@@ -193,12 +193,21 @@ export function GamePlayComponent() {
                 connection.on("UpdateAttack", (attack) => {
                     setAdventurer({ ...adventurerRef.current, damage: attack });
                 });
+                connection.on("UpdateHealth", (health) => {
+                    setAdventurer({ ...adventurerRef.current, health: health });
+                });
+                connection.on("UpdateRoomsExplored", (rooms) => {
+                    setAdventurer({ ...adventurerRef.current, roomsCleared: rooms });
+                });
+                connection.on("UpdateExperience", (exp) => {
+                    setAdventurer({ ...adventurerRef.current, experience: exp });
+                });
 
                 connection.on("UpdateEnemy", (enemy) => {
                     setEnemy(enemy);
                 });
                 connection.on("UpdateEnemyHealth", (health) => {
-                    setAdventurer({ ...enemyRef.current, health: health });
+                    setEnemy({ ...enemyRef.current, health: health });
                 });
                 await connection.invoke("Join", parseInt(URI.search.replace("?user=", "")));
             }
@@ -268,12 +277,18 @@ export function GamePlayComponent() {
 
     //game logic
     async function SendCommand(command) {
-        await connection.invoke("SendCommand", command);
+        if (connection.state != "Disconnected")
+        {
+            await connection.invoke("SendCommand", command);
+        }
     }
 
     async function EquipWeapon(weaponId) {
-        setLoadingInventory(true);
-        await connection.invoke("EquipWeapon", weaponId)
-        setLoadingInventory(false);
+        if (connection.state != "Disconnected")
+        {
+            setLoadingInventory(true);
+            await connection.invoke("EquipWeapon", weaponId)
+            setLoadingInventory(false);
+        }
     }
 }

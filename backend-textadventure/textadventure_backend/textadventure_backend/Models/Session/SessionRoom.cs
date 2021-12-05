@@ -20,31 +20,23 @@ namespace textadventure_backend.Models.Session
         {
             if (EventCompleted)
             {
-                switch (Enum.Parse(typeof(Events), Event))
+                return (Enum.Parse(typeof(Events), Event)) switch
                 {
-                    case Events.Chest:
-                        return "an already opened chest, seems like you have already been here";
-                    case Events.Enemy:
-                        return "a slain enemy, brings back memories of your past victory";
-                    case Events.Empty:
-                        return "an empty room that you seem to remember having been to before. It is unsettling";
-                    default:
-                        return "actually nothing hmmm, maybe a bug maybe a feature who knows!";
-                }
+                    Events.Chest => "an already opened chest, seems like you have already been here",
+                    Events.Enemy => "a slain enemy, brings back memories of your past victory",
+                    Events.Empty => "an empty room that you seem to remember having been to before. It is unsettling",
+                    _ => "actually nothing hmmm, maybe a bug maybe a feature who knows!",
+                };
             }
             else
             {
-                switch (Enum.Parse(typeof(Events), Event))
+                return (Enum.Parse(typeof(Events), Event)) switch
                 {
-                    case Events.Chest:
-                        return "a treasure chest! There might be some good loot in there";
-                    case Events.Enemy:
-                        return "a monster wielding some kind of weapon";
-                    case Events.Empty:
-                        return "nothing... how strange";
-                    default:
-                        return "actually nothing hmmm, maybe a bug maybe a feature who knows!";
-                }
+                    Events.Chest => "a treasure chest! There might be some good loot in there",
+                    Events.Enemy => "a monster wielding some kind of weapon",
+                    Events.Empty => "nothing... how strange",
+                    _ => "actually nothing hmmm, maybe a bug maybe a feature who knows!",
+                };
             }
         }
     }
