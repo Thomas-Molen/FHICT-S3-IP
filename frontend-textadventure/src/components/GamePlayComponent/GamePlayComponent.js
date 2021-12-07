@@ -11,14 +11,18 @@ import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 
 export function GamePlayComponent() {
     const JWTToken = useRecoilValue(JWTAtom);
+    let URI = useLocation();
+
+    //stats sidebar
     const [adventurer, setAdventurer, adventurerRef] = useState({ id: null, experience: 0, health: 0, name: "Adventurer", damage: 0, roomsCleared: 0 });
     const [enemy, setEnemy, enemyRef] = useState({ difficulty: 1, name: "Enemy", weapon: "Weapon", health: 0 });
     const [selectedView, setSelectedView] = useState("stats");
     const [items, setItems] = useState([]);
     const [loadingInventory, setLoadingInventory] = useState(false);
 
-
-    let URI = useLocation();
+    //input history
+    const [inputHistory, setInputHistory] = useState([]);
+    const [inputHistoryIndex, setInputHistoryIndex] = useState(0);
 
     const [connection, setConnection] = useState(new HubConnectionBuilder()
         .withUrl(process.env.REACT_APP_GAME_MANAGER + "game", { accessTokenFactory: () => JWTToken })
@@ -144,7 +148,7 @@ export function GamePlayComponent() {
                     <div className="row">
                         <div className="col-8">
                             <div className="offset-1 col">
-                                <textarea className="gameInput" rows="1" onChange={(e) => GameInputOnChange(e)} onKeyPress={(e) => CheckForEnterKey(e)} autoFocus={true}>
+                                <textarea className="gameInput" rows="1" onChange={(e) => GameInputOnChange(e)} onKeyDown={(e) => CheckForSpecialKey(e)} autoFocus={true}>
 
                                 </textarea>
                                 <Icon icon="akar-icons:send" width="28" className="sendCommandIcon float-end EmptyConsoleInputIcon" onClick={(e) => ClickSendButton(e)} />
@@ -237,9 +241,34 @@ export function GamePlayComponent() {
         object.classList.remove("EmptyConsoleInputIcon");
     }
 
-    function CheckForEnterKey(input) {
-        if (input.key == "Enter") {
-            if (input.preventDefault) input.preventDefault();
+    function CheckForSpecialKey(input) {
+        if (input.key == "ArrowUp") {
+            input?.preventDefault();
+            
+            if (inputHistoryIndex > 0)
+            {
+                setInputHistoryIndex(inputHistoryIndex-1);
+                input.target.value = inputHistory[inputHistoryIndex-1];
+            }
+            
+        }
+        else if (input.key == "ArrowDown") {
+            input?.preventDefault();
+            
+            if (inputHistoryIndex < inputHistory.length-1)
+            {
+                setInputHistoryIndex(inputHistoryIndex+1);
+                input.target.value = inputHistory[inputHistoryIndex+1];
+            }
+            else
+            {
+                setInputHistoryIndex(inputHistory.length);
+                input.target.value = "";
+            }
+            
+        }
+        else if (input.key == "Enter") {
+            input?.preventDefault();
             const element = input.target.parentElement.childNodes[1];
 
             RemoveClasses(element);
@@ -277,15 +306,17 @@ export function GamePlayComponent() {
 
     //game logic
     async function SendCommand(command) {
-        if (connection.state != "Disconnected")
-        {
+        if (connection.state != "Disconnected") {
+            setInputHistory(prevState => (
+                [...prevState, command]
+              ));
+            setInputHistoryIndex(inputHistory.length+1);
             await connection.invoke("SendCommand", command);
         }
     }
 
     async function EquipWeapon(weaponId) {
-        if (connection.state != "Disconnected")
-        {
+        if (connection.state != "Disconnected") {
             setLoadingInventory(true);
             await connection.invoke("EquipWeapon", weaponId)
             setLoadingInventory(false);
