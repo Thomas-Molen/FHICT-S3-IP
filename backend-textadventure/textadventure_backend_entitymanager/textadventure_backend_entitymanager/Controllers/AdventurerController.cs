@@ -71,43 +71,13 @@ namespace textadventure_backend_entitymanager.Controllers
         }
 
         [HttpGet("get/{adventurerId}")]
-        public async Task<IActionResult> GetAdventurer([FromRoute] string adventurerId)
+        public async Task<IActionResult> GetAdventurer([FromRoute] int adventurerId)
         {
             try
             {
-                var response = await adventurerService.Get(JWT.GetUserIdFromJWT(Request.Headers[HeaderNames.Authorization]), Convert.ToInt32(adventurerId));
+                var response = await adventurerService.Get(JWT.GetUserIdFromJWT(Request.Headers[HeaderNames.Authorization]), adventurerId);
 
                 return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpGet("get-drawing/{adventurerId}")]
-        public async Task<IActionResult> GetDrawing([FromRoute] int adventurerId)
-        {
-            try
-            {
-                var result = await adventurerService.GetDrawing(adventurerId);
-
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpPost("save-drawing/{adventurerId}")]
-        public async Task<IActionResult> SaveDrawing([FromRoute] int adventurerId, [FromBody] SaveDrawingRequest drawing)
-        {
-            try
-            {
-                await adventurerService.SaveDrawing(adventurerId, drawing.Drawing);
-
-                return Ok();
             }
             catch (Exception ex)
             {

@@ -16,7 +16,7 @@ export function DrawingComponent({ adventurerId }) {
 
 
     useEffect(() => {
-        fetchWrapper.get(`Adventurer/get-drawing/${adventurerId}`)
+        fetchWrapper.get(`Drawing/get/${adventurerId}`)
             .then((response) => {
                 setDrawing(decompressFromBase64(response.drawing));
             })
@@ -31,7 +31,7 @@ export function DrawingComponent({ adventurerId }) {
                             onClick={() => {
                                 var drawing = drawingCanvas.getSaveData();
                                 setDrawing(drawing);
-                                fetchWrapper.post(`Adventurer/save-drawing/${adventurerId}`, { drawing: compressToBase64(drawing) })
+                                fetchWrapper.post(`Drawing/save/${adventurerId}`, { drawing: compressToBase64(drawing) })
                                     .then(() => {
                                         setDrawing(drawing);
                                     })
@@ -52,7 +52,7 @@ export function DrawingComponent({ adventurerId }) {
                     <a data-tip="Reload drawing field">
                         <Icon icon="mdi:reload-alert" color="#585858" width="30" className="pointer drawingOption"
                             onClick={() => {
-                                fetchWrapper.post(`Adventurer/save-drawing/${adventurerId}`, { drawing: compressToBase64(drawingCanvas.getSaveData()) })
+                                fetchWrapper.post(`Drawing/save/${adventurerId}`, { drawing: compressToBase64(drawingCanvas.getSaveData()) })
                                     .then(() => {
                                         setDrawing(drawingCanvas.getSaveData);
                                         setKeyValue(keyValue + 1);

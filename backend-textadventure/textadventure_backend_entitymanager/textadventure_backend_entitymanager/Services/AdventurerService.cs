@@ -234,27 +234,5 @@ namespace textadventure_backend_entitymanager.Services
                 return result;
             }
         }
-
-        public async Task SaveDrawing(int adventurerId, string drawing)
-        {
-            using (var db = contextFactory.CreateDbContext())
-            {
-                var adventurer = await db.Adventurers.OrderByDescending(x => x.Id).FirstOrDefaultAsync(a => a.Id == adventurerId);
-                adventurer.Drawing = drawing;
-
-                db.Update(adventurer);
-                await db.SaveChangesAsync();
-            }
-        }
-
-        public async Task<GetDrawingResponse> GetDrawing(int adventurerId)
-        {
-            using (var db = contextFactory.CreateDbContext())
-            {
-                var adventurer = await db.Adventurers.OrderByDescending(x => x.Id).FirstOrDefaultAsync(a => a.Id == adventurerId);
-
-                return new GetDrawingResponse { drawing = adventurer.Drawing };
-            }
-        }
     }
 }

@@ -52,6 +52,7 @@ namespace textadventure_backend_entitymanager
             services.AddSingleton<EnemyService>();
             services.AddSingleton<RoomService>();
             services.AddSingleton<WeaponService>();
+            services.AddSingleton<DrawingService>();
             services.AddSingleton<JWTHelper>();
             services.AddSingleton<AccessTokenHelper>();
 
