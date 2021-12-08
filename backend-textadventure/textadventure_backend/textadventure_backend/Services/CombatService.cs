@@ -8,12 +8,12 @@ namespace textadventure_backend.Services
     public class CombatService
     {
         private readonly SessionManager sessionManager;
-        private readonly RoomService roomService;
-        private readonly WeaponService weaponService;
-        private readonly AdventurerService adventurerService;
-        private readonly EnemyService enemyService;
+        private readonly RoomConnectionService roomService;
+        private readonly WeaponConnectionService weaponService;
+        private readonly AdventurerConnectionService adventurerService;
+        private readonly EnemyConnectionService enemyService;
 
-        public CombatService(SessionManager _sessionManager, RoomService _roomService, WeaponService _weaponService, AdventurerService _adventurerService, EnemyService _enemyService)
+        public CombatService(SessionManager _sessionManager, RoomConnectionService _roomService, WeaponConnectionService _weaponService, AdventurerConnectionService _adventurerService, EnemyConnectionService _enemyService)
         {
             sessionManager = _sessionManager;
             roomService = _roomService;

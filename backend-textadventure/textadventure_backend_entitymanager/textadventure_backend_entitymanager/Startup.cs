@@ -49,6 +49,7 @@ namespace textadventure_backend_entitymanager
 
             services.AddSingleton<UserService>();
             services.AddSingleton<AdventurerService>();
+            services.AddSingleton<HubAdventurerService>();
             services.AddSingleton<EnemyService>();
             services.AddSingleton<RoomService>();
             services.AddSingleton<WeaponService>();

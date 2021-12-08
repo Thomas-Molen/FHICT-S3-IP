@@ -10,11 +10,11 @@ using textadventure_backend.Models.Entities;
 
 namespace textadventure_backend.Services
 {
-    public class EnemyService
+    public class EnemyConnectionService
     {
         private readonly HttpClient httpClient;
         private readonly AppSettings appSettings;
-        public EnemyService(HttpClient _httpClient, IOptions<AppSettings> _appSettings)
+        public EnemyConnectionService(HttpClient _httpClient, IOptions<AppSettings> _appSettings)
         {
             httpClient = _httpClient;
             appSettings = _appSettings.Value;

@@ -12,13 +12,13 @@ namespace textadventure_backend.Services
     {
         private readonly SessionManager sessionManager;
         private readonly IHubContext<GameHub> hubContext;
-        private readonly RoomService roomService;
-        private readonly WeaponService weaponService;
-        private readonly AdventurerService adventurerService;
-        private readonly EnemyService enemyService;
+        private readonly RoomConnectionService roomService;
+        private readonly WeaponConnectionService weaponService;
+        private readonly AdventurerConnectionService adventurerService;
+        private readonly EnemyConnectionService enemyService;
         private readonly CombatService combatService;
 
-        public CommandService(SessionManager _sessionManager, IHubContext<GameHub> _hubContext, RoomService _roomService, WeaponService _weaponService, AdventurerService _adventurerService, EnemyService _enemyService, CombatService _combatService)
+        public CommandService(SessionManager _sessionManager, IHubContext<GameHub> _hubContext, RoomConnectionService _roomService, WeaponConnectionService _weaponService, AdventurerConnectionService _adventurerService, EnemyConnectionService _enemyService, CombatService _combatService)
         {
             sessionManager = _sessionManager;
             hubContext = _hubContext;
@@ -171,7 +171,7 @@ namespace textadventure_backend.Services
                     session.Room.EventCompleted = true;
 
                     await hubContext.Clients.Client(connectionId)
-                                .SendAsync("ReceiveMessage", $"You Open the chest and find a {weapon.Name}");
+                                .SendAsync("ReceiveMessage", $"You open the chest and find a {weapon.Name}");
                     return;
                 case "observe":
                     await GetEnemy(connectionId);

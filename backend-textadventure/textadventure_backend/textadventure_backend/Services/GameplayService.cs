@@ -14,12 +14,12 @@ namespace textadventure_backend.Services
     {
         private readonly SessionManager sessionManager;
         private readonly IHubContext<GameHub> hubContext;
-        private readonly RoomService roomService;
-        private readonly WeaponService weaponService;
-        private readonly AdventurerService adventurerService;
+        private readonly RoomConnectionService roomService;
+        private readonly WeaponConnectionService weaponService;
+        private readonly AdventurerConnectionService adventurerService;
         private readonly CommandService commandService;
 
-        public GameplayService(SessionManager _sessionManager, IHubContext<GameHub> _hubContext, RoomService _roomService, WeaponService _weaponService, AdventurerService _adventurerService, EnemyService _enemyService, CommandService _commandService)
+        public GameplayService(SessionManager _sessionManager, IHubContext<GameHub> _hubContext, RoomConnectionService _roomService, WeaponConnectionService _weaponService, AdventurerConnectionService _adventurerService, EnemyConnectionService _enemyService, CommandService _commandService)
         {
             sessionManager = _sessionManager;
             hubContext = _hubContext;

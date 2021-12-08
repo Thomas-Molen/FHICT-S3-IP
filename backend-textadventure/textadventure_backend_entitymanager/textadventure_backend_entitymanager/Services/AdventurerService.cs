@@ -68,7 +68,7 @@ namespace textadventure_backend_entitymanager.Services
             }
         }
 
-        public async Task<ICollection<GetAdventurersResponse>> Get(int userId)
+        public async Task<ICollection<GetAdventurersResponse>> GetAllFromUser(int userId)
         {
             using (var db = contextFactory.CreateDbContext())
             {
@@ -136,70 +136,6 @@ namespace textadventure_backend_entitymanager.Services
 
                 return result;
 
-            }
-        }
-
-        public async Task<Adventurers> Find(int adventurerId)
-        {
-            using (var db = contextFactory.CreateDbContext())
-            {
-                var adventurer = await db.Adventurers
-                    .OrderByDescending(x => x.Id)
-                    .Include(a => a.AdventurerMaps)
-                    .Include(a => a.Weapons
-                        .Where(w => w.Durability > 0))
-                    .Include(a => a.Room)
-                    .FirstOrDefaultAsync(a => a.Id == adventurerId);
-                if (adventurer == null)
-                {
-                    throw new ArgumentException("No adventurer found with given Id");
-                }
-                return adventurer;
-            }
-        }
-
-        public async Task SetHealth(int adventurerId, int health)
-        {
-            using (var db = contextFactory.CreateDbContext())
-            {
-                var adventurer = await db.Adventurers
-                    .OrderByDescending(x => x.Id)
-                    .FirstOrDefaultAsync(a => a.Id == adventurerId);
-
-                if (adventurer == null)
-                {
-                    throw new ArgumentException("No adventurer found with given Id");
-                }
-
-                if (health < 0)
-                {
-                    health = 0;
-                }
-
-                adventurer.Health = health;
-
-                db.Update(adventurer);
-                await db.SaveChangesAsync();
-            }
-        }
-
-        public async Task SetExperience(int adventurerId, int experience)
-        {
-            using (var db = contextFactory.CreateDbContext())
-            {
-                var adventurer = await db.Adventurers
-                    .OrderByDescending(x => x.Id)
-                    .FirstOrDefaultAsync(a => a.Id == adventurerId);
-
-                if (adventurer == null)
-                {
-                    throw new ArgumentException("No adventurer found with given Id");
-                }
-
-                adventurer.Experience = experience;
-
-                db.Update(adventurer);
-                await db.SaveChangesAsync();
             }
         }
 

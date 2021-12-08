@@ -46,7 +46,11 @@ export function GameHomeComponent() {
                         <div className="d-flex align-items-center justify-content-center" key={adventurer.id} onClick={(selectedOption) => SelectAdventurer(selectedOption.target, adventurer.id)}>
                             <div className="adventurerOption align-items-center noselect">
                                 <div className="d-flex justify-content-between">
+                                    {adventurer.health < 1 ?
+                                        <p className="adventurerOptionName text-start" ><del>{adventurer.name}</del></p>
+                                    :
                                     <p className="adventurerOptionName text-start" >{adventurer.name}</p>
+                                    }
                                     <Button variant="danger" className="adventurerDeleteButton" onClick={(selectedButton) => DeleteAdventurer(selectedButton.target, adventurer.id)}><Icon icon="bx:bxs-trash" className="noclick" color="white" width="24" /></Button>
                                 </div>
                                 <div className="d-flex d-inline align-items-center justify-content-center noclick">

@@ -10,11 +10,11 @@ using textadventure_backend_entitymanager.Models.Responses;
 
 namespace textadventure_backend.Services
 {
-    public class RoomService
+    public class RoomConnectionService
     {
         private readonly HttpClient httpClient;
         private readonly AppSettings appSettings;
-        public RoomService(HttpClient _httpClient, IOptions<AppSettings> _appSettings)
+        public RoomConnectionService(HttpClient _httpClient, IOptions<AppSettings> _appSettings)
         {
             httpClient = _httpClient;
             appSettings = _appSettings.Value;

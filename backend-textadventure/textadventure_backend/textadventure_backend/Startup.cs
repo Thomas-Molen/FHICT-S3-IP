@@ -42,11 +42,11 @@ namespace textadventure_backend
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
 
             services.AddSingleton<HttpClient>();
-            services.AddSingleton<AdventurerService>();
+            services.AddSingleton<AdventurerConnectionService>();
             services.AddSingleton<SessionManager>();
-            services.AddSingleton<EnemyService>();
-            services.AddSingleton<WeaponService>();
-            services.AddSingleton<RoomService>();
+            services.AddSingleton<EnemyConnectionService>();
+            services.AddSingleton<WeaponConnectionService>();
+            services.AddSingleton<RoomConnectionService>();
             services.AddSingleton<GameplayService>();
             services.AddSingleton<CommandService>();
             services.AddSingleton<CombatService>();

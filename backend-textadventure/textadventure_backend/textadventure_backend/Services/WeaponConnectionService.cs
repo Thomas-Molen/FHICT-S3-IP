@@ -11,11 +11,11 @@ using textadventure_backend.Models.Requests;
 
 namespace textadventure_backend.Services
 {
-    public class WeaponService
+    public class WeaponConnectionService
     {
         private readonly HttpClient httpClient;
         private readonly AppSettings appSettings;
-        public WeaponService(HttpClient _httpClient, IOptions<AppSettings> _appSettings)
+        public WeaponConnectionService(HttpClient _httpClient, IOptions<AppSettings> _appSettings)
         {
             httpClient = _httpClient;
             appSettings = _appSettings.Value;

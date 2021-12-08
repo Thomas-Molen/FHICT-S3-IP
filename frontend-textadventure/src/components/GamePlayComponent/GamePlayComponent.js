@@ -63,13 +63,13 @@ export function GamePlayComponent() {
                                 <div className="characterStats mb-5">
                                     <div className="row-fluid m-1">
                                         <a data-tip="Adventurer's stats">
-                                            <Icon icon="ant-design:user-outlined" color="#585858" width="30" className={"statsoption stats " + (selectedView == "stats" ? "WhiteIcon" : "noclick")} onClick={(e) => setSelectedView("stats")} />
+                                            <Icon icon="ant-design:user-outlined" color="#585858" width="30" className={"statsoption stats " + (selectedView == "stats" ? "WhiteIcon noclick" : "")} onClick={(e) => setSelectedView("stats")} />
                                         </a>
                                         <a data-tip="Weapons">
-                                            <Icon icon="mdi:treasure-chest" color="#585858" width="30" className={"statsoption inventory " + (selectedView == "inventory" ? "WhiteIcon" : "noclick")}onClick={(e) => setSelectedView("inventory")} />
+                                            <Icon icon="mdi:treasure-chest" color="#585858" width="30" className={"statsoption inventory " + (selectedView == "inventory" ? "WhiteIcon noclick" : "")}onClick={(e) => setSelectedView("inventory")} />
                                         </a>
                                         <a data-tip="Enemy's stats">
-                                            <Icon icon="mdi:sword-cross" color="#585858" width="30" className={"statsoption enemy " + (selectedView == "enemy" ? "WhiteIcon" : "noclick")} onClick={(e) => setSelectedView("enemy")} />
+                                            <Icon icon="mdi:sword-cross" color="#585858" width="30" className={"statsoption enemy " + (selectedView == "enemy" ? "WhiteIcon noclick" : "")} onClick={(e) => setSelectedView("enemy")} />
                                         </a>
                                         <ReactTooltip/>
                                     </div>

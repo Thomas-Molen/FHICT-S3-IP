@@ -7,11 +7,11 @@ using textadventure_backend.Models.Entities;
 
 namespace textadventure_backend.Services
 {
-    public class AdventurerService
+    public class AdventurerConnectionService
     {
         private readonly HttpClient httpClient;
         private readonly AppSettings appSettings;
-        public AdventurerService(HttpClient _httpClient, IOptions<AppSettings> _appSettings)
+        public AdventurerConnectionService(HttpClient _httpClient, IOptions<AppSettings> _appSettings)
         {
             httpClient = _httpClient;
             appSettings = _appSettings.Value;
@@ -19,7 +19,7 @@ namespace textadventure_backend.Services
 
         public async Task<Adventurers> GetAdventurer(int adventurerId)
         {
-            using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"{appSettings.EnityManagerURL}Adventurer/get/{adventurerId}/{appSettings.GameAccessToken}"))
+            using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"{appSettings.EnityManagerURL}HubAdventurer/get/{adventurerId}/{appSettings.GameAccessToken}"))
             {
                 var response = await httpClient.SendAsync(requestMessage);
                 if (!response.IsSuccessStatusCode)
@@ -32,7 +32,7 @@ namespace textadventure_backend.Services
 
         public async Task SetHealth(int adventurerId, int health)
         {
-            using (var requestMessage = new HttpRequestMessage(HttpMethod.Post, $"{appSettings.EnityManagerURL}Adventurer/set-health/{adventurerId}/{health}/{appSettings.GameAccessToken}"))
+            using (var requestMessage = new HttpRequestMessage(HttpMethod.Post, $"{appSettings.EnityManagerURL}HubAdventurer/set-health/{adventurerId}/{health}/{appSettings.GameAccessToken}"))
             {
                 var response = await httpClient.SendAsync(requestMessage);
                 if (!response.IsSuccessStatusCode)
@@ -44,7 +44,7 @@ namespace textadventure_backend.Services
 
         public async Task SetExperience(int adventurerId, int experience)
         {
-            using (var requestMessage = new HttpRequestMessage(HttpMethod.Post, $"{appSettings.EnityManagerURL}Adventurer/set-experience/{adventurerId}/{experience}/{appSettings.GameAccessToken}"))
+            using (var requestMessage = new HttpRequestMessage(HttpMethod.Post, $"{appSettings.EnityManagerURL}HubAdventurer/set-experience/{adventurerId}/{experience}/{appSettings.GameAccessToken}"))
             {
                 var response = await httpClient.SendAsync(requestMessage);
                 if (!response.IsSuccessStatusCode)
