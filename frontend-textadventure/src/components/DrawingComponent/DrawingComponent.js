@@ -1,11 +1,10 @@
-import { React, useEffect } from 'react';
-import CanvasDraw from "react-canvas-draw";
-import useState from 'react-usestateref';
-import { UseFetchWrapper } from '../../helpers'
-import { compressToBase64, decompressFromBase64 } from 'lz-string'
-import './DrawingComponent.css';
-import { Button, Row, Col, Container } from 'react-bootstrap'
 import { Icon } from '@iconify/react';
+import { compressToBase64, decompressFromBase64 } from 'lz-string';
+import { React, useEffect } from 'react';
+import CanvasDraw from "sugarypineapple-react-canvas-draw";
+import useState from 'react-usestateref';
+import { UseFetchWrapper } from '../../helpers';
+import './DrawingComponent.css';
 import ReactTooltip from 'react-tooltip';
 
 export function DrawingComponent({ adventurerId }) {
@@ -27,7 +26,7 @@ export function DrawingComponent({ adventurerId }) {
         <>
             <div className="DrawingCanvas mb-5">
                 <div className="row-fluid m-2">
-                    <Icon icon="feather:save" color="#585858" width="30" className="pointer drawingOption me-2"
+                    <Icon icon="feather:save" color="#585858" width="30" className="pointer drawingOption me-2" data-tip="Save drawing"
                         onClick={() => {
                             var drawing = drawingCanvas.getSaveData();
                             setDrawing(drawing);
@@ -35,17 +34,16 @@ export function DrawingComponent({ adventurerId }) {
                                 .then(() => {
                                     setDrawing(drawing);
                                 })
-                            console.log(drawing)
                         }} />
-                    <Icon icon="ci:trash-empty" color="#585858" width="30" className="pointer drawingOption me-2"
+                    <Icon icon="ci:trash-empty" color="#585858" width="30" className="pointer drawingOption me-2" data-tip="Clear drawing"
                         onClick={() => {
                             drawingCanvas.eraseAll();
                         }} />
-                    <Icon icon="ic:baseline-undo" color="#585858" width="30" className="pointer drawingOption me-2"
+                    <Icon icon="ic:baseline-undo" color="#585858" width="30" className="pointer drawingOption me-2" data-tip="Undo last stroke"
                         onClick={() => {
                             drawingCanvas.undo();
                         }} />
-                    <Icon icon="mdi:reload-alert" color="#585858" width="30" className="pointer drawingOption"
+                    <Icon icon="mdi:reload-alert" color="#585858" width="30" className="pointer drawingOption" data-tip="Reload drawing field"
                         onClick={() => {
                             fetchWrapper.post(`Adventurer/save-drawing/${adventurerId}`, { drawing: compressToBase64(drawingCanvas.getSaveData()) })
                                 .then(() => {
@@ -74,59 +72,6 @@ export function DrawingComponent({ adventurerId }) {
                         immediateLoading={true} />
                 </div>
             </div>
-
-
-
-            {/* <Container fluid>
-                <div className="NotePad d-flex characterStats">
-                    <Col>
-                        <div className="d-flex">
-                            <Icon icon="feather:save" color="white" width="30" className="pointer"
-                                onClick={() => {
-                                    var drawing = drawingCanvas.getSaveData();
-                                    setDrawing(drawing);
-                                    fetchWrapper.post(`Adventurer/save-drawing/${adventurerId}`, { drawing: compressToBase64(drawing) })
-                                        .then(() => {
-                                            setDrawing(drawing);
-                                        })
-                                    console.log(drawing)
-                                }} />
-                            <Icon icon="ci:trash-empty" color="white" width="30" className="pointer"
-                                onClick={() => {
-                                    drawingCanvas.eraseAll();
-                                }} />
-                            <Icon icon="ic:baseline-undo" color="white" width="30" className="pointer"
-                                onClick={() => {
-                                    drawingCanvas.undo();
-                                }} />
-                            <Icon icon="mdi:reload-alert" color="white" width="30" className="pointer"
-                                onClick={() => {
-                                    fetchWrapper.post(`Adventurer/save-drawing/${adventurerId}`, { drawing: compressToBase64(drawingCanvas.getSaveData()) })
-                                        .then(() => {
-                                            setDrawing(drawingCanvas.getSaveData);
-                                            setKeyValue(keyValue + 1);
-                                        })
-                                }} />
-                        </div>
-                        <hr className="m-0" />
-                        <CanvasDraw
-                            className="NotePadCanvas"
-                            key={keyValue}
-                            ref={canvasDraw => (setDrawingCanvas(canvasDraw))}
-                            brushColor={"#585858"}
-                            backgroundColor={"#252525"}
-                            catenaryColor={"ffffff"}
-                            hideGrid
-                            enablePanAndZoom
-                            mouseZoomFactor={0.001}
-                            lazyRadius={0}
-                            brushRadius={2}
-                            canvasWidth={1000}
-                            saveData={drawing}
-                            immediateLoading={true} />
-                    </Col>
-                </div>
-            </Container> */}
         </>
     )
 }

@@ -62,14 +62,12 @@ export function GamePlayComponent() {
                                         <Icon icon="ant-design:user-outlined" color="#585858" width="30" className="statsoption selectedStatOption stats" data-tip="Stats" onClick={(e) => SetStatsWindow("stats", e)} />
                                         <Icon icon="mdi:treasure-chest" color="#585858" width="30" className="statsoption inventory" data-tip="Inventory" onClick={(e) => SetStatsWindow("inventory", e)} />
                                         <Icon icon="mdi:sword-cross" color="#585858" width="30" className="statsoption enemy" data-tip="Enemy details" onClick={(e) => SetStatsWindow("enemy", e)} />
-                                        <ReactTooltip />
                                     </div>
                                     <hr className="m-0" />
                                     <div className="statsInformationWindow">
                                         {selectedView == "stats" &&
                                             <div className="row">
                                                 <div className="col-4">
-                                                    <ReactTooltip />
                                                     <div className="d-flex align-items-center">
                                                         <div data-tip="Level">
                                                             <Icon icon="mdi:chevron-double-up" width="50" color="white" />{adventurer.experience / 10}
@@ -98,7 +96,6 @@ export function GamePlayComponent() {
                                         }
                                         {selectedView == "inventory" &&
                                             <div className={"row-fluid Inventory overflow-auto " + (loadingInventory ? "disabled" : "")}>
-                                                <ReactTooltip />
                                                 {items.map((item) =>
                                                     <div key={item.id} className="d-flex align-items-center">
                                                         <div className={"ms-3 " + (item.equiped == true ? 'EquipedItem' : 'pointer')} onClick={() => EquipWeapon(item.id)}>
@@ -114,7 +111,6 @@ export function GamePlayComponent() {
                                             <>
                                                 <div className="row">
                                                     <div className="col">
-                                                        <ReactTooltip />
                                                         <div className="d-flex align-items-center">
                                                             <div data-tip="Difficulty">
                                                                 <Icon icon={"" + (enemy.difficulty < 2 ? "fad:xlrplug" : (enemy.difficulty < 3 ? "ri:skull-line" : "ri:skull-2-line"))} width="50" color="white" className="me-1" />
