@@ -67,7 +67,7 @@ export function DrawingComponent({ adventurerId }) {
                         className="NotePadCanvas"
                         key={keyValue}
                         ref={canvasDraw => (setDrawingCanvas(canvasDraw))}
-                        brushColor={"#585858"}
+                        brushColor={"#808080"}
                         backgroundColor={"#252525"}
                         catenaryColor={"ffffff"}
                         hideGrid
