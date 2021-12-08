@@ -23,7 +23,7 @@
     font-size: 30px;
 }
 
-.gameConsole {
+.Console {
     width: 100%;
     min-height: 150px;
     height: 67vh;
@@ -51,19 +51,11 @@
     position: relative;
     top: -39px;
     right: 7px;
-}
-
-.EmptyConsoleInputIcon {
-    pointer-events: none;
     color: #585858;
 }
 
-.ConsoleInputIcon {
-    color: #ffffff;
-}
-
-.ConsoleInputIcon:hover {
-    cursor: pointer;
+.WhiteIcon {
+    color: white !important;
 }
 
 .characterStats {
