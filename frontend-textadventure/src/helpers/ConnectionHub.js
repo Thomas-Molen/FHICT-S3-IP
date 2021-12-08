@@ -18,12 +18,12 @@ export function UseConnectionHub() {
         sendCommand: SendCommand(connection),
         equipWeapon: EquipWeapon(connection)
     }
-    
+
     //startup
     function ConnectToHub(connection) {
         let URI = useLocation();
         const cmd = UseCMDWrapper();
-        
+
         const [items, setItems] = useRecoilState(ItemsAtom);
         const [adventurer, setAdventurer] = useRecoilState(AdventurerAtom);
         const [enemy, setEnemy] = useRecoilState(EnemyAtom);
@@ -34,52 +34,62 @@ export function UseConnectionHub() {
                 try {
                     await connection.start();
                     cmd.clear();
-                    
+
                     //background setup
                     connection.onreconnecting(() => {
                         cmd.display("Attempting to reconnect to the game server, \nthis might take a moment...");
                     });
-                    
+
                     connection.onreconnected(() => {
                         window.location.reload();
                     });
-                    
+
                     //invoke connection commands
                     connection.on("ReceiveMessage", (message) => {
                         cmd.display(message);
                     });
-                    
+
                     connection.on("ClearConsole", () => {
                         cmd.clear();
                     });
-                    
+
                     connection.on("UpdateWeapons", (items) => {
                         setItems(items);
                     });
-                    
+
                     connection.on("UpdateAdventurer", (adventurer) => {
                         setAdventurer(adventurer);
                     });
                     connection.on("UpdateAttack", (attack) => {
-                        // setAdventurer({ ...adventurerRef.current, damage: attack });
+                        setAdventurer(adv => ({
+                            ...adv, damage: attack
+                        }));
                     });
                     connection.on("UpdateHealth", (health) => {
-                        // setAdventurer({ ...adventurerRef.current, health: health });
+                        setAdventurer(adv => ({
+                            ...adv, health: health
+                        }));
                     });
                     connection.on("UpdateRoomsExplored", (rooms) => {
-                        // setAdventurer({ ...adventurerRef.current, roomsCleared: rooms });
+                        setAdventurer(adv => ({
+                            ...adv, roomsCleared: rooms
+                        }));
                     });
                     connection.on("UpdateExperience", (exp) => {
-                        // setAdventurer({ ...adventurerRef.current, experience: exp });
+                        setAdventurer(adv => ({
+                            ...adv, experience: exp
+                        }));
                     });
-                    
+
                     connection.on("UpdateEnemy", (enemy) => {
                         setEnemy(enemy);
                     });
                     connection.on("UpdateEnemyHealth", (health) => {
-                        // setEnemy({ ...enemyRef.current, health: health });
+                        setEnemy(en => ({
+                            ...en, health: health
+                        }));
                     });
-                    
+
                     await connection.invoke("Join", parseInt(URI.search.replace("?user=", "")));
                 }
                 catch (e) {
@@ -90,7 +100,7 @@ export function UseConnectionHub() {
             }
         }
     }
-    
+
     //game logic
     function SendCommand(connection) {
         return async (command) => {
@@ -99,7 +109,7 @@ export function UseConnectionHub() {
             }
         }
     }
-    
+
     function EquipWeapon(connection) {
         return async (weaponId) => {
             if (connection.state != "Disconnected") {
