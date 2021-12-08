@@ -12,6 +12,7 @@ namespace textadventure_backend_entitymanager.Models.Entities
         public int Health { get; set; } = 20;
 
         public string Name { get; set; } = "Adventurer";
+        public string Drawing { get; set; }
         public int UserId { get; set; }
         public int DungeonId { get; set; }
         public int? RoomId { get; set; }

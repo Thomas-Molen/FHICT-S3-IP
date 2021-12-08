@@ -1,0 +1,16 @@
+.DrawingCanvas {
+    color: #ffffff;
+    background-color: #252525;
+    border-color: #585858;
+    border-width: 2px;
+    border-style: solid;
+    font-size: 20px;
+}
+
+.NotePadCanvas:hover {
+    cursor: none;
+}
+
+.drawingOption:hover {
+    color: white !important;
+}

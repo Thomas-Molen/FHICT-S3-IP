@@ -62,6 +62,8 @@ namespace textadventure_backend_entitymanager.Context
                     .HasMaxLength(20)
                     .IsRequired();
 
+                entity.Property(model => model.Drawing).HasColumnName("drawing");
+
                 entity.HasOne(a => a.User)
                    .WithMany(u => u.Adventurers)
                    .HasForeignKey(a => a.UserId)

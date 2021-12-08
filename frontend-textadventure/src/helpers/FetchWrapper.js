@@ -23,7 +23,6 @@ export function UseFetchWrapper() {
                 requestOptions.headers['Content-Type'] = 'application/json';
                 requestOptions.body = JSON.stringify(body);
             }
-            console.log(process.env.REACT_APP_ENTITY_MANAGER);
             return fetch(process.env.REACT_APP_ENTITY_MANAGER + url, requestOptions).then(HandleResponse);
         }
     }

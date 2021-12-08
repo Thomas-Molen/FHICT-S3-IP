@@ -150,7 +150,7 @@ export function GameHomeComponent() {
 
     function CreateAdventurer(selectedButton) {
         setCreatingAdventurer(true);
-        fetchWrapper.post('Adventurer/create', { "name": selectedButton.parentElement.querySelector('input').value })
+        fetchWrapper.post('Adventurer/create', { name: selectedButton.parentElement.querySelector('input').value })
             .then(() => {
                 GetAdventurers();
                 setSettingAdventurerName(false);

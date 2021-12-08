@@ -1,13 +1,14 @@
-import './GamePlayComponent.css'
-import { React, useEffect } from 'react';
-import useState from 'react-usestateref';
-import { useLocation, useHistory } from 'react-router-dom';
-import { cmd } from '../../helpers';
-import { useRecoilValue } from 'recoil';
-import { JWTAtom } from '../../state';
 import { Icon } from '@iconify/react';
-import ReactTooltip from 'react-tooltip';
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
+import { React, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import ReactTooltip from 'react-tooltip';
+import useState from 'react-usestateref';
+import { useRecoilValue } from 'recoil';
+import { DrawingComponent } from '..';
+import { cmd } from '../../helpers';
+import { JWTAtom } from '../../state';
+import './GamePlayComponent.css';
 
 export function GamePlayComponent() {
     const JWTToken = useRecoilValue(JWTAtom);
@@ -37,23 +38,27 @@ export function GamePlayComponent() {
     return (
         <>
             <div className="gameBackground">
-                <div className="col-9">
+                <div className="col-12 col-lg-9">
                     <div className="gameHeader offset-1 col ">
                         Welcome {adventurer.name}
                     </div>
                 </div>
                 <div className="container-fluid">
                     <div className="row">
-                        <div className="col-8">
+                        <div className="col-11 col-lg-8 ms-2 ms-lg-0">
                             <div className="offset-1 col">
                                 <textarea className="gameConsole" readOnly />
                             </div>
+                            <div className="offset-1 col">
+                                <textarea className="gameInput" rows="1" onChange={(e) => GameInputOnChange(e)} onKeyDown={(e) => CheckForSpecialKey(e)} autoFocus={true}></textarea>
+                                <Icon icon="akar-icons:send" width="28" className="sendCommandIcon float-end EmptyConsoleInputIcon" onClick={(e) => ClickSendButton(e)} />
+                            </div>
                         </div>
-                        <div className="col-4 d-flex">
-                            <div className="offset-1 col-10">
+                        <div className="col-12 col-lg-4 d-flex">
+                            <div className="offset-lg-1 offset-1 col-10">
                                 {/* stats UI */}
                                 <div className="characterStats mb-5">
-                                    <div className="row-fluid statsOptionsBar">
+                                    <div className="row-fluid m-1">
                                         <Icon icon="ant-design:user-outlined" color="#585858" width="30" className="statsoption selectedStatOption stats" data-tip="Stats" onClick={(e) => SetStatsWindow("stats", e)} />
                                         <Icon icon="mdi:treasure-chest" color="#585858" width="30" className="statsoption inventory" data-tip="Inventory" onClick={(e) => SetStatsWindow("inventory", e)} />
                                         <Icon icon="mdi:sword-cross" color="#585858" width="30" className="statsoption enemy" data-tip="Enemy details" onClick={(e) => SetStatsWindow("enemy", e)} />
@@ -61,7 +66,6 @@ export function GamePlayComponent() {
                                     </div>
                                     <hr className="m-0" />
                                     <div className="statsInformationWindow">
-
                                         {selectedView == "stats" &&
                                             <div className="row">
                                                 <div className="col-4">
@@ -138,20 +142,8 @@ export function GamePlayComponent() {
                                         }
                                     </div>
                                 </div>
-                                {/* minimap */}
-                                <div className="MiniMap characterStats d-flex" data-tip="Minimap">
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-8">
-                            <div className="offset-1 col">
-                                <textarea className="gameInput" rows="1" onChange={(e) => GameInputOnChange(e)} onKeyDown={(e) => CheckForSpecialKey(e)} autoFocus={true}>
-
-                                </textarea>
-                                <Icon icon="akar-icons:send" width="28" className="sendCommandIcon float-end EmptyConsoleInputIcon" onClick={(e) => ClickSendButton(e)} />
+                                {/* DrawingCanvas */}
+                                <DrawingComponent adventurerId={parseInt(URI.search.replace("?user=", ""))}/>
                             </div>
                         </div>
                     </div>
@@ -244,28 +236,25 @@ export function GamePlayComponent() {
     function CheckForSpecialKey(input) {
         if (input.key == "ArrowUp") {
             input?.preventDefault();
-            
-            if (inputHistoryIndex > 0)
-            {
-                setInputHistoryIndex(inputHistoryIndex-1);
-                input.target.value = inputHistory[inputHistoryIndex-1];
+
+            if (inputHistoryIndex > 0) {
+                setInputHistoryIndex(inputHistoryIndex - 1);
+                input.target.value = inputHistory[inputHistoryIndex - 1];
             }
-            
+
         }
         else if (input.key == "ArrowDown") {
             input?.preventDefault();
-            
-            if (inputHistoryIndex < inputHistory.length-1)
-            {
-                setInputHistoryIndex(inputHistoryIndex+1);
-                input.target.value = inputHistory[inputHistoryIndex+1];
+
+            if (inputHistoryIndex < inputHistory.length - 1) {
+                setInputHistoryIndex(inputHistoryIndex + 1);
+                input.target.value = inputHistory[inputHistoryIndex + 1];
             }
-            else
-            {
+            else {
                 setInputHistoryIndex(inputHistory.length);
                 input.target.value = "";
             }
-            
+
         }
         else if (input.key == "Enter") {
             input?.preventDefault();
@@ -309,8 +298,8 @@ export function GamePlayComponent() {
         if (connection.state != "Disconnected") {
             setInputHistory(prevState => (
                 [...prevState, command]
-              ));
-            setInputHistoryIndex(inputHistory.length+1);
+            ));
+            setInputHistoryIndex(inputHistory.length + 1);
             await connection.invoke("SendCommand", command);
         }
     }

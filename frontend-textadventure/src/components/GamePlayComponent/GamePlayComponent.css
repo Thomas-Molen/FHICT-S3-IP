@@ -66,21 +66,7 @@
     cursor: pointer;
 }
 
-.statsOptionsBar {
-    margin: 5px;
-}
-
-@media (max-width: 800px) {
-    .MiniMap {
-        display: none !important;
-    }
-    .characterStats {
-        min-height: 100% !important;
-    }
-}
-
 .characterStats {
-    min-height: 45.7%;
     color: #ffffff;
     background-color: #252525;
     border-color: #585858;

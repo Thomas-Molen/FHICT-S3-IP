@@ -85,6 +85,36 @@ namespace textadventure_backend_entitymanager.Controllers
             }
         }
 
+        [HttpGet("get-drawing/{adventurerId}")]
+        public async Task<IActionResult> GetDrawing([FromRoute] int adventurerId)
+        {
+            try
+            {
+                var result = await adventurerService.GetDrawing(adventurerId);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("save-drawing/{adventurerId}")]
+        public async Task<IActionResult> SaveDrawing([FromRoute] int adventurerId, [FromBody] SaveDrawingRequest drawing)
+        {
+            try
+            {
+                await adventurerService.SaveDrawing(adventurerId, drawing.Drawing);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [AllowAnonymous]
         [HttpGet("get-leaderboard")]
         public async Task<IActionResult> GetLeaderboard()
