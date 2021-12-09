@@ -1,6 +1,6 @@
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
+import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import useState from 'react-usestateref';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { UseCMDWrapper } from '.';
 import { AdventurerAtom, EnemyAtom, ItemsAtom, JWTAtom } from '../state';

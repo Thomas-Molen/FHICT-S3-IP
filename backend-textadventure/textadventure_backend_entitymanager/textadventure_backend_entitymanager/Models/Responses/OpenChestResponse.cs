@@ -9,6 +9,6 @@ namespace textadventure_backend_entitymanager.Models.Responses
     public class OpenChestResponse
     {
         public string Message { get; set; }
-        public Weapons weapon { get; set; }
+        public Weapons Weapon { get; set; }
     }
 }

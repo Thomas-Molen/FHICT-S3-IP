@@ -1,8 +1,7 @@
 import { Icon } from '@iconify/react';
 import { compressToBase64, decompressFromBase64 } from 'lz-string';
-import { React, useEffect } from 'react';
+import { React, useEffect, useState } from 'react';
 import CanvasDraw from "sugarypineapple-react-canvas-draw";
-import useState from 'react-usestateref';
 import { UseFetchWrapper } from '../../helpers';
 import './DrawingComponent.css';
 import ReactTooltip from 'react-tooltip';
@@ -13,7 +12,7 @@ export function DrawingComponent({ adventurerId }) {
     //drawingCanvas
     const [drawingCanvas, setDrawingCanvas] = useState();
     const [drawing, setDrawing] = useState("");
-
+    const [isSaving, setIsSaving] = useState(false);
 
     useEffect(() => {
         fetchWrapper.get(`Drawing/get/${adventurerId}`)
@@ -25,22 +24,18 @@ export function DrawingComponent({ adventurerId }) {
     return (
         <>
             <div className="DrawingCanvas mb-5">
-                <div className="row-fluid m-2">
+                <div className={"row-fluid m-2 " + (isSaving ? "disabled" : "")}>
                     <a data-tip="Save drawing">
                         <Icon icon="feather:save" color="#585858" width="30" className="pointer drawingOption me-2"
-                            onClick={() => {
+                            onClick={async () => {
+                                setIsSaving(true);
                                 var drawing = drawingCanvas.getSaveData();
                                 setDrawing(drawing);
-                                fetchWrapper.post(`Drawing/save/${adventurerId}`, { drawing: compressToBase64(drawing) })
+                                await fetchWrapper.post(`Drawing/save/${adventurerId}`, { drawing: compressToBase64(drawing) })
                                     .then(() => {
                                         setDrawing(drawing);
                                     })
-                            }} />
-                    </a>
-                    <a data-tip="Clear drawing">
-                        <Icon icon="ci:trash-empty" color="#585858" width="30" className="pointer drawingOption me-2"
-                            onClick={() => {
-                                drawingCanvas.eraseAll();
+                                setIsSaving(false);
                             }} />
                     </a>
                     <a data-tip="Undo last action">
@@ -49,7 +44,8 @@ export function DrawingComponent({ adventurerId }) {
                                 drawingCanvas.undo();
                             }} />
                     </a>
-                    <a data-tip="Reload drawing field">
+                    {/* Button to reload drawing field when it crashes */}
+                    {/* <a data-tip="Reload drawing field">
                         <Icon icon="mdi:reload-alert" color="#585858" width="30" className="pointer drawingOption"
                             onClick={() => {
                                 fetchWrapper.post(`Drawing/save/${adventurerId}`, { drawing: compressToBase64(drawingCanvas.getSaveData()) })
@@ -59,10 +55,18 @@ export function DrawingComponent({ adventurerId }) {
                                     })
                             }} />
                     </a>
-                    <ReactTooltip />
+                    <ReactTooltip /> */}
+                    <a data-tip="Clear drawing">
+                        <div className="float-end">
+                            <Icon icon="ci:trash-empty" color="#585858" width="30" className="pointer drawingOption drawingOptionDelete"
+                                onClick={() => {
+                                    drawingCanvas.eraseAll();
+                                }} />
+                        </div>
+                    </a>
                 </div>
                 <hr className="m-0" />
-                <div className="d-flex">
+                <div className={"d-flex " + (isSaving ? "disabled" : "")}>
                     <CanvasDraw
                         className="NotePadCanvas"
                         key={keyValue}

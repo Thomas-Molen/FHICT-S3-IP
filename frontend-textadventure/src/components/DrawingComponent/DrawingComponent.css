@@ -14,3 +14,7 @@
 .drawingOption:hover {
     color: white !important;
 }
+
+.drawingOptionDelete:hover {
+    color: #ff6060 !important;
+}

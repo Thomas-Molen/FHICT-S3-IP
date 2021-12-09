@@ -1,9 +1,8 @@
 import { Icon } from '@iconify/react';
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
-import { React, useEffect } from 'react';
+import { React, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
-import useState from 'react-usestateref';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { DrawingComponent } from '..';
 import { UseCMDWrapper, UseConnectionHub } from '../../helpers';
@@ -54,7 +53,7 @@ export function GamePlayComponent() {
                             </div>
                             <div className="offset-1 col">
                                 <textarea className="gameInput" rows="1" onChange={(e) => setInputCommand(e.target.value)} onKeyDown={(e) => CheckForSpecialKey(e)} autoFocus={true}></textarea>
-                                <Icon icon="akar-icons:send" width="28" className={"sendCommandIcon float-end " + (inputCommand == "" ? "noclick" : "WhiteIcon pointer")} onClick={(e) => ClickSendButton(e)} />
+                                <Icon icon="akar-icons:send" width="28" className={"sendCommandIcon float-end " + (inputCommand == "" ? "noclick" : "white pointer")} onClick={(e) => ClickSendButton(e)} />
                             </div>
                         </div>
                         <div className="col-12 col-lg-4 d-flex">
@@ -63,18 +62,19 @@ export function GamePlayComponent() {
                                 <div className="characterStats mb-5">
                                     <div className="row-fluid m-1">
                                         <a data-tip="Adventurer's stats">
-                                            <Icon icon="ant-design:user-outlined" color="#585858" width="30" className={"statsoption stats " + (selectedView == "stats" ? "WhiteIcon noclick" : "")} onClick={(e) => setSelectedView("stats")} />
+                                            <Icon icon="ant-design:user-outlined" color="#585858" width="30" className={"statsoption stats " + (selectedView == "stats" ? "white noclick" : "")} onClick={(e) => setSelectedView("stats")} />
                                         </a>
                                         <a data-tip="Weapons">
-                                            <Icon icon="mdi:treasure-chest" color="#585858" width="30" className={"statsoption inventory " + (selectedView == "inventory" ? "WhiteIcon noclick" : "")}onClick={(e) => setSelectedView("inventory")} />
+                                            <Icon icon="mdi:treasure-chest" color="#585858" width="30" className={"statsoption inventory " + (selectedView == "inventory" ? "white noclick" : "")}onClick={(e) => setSelectedView("inventory")} />
                                         </a>
                                         <a data-tip="Enemy's stats">
-                                            <Icon icon="mdi:sword-cross" color="#585858" width="30" className={"statsoption enemy " + (selectedView == "enemy" ? "WhiteIcon noclick" : "")} onClick={(e) => setSelectedView("enemy")} />
+                                            <Icon icon="mdi:sword-cross" color="#585858" width="30" className={"statsoption enemy " + (selectedView == "enemy" ? "white noclick" : "")} onClick={(e) => setSelectedView("enemy")} />
                                         </a>
                                         <ReactTooltip/>
                                     </div>
                                     <hr className="m-0" />
                                     <div className="statsInformationWindow">
+                                        {/* Stats */}
                                         {selectedView == "stats" &&
                                             <div className="row">
                                                 <div className="col-4">
@@ -104,6 +104,7 @@ export function GamePlayComponent() {
                                                 </div>
                                             </div>
                                         }
+                                        {/* Inventory */}
                                         {selectedView == "inventory" &&
                                             <div className={"row-fluid Inventory overflow-auto " + (loadingInventory ? "disabled" : "")}>
                                                 {items.map((item) =>
@@ -122,6 +123,7 @@ export function GamePlayComponent() {
                                                 )}
                                             </div>
                                         }
+                                        {/* Enemy */}
                                         {selectedView == "enemy" &&
                                             <>
                                                 <div className="row">
