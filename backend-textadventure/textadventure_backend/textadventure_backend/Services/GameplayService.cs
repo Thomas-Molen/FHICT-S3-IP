@@ -60,7 +60,7 @@ namespace textadventure_backend.Services
                 room = adventurer.Room;
 
                 await hubContext.Clients.Client(connectionId)
-                    .SendAsync("ReceiveMessage", $"You wake up in a dark room and slightly moist room, \n In your hand you see a dog tag saying {adventurer.Name}\nYou stand up and see some kind of chest infront of you");
+                    .SendAsync("ReceiveMessage", $"You wake up in a dark room, \n In your hand you see a dog tag saying {adventurer.Name}");
             }
             else
             {
@@ -146,6 +146,7 @@ namespace textadventure_backend.Services
             var weapons = await weaponService.GetWeapons(session.Adventurer.Id);
             var weaponBeingEquiped = weapons.FirstOrDefault(w => w.Id == weaponId);
             session.Weapon = weaponBeingEquiped;
+            session.Adventurer.Damage = weaponBeingEquiped.Attack ?? 0;
 
             await hubContext.Clients.Client(connectionId)
                 .SendAsync("UpdateWeapons", weapons);

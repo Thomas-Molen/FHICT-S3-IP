@@ -73,13 +73,13 @@ namespace textadventure_backend_entitymanager.Context
                 entity.HasOne(a => a.Dungeon)
                    .WithMany(d => d.Adventurers)
                    .HasForeignKey(a => a.DungeonId)
-                   .OnDelete(DeleteBehavior.ClientSetNull)
+                   .OnDelete(DeleteBehavior.Cascade)
                    .HasConstraintName("FK_Adventurers_Dungeons");
 
                 entity.HasOne(a => a.Room)
                    .WithMany(r => r.Adventurers)
                    .HasForeignKey(a => a.RoomId)
-                   .OnDelete(DeleteBehavior.ClientSetNull)
+                   .OnDelete(DeleteBehavior.Cascade)
                    .HasConstraintName("FK_Adventurers_Rooms")
                    .IsRequired(false);
             });
@@ -91,13 +91,13 @@ namespace textadventure_backend_entitymanager.Context
                 entity.HasOne(am => am.Adventurer)
                    .WithMany(a => a.AdventurerMaps)
                    .HasForeignKey(am => am.AdventurerId)
-                   .OnDelete(DeleteBehavior.ClientSetNull)
+                   .OnDelete(DeleteBehavior.Cascade)
                    .HasConstraintName("FK_AdventurerMaps_Adventurers");
 
                 entity.HasOne(am => am.Room)
                    .WithMany(r => r.AdventurerMaps)
                    .HasForeignKey(am => am.RoomId)
-                   .OnDelete(DeleteBehavior.ClientSetNull)
+                   .OnDelete(DeleteBehavior.Cascade)
                    .HasConstraintName("FK_AdventurerMaps_Rooms");
             });
 
@@ -122,7 +122,7 @@ namespace textadventure_backend_entitymanager.Context
                 entity.HasOne(w => w.Adventurer)
                    .WithMany(a => a.Weapons)
                    .HasForeignKey(w => w.AdventurerId)
-                   .OnDelete(DeleteBehavior.ClientSetNull)
+                   .OnDelete(DeleteBehavior.Cascade)
                    .HasConstraintName("FK_Weapons_Adventurers");
             });
 
@@ -145,7 +145,7 @@ namespace textadventure_backend_entitymanager.Context
                 entity.HasOne(it => it.Adventurer)
                    .WithMany(a => a.Items)
                    .HasForeignKey(it => it.AdventurerId)
-                   .OnDelete(DeleteBehavior.ClientSetNull)
+                   .OnDelete(DeleteBehavior.Cascade)
                    .HasConstraintName("FK_Items_Adventurers");
             });
 
@@ -187,7 +187,7 @@ namespace textadventure_backend_entitymanager.Context
                 entity.HasOne(r => r.Dungeon)
                    .WithMany(d => d.Rooms)
                    .HasForeignKey(r => r.DungeonId)
-                   .OnDelete(DeleteBehavior.ClientSetNull)
+                   .OnDelete(DeleteBehavior.Cascade)
                    .HasConstraintName("FK_Rooms_Dungeons");
             });
 
@@ -237,7 +237,7 @@ namespace textadventure_backend_entitymanager.Context
                 entity.HasOne(rt => rt.User)
                    .WithMany(u => u.RefreshTokens)
                    .HasForeignKey(rt => rt.UserId)
-                   .OnDelete(DeleteBehavior.ClientSetNull)
+                   .OnDelete(DeleteBehavior.Cascade)
                    .HasConstraintName("FK_RefreshTokens_Users");
             });
 

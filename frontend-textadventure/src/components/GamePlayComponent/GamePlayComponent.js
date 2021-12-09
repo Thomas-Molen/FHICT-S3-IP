@@ -60,6 +60,7 @@ export function GamePlayComponent() {
                             <div className="offset-lg-1 offset-1 col-10">
                                 {/* stats UI */}
                                 <div className="characterStats mb-5">
+                                    {/* stats tabs */}
                                     <div className="row-fluid m-1">
                                         <a data-tip="Adventurer's stats">
                                             <Icon icon="ant-design:user-outlined" color="#585858" width="30" className={"statsoption stats " + (selectedView == "stats" ? "white noclick" : "")} onClick={(e) => setSelectedView("stats")} />
