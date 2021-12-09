@@ -75,5 +75,10 @@ namespace textadventure_backend_entitymanager.Services
         {
             return await JWT.RenewTokens(refreshToken);
         }
+
+        public async Task DeactivateToken(string refreshToken)
+        {
+             await JWT.DeactivateRefreshToken(refreshToken);
+        }
     }
 }

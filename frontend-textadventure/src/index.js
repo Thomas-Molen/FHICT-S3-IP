@@ -1,21 +1,19 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './components/App/App';
-import reportWebVitals from './reportWebVitals';
-import {
-  RecoilRoot,
-} from 'recoil';
-import { BrowserRouter } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.css';
 import 'font-awesome/css/font-awesome.min.css';
-import { Sugar } from 'react-preloaders2';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
+import {
+  RecoilRoot
+} from 'recoil';
+import App from './components/App/App';
+import './index.css';
+import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
     <RecoilRoot>
       <BrowserRouter>
         <App />
-        {/* <Sugar color={'#ffffff'} background='#212529'/>  */}
       </BrowserRouter>
     </RecoilRoot>,
   document.getElementById('root')

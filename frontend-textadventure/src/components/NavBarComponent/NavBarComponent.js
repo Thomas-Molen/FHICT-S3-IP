@@ -1,12 +1,16 @@
-import './NavBarComponent.css'
+import { Icon } from '@iconify/react';
 import React, { useState } from 'react';
+import { useRecoilValue } from 'recoil';
 import { SignUpComponent } from '..';
 import { userAtom } from '../../state';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import './NavBarComponent.css';
+import { UseFetchWrapper } from '../../helpers';
 
 export function NavBarComponent() {
     const user = useRecoilValue(userAtom);
+    const fetchWrapper = UseFetchWrapper();
     const [isSignUpOpen, setIsSignUpOpen] = useState(false);
+    const [isLoggingOut, setIsLoggingOut] = useState(false);
     return (
         <>
             <div className="navbarBackground container-fluid">
@@ -33,7 +37,18 @@ export function NavBarComponent() {
                                 </>
                                 :
                                 <>
-
+                                    <Icon icon="si-glyph:sign-out" color="black" width="50" className={"signOutButton pointer float-end " + (isLoggingOut ? "disabled" : "")}
+                                        onClick={async () => {
+                                            setIsLoggingOut(true);
+                                            fetchWrapper.post("User/deactivate-token")
+                                                .then(() => {
+                                                    setIsLoggingOut(false);
+                                                })
+                                                .catch(() => {
+                                                    setIsLoggingOut(false);
+                                                })
+                                            window.location.reload(false);
+                                        }} />
                                 </>
                             }
                         </div>

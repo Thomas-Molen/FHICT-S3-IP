@@ -1,8 +1,8 @@
-import './SignUpComponent.css'
 import { React, useState } from 'react';
-import { JWTAtom, userAtom } from '../../state';
-import { UseFetchWrapper } from '../../helpers'
 import { useSetRecoilState } from 'recoil';
+import { UseFetchWrapper } from '../../helpers';
+import { JWTAtom, userAtom } from '../../state';
+import './SignUpComponent.css';
 
 export function SignUpComponent({ isOpen }) {
     const fetchWrapper = UseFetchWrapper();
@@ -55,7 +55,7 @@ export function SignUpComponent({ isOpen }) {
 
     async function Login() {
         setIsLoggingIn(true);
-        fetchWrapper.post('User/login', {email: email, password: loginPassword})
+        await fetchWrapper.post('User/login', {email: email, password: loginPassword})
             .then(data => {
                 setJWTToken(data.token);
                 setUser({ id: data.id, username: data.username, email: data.email, admin: data.admin });

@@ -1,87 +1,101 @@
 .navbarBackground {
-    background-image: url("../../assets/NavBarBG.svg");
-    height: 65px;
-    background-position: left;
-    background-repeat: no-repeat;
-    background-size: cover;
-  }
+  background-image: url("../../assets/NavBarBG.svg");
+  height: 65px;
+  background-position: left;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
 
 
-  .TAlogo {
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    content: url("../../assets/Logo.svg");
-    height: 75px;
-  }
-  
+.TAlogo {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  content: url("../../assets/Logo.svg");
+  height: 75px;
+}
+
+.TAtitle {
+  position: absolute;
+  top: 20px;
+  left: 110px;
+  color: white;
+  font-size: 55px;
+}
+
+@media (max-width: 600px) {
   .TAtitle {
-    position: absolute;
-    top: 20px;
-    left: 110px;
-    color: white;
-    font-size: 55px;
+    display: none;
   }
 
-  @media (max-width: 550px) 
-  {
-    .TAtitle
-      {
-          display: none;
-      }
+  .signOutButton {
+    color: white !important;
+    margin-top: 20px !important;
+  }
+}
+
+.TAannouncement {
+  color: black;
+  position: absolute;
+  left: 35%;
+  top: 1.7%;
+  font-size: 3vh;
+
+  overflow: hidden;
+  border-right: .15em solid rgb(53, 53, 53);
+  white-space: nowrap;
+  margin: 0 auto;
+  letter-spacing: .1em;
+  animation:
+    typing 3.5s steps(50, end),
+    blink-caret 1s step-end infinite;
+}
+
+/* The typing effect */
+@keyframes typing {
+  from {
+    width: 0
   }
 
+  to {
+    width: 55%
+  }
+}
+
+/* The typewriter cursor effect */
+@keyframes blink-caret {
+  from, to {
+    border-color: transparent
+  }
+
+  50% {
+    border-color: rgb(53, 53, 53);
+  }
+}
+
+@media (max-width: 1780px) {
   .TAannouncement {
-    color: black;
-    position: absolute;
-    left: 35%;
-    top: 1.7%;
-    font-size: 3vh;
-
-    overflow: hidden;
-    border-right: .15em solid rgb(53, 53, 53);
-    white-space: nowrap;
-    margin: 0 auto;
-    letter-spacing: .1em;
-    animation: 
-      typing 3.5s steps(50, end),
-      blink-caret 1s step-end infinite;
-  }
-  
-  /* The typing effect */
-  @keyframes typing {
-    from { width: 0 }
-    to { width: 55% }
-  }
-  
-  /* The typewriter cursor effect */
-  @keyframes blink-caret {
-    from, to { border-color: transparent }
-    50% { border-color: rgb(53, 53, 53); }
+    display: none;
   }
 
-  @media (max-width: 1780px) 
-{
-  .TAannouncement
-    {
-        display: none;
-    }
-  .TAannouncementCol
-    {
-        visibility: none;
-    }
+  .TAannouncementCol {
+    visibility: none;
+  }
 }
 
-  @media (max-width: 1200px) 
-{
-  .TAannouncementCol
-    {
-        display: none;
-    }
+@media (max-width: 1200px) {
+  .TAannouncementCol {
+    display: none;
+  }
 }
 
-.signUpButton{
+.signUpButton {
   font-weight: bold !important;
   margin-top: 10px;
   font-size: 22px !important;
+}
+
+.signOutButton {
+  margin-top: 10px;
+  margin-right: -35px;
 }

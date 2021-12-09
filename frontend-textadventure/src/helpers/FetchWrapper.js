@@ -12,11 +12,12 @@ export function UseFetchWrapper() {
     }
     
     function request(method) {
-        return (url, body) => {
+        return (url, body, timeOutSeconds = 8) => {
             const requestOptions = {
                 method: method,
                 headers: GetHeader(),
-                credentials: 'include'
+                credentials: 'include',
+                signal: Timeout(timeOutSeconds).signal
             };
             if (body)
             {
@@ -54,5 +55,11 @@ export function UseFetchWrapper() {
             
             return data;
         });
+    }
+
+    function Timeout(seconds){
+        let controller = new AbortController();
+        setTimeout(() => controller.abort(), seconds * 1000);
+        return controller;
     }
 };

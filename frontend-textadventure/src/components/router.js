@@ -1,11 +1,13 @@
 import React from 'react';
+import { Sugar } from 'react-preloaders2';
 import { Route, Switch } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
-import { IntroductionComponent, SocialMediaComponent, GameHomeComponent, InformationComponent, LeaderboardComponent, FooterComponent, NavBarComponent, GamePlayComponent } from '../components';
-import { userAtom } from '../state';
+import { useRecoilValue } from 'recoil';
+import { FooterComponent, GameHomeComponent, GamePlayComponent, InformationComponent, IntroductionComponent, LeaderboardComponent, NavBarComponent, SocialMediaComponent } from '../components';
+import { PreLoaderAtom, userAtom } from '../state';
 
 const Routes = () => {
-    const [user] = useRecoilState(userAtom);
+    const user = useRecoilValue(userAtom);
+    
     return (
         <main>
             <Switch>
@@ -26,6 +28,7 @@ const Routes = () => {
                     <FooterComponent />
                 </Route>
             </Switch>
+            
         </main >
     )
 }

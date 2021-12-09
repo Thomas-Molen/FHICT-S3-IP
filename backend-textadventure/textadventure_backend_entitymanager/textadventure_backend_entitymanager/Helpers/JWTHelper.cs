@@ -62,6 +62,32 @@ namespace textadventure_backend_entitymanager.Helpers
             }
         }
 
+        public async Task DeactivateRefreshToken(string _refreshToken)
+        {
+            if (_refreshToken == null)
+            {
+                throw new ArgumentException("No refreshToken given");
+            }
+
+            using (var db = contextFactory.CreateDbContext())
+            {
+                Users user = db.Users.FirstOrDefault(u => u.RefreshTokens.Any(rt => rt.Token == _refreshToken));
+
+                if (user == null)
+                {
+                    throw new ArgumentException("No user found with token");
+                }
+                var refreshToken = db.RefreshTokens.FirstOrDefault(x => x.Token == _refreshToken);
+
+                if (refreshToken.Useable)
+                {
+                    refreshToken.RevokedAt = DateTime.UtcNow;
+                    db.Update(user);
+                    await db.SaveChangesAsync();
+                }
+            }
+        }
+
         public string GenerateJwtToken(Users user)
         {
             // generate token that is valid for x days

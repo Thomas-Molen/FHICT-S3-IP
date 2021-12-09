@@ -67,6 +67,22 @@ namespace textadventure_backend_entitymanager.Controllers
             }
         }
 
+        [HttpPost("deactivate-token")]
+        public async Task<IActionResult> DeactivateToken()
+        {
+            var refreshToken = Request.Cookies["refreshToken"];
+            try
+            {
+                await userService.DeactivateToken(refreshToken);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         private void setTokenCookie(string token)
         {
             var cookieOptions = new CookieOptions
