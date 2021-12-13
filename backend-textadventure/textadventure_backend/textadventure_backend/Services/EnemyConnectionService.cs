@@ -20,9 +20,9 @@ namespace textadventure_backend.Services
             appSettings = _appSettings.Value;
         }
 
-        public async Task<Enemy> CreateEnemy(int experience, int roomId)
+        public async Task<Enemy> CreateEnemy(int adventurerId, int roomId)
         {
-            using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"{appSettings.EnityManagerURL}Enemy/generate/{experience}/{appSettings.GameAccessToken}"))
+            using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"{appSettings.EnityManagerURL}Enemy/generate/{adventurerId}/{appSettings.GameAccessToken}"))
             {
                 var response = await httpClient.SendAsync(requestMessage);
                 if (!response.IsSuccessStatusCode)

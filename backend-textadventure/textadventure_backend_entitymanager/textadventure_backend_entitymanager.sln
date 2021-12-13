@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.31702.278
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "textadventure_backend_entitymanager", "textadventure_backend_entitymanager\textadventure_backend_entitymanager.csproj", "{0D44456B-DB11-45F8-919C-D09B507455DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "textadventure_backend_entitymanager.tests", "textadventure_backend_entitymanager.tests\textadventure_backend_entitymanager.tests.csproj", "{39E5D66A-3653-47FB-A0CA-C15626704D3D}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{0D44456B-DB11-45F8-919C-D09B507455DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D44456B-DB11-45F8-919C-D09B507455DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D44456B-DB11-45F8-919C-D09B507455DA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{39E5D66A-3653-47FB-A0CA-C15626704D3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{39E5D66A-3653-47FB-A0CA-C15626704D3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{39E5D66A-3653-47FB-A0CA-C15626704D3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{39E5D66A-3653-47FB-A0CA-C15626704D3D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

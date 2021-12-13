@@ -19,8 +19,8 @@ namespace textadventure_backend_entitymanager.Controllers
             accessTokenHelper = _accessTokenHelper;
         }
 
-        [HttpGet("generate/{experience}/{accessToken}")]
-        public IActionResult GenerateEnemy([FromRoute] string accesstoken, int experience)
+        [HttpGet("generate/{adventurerId}/{accessToken}")]
+        public async Task<IActionResult> GenerateEnemy([FromRoute] string accesstoken, int adventurerId)
         {
             if (!accessTokenHelper.IsTokenValid(accesstoken))
             {
@@ -29,7 +29,7 @@ namespace textadventure_backend_entitymanager.Controllers
 
             try
             {
-                var result = enemyService.GenerateEnemy(experience);
+                var result = await enemyService.GenerateEnemy(adventurerId);
 
                 return Ok(result);
             }
