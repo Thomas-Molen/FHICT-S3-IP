@@ -307,7 +307,7 @@ namespace textadventure_backend.Services
 
             if (session.Enemy == null || session.Enemy.RoomId != session.Room.Id)
             {
-                var enemy = await enemyService.CreateEnemy(session.Adventurer.Id, session.Room.Id);
+                var enemy = await enemyService.CreateEnemy(session.Adventurer.Experience, session.Room.Id);
                 session.Enemy = enemy;
             }
 

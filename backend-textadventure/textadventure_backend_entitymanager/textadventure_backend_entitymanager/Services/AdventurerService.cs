@@ -79,6 +79,11 @@ namespace textadventure_backend_entitymanager.Services
                     .Where(w => w.Equiped))
                     .FirstOrDefaultAsync(u => u.Id == userId);
 
+                if (user == null)
+                {
+                    throw new ArgumentException("No user found with given Id");
+                }
+
                 var result = new List<GetAdventurersResponse>();
                 foreach (var adventurer in user.Adventurers)
                 {

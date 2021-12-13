@@ -11,24 +11,15 @@ namespace textadventure_backend_entitymanager.Services
 {
     public class EnemyService
     {
-        private readonly IDbContextFactory<TextadventureDBContext> contextFactory;
 
-        public EnemyService(IDbContextFactory<TextadventureDBContext> _contextFactory)
+        public EnemyService()
         {
-            contextFactory = _contextFactory;
+            
         }
 
-        public async Task<Enemy> GenerateEnemy(int adventurerId)
+        public Enemy GenerateEnemy(int experience)
         {
-            using (var db = contextFactory.CreateDbContext())
-            {
-                var adventurer = await db.Adventurers.OrderBy(d => d.Id).FirstOrDefaultAsync(a => a.Id == adventurerId);
-                if (adventurer == null)
-                {
-                    throw new ArgumentException("No adventurer found with given Id");
-                }
-                return new Enemy(adventurer.Experience);
-            }
+             return new Enemy(experience);
         }
     }
 }
