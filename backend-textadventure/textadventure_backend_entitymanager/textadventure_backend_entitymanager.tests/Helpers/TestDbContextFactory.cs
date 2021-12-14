@@ -13,7 +13,7 @@ namespace textadventure_backend_entitymanager.tests.Helpers
         public TestDbContextFactory()
         {
             _options = new DbContextOptionsBuilder<TextadventureDBContext>()
-                .UseInMemoryDatabase("InMemoryDB")
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
         }
 

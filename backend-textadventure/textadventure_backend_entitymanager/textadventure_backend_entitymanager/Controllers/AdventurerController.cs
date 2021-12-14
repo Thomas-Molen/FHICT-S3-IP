@@ -73,7 +73,7 @@ namespace textadventure_backend_entitymanager.Controllers
         {
             try
             {
-                var response = await adventurerService.Get(JWT.GetUserIdFromJWT(Request.Headers[HeaderNames.Authorization]), adventurerId);
+                var response = await adventurerService.Get(adventurerId);
 
                 return Ok(response);
             }

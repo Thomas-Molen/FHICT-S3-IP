@@ -18,10 +18,15 @@ namespace textadventure_backend_entitymanager.Services
             contextFactory = _contextFactory;
         }
 
-        public async Task Create(string name, int userId)
+        public async Task<Adventurers> Create(string name, int userId)
         {
             using (var db = contextFactory.CreateDbContext())
             {
+                if (db.Users.Find(userId) == null)
+                {
+                    throw new ArgumentException("No user found with given userId");
+                }
+
                 var dungeon = db.Dungeons.OrderBy(d => d.Id).LastOrDefault();
                 if (dungeon == null)
                 {
@@ -44,6 +49,8 @@ namespace textadventure_backend_entitymanager.Services
 
                 await db.AddAsync(adventurer);
                 await db.SaveChangesAsync();
+
+                return adventurer;
             }
         }
 
@@ -109,14 +116,14 @@ namespace textadventure_backend_entitymanager.Services
             }
         }
 
-        public async Task<GetAdventurerResponse> Get(int userId, int adventurerId)
+        public async Task<GetAdventurerResponse> Get(int adventurerId)
         {
             using (var db = contextFactory.CreateDbContext())
             {
                 var adventurer = await db.Adventurers
                     .OrderByDescending(x => x.Id)
                     .Include(a => a.Weapons.Where(w => w.Equiped))
-                    .FirstOrDefaultAsync(a => a.Id == adventurerId && a.User.Id == userId);
+                    .FirstOrDefaultAsync(a => a.Id == adventurerId);
 
                 if (adventurer == null)
                 {
