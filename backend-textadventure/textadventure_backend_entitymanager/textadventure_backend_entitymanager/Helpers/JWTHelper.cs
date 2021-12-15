@@ -71,18 +71,12 @@ namespace textadventure_backend_entitymanager.Helpers
 
             using (var db = contextFactory.CreateDbContext())
             {
-                Users user = db.Users.FirstOrDefault(u => u.RefreshTokens.Any(rt => rt.Token == _refreshToken));
+                var token = db.RefreshTokens.FirstOrDefault(rt => rt.Token == _refreshToken);
 
-                if (user == null)
+                if (token.Useable)
                 {
-                    throw new ArgumentException("No user found with token");
-                }
-                var refreshToken = db.RefreshTokens.FirstOrDefault(x => x.Token == _refreshToken);
-
-                if (refreshToken.Useable)
-                {
-                    refreshToken.RevokedAt = DateTime.UtcNow;
-                    db.Update(user);
+                    token.RevokedAt = DateTime.UtcNow;
+                    db.Update(token);
                     await db.SaveChangesAsync();
                 }
             }
