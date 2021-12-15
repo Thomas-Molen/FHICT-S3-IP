@@ -88,9 +88,37 @@ namespace textadventure_backend_entitymanager.tests
             //Arrange
             var newAdventurer = await _sut.Create("SucessfullyAddedAdventurer", _user.Id);
             //Act
-            var adventurerToGet = await _sut.Get(newAdventurer.Id);
+            var adventurerToGet = await _sut.Get(newAdventurer.Id, _user.Id);
             //Assert
             adventurerToGet.Name.ShouldBeEquivalentTo(newAdventurer.Name);
+        }
+
+        [Fact]
+        public async Task CanNotGetOtherUsersAdventurer()
+        {
+            //Arrange
+            var contextFactory = new TestDbContextFactory();
+            var context = contextFactory.CreateDbContext();
+            var sut = new AdventurerService(contextFactory);
+
+            var user = new Users("tempEmail", "tempUsername", "tempPassword");
+            var user2 = new Users("tempEmail2", "tempUsername2", "tempPassword2");
+            var dungeon = new Dungeons();
+            context.Add(user);
+            context.Add(user2);
+            context.Add(dungeon);
+            context.SaveChanges();
+
+            var adventurer = new Adventurers
+            {
+                Name = "AdventurerThatCanNotBeAccessed",
+                UserId = user.Id,
+                DungeonId = dungeon.Id
+            };
+            context.Add(adventurer);
+            //Act
+            //Assert
+            await sut.Get(adventurer.Id, user2.Id).ShouldThrowAsync<ArgumentException>();
         }
 
         [Fact]
