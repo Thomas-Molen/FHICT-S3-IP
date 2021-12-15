@@ -1,13 +1,12 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
-name: Build and deploy ASP.Net Core app to Azure Web App - backendtextadventure-enitymanager
+name: Build, test and deploy ASP.Net Core app to Azure Web App - backendtextadventure-enitymanager
 
 on:
   push:
-    branches:
-      - main
-  workflow_dispatch:
+    paths:
+    - 'backend-textadventure/textadventure_backend_entitymanager/**'
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
   build:
@@ -16,21 +15,25 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Set up .NET Core
+      - name: Setup
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '3.1.301'
           include-prerelease: true
 
-      - name: Build with dotnet
+      - name: Build
+        working-directory: backend-textadventure/textadventure_backend_entitymanager
         run: dotnet build --configuration Release
-        working-directory: backend-textadventure/textadventure_backend_entitymanager
+        
+      - name: Test
+        working-directory: ./backend-textadventure/textadventure_backend_entitymanager
+        run: dotnet test --no-build --verbosity normal
 
-      - name: dotnet publish
+      - name: Publish
+        working-directory: backend-textadventure/textadventure_backend_entitymanager
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
-        working-directory: backend-textadventure/textadventure_backend_entitymanager
 
-      - name: Upload artifact for deployment job
+      - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
           name: .net-app
