@@ -116,7 +116,7 @@ namespace textadventure_backend_entitymanager.Services
             }
         }
 
-        public async Task<GetAdventurerResponse> Get(int adventurerId)
+        public async Task<GetAdventurerResponse> Get(int adventurerId, int userId)
         {
             using (var db = contextFactory.CreateDbContext())
             {
@@ -125,7 +125,7 @@ namespace textadventure_backend_entitymanager.Services
                     .Include(a => a.Weapons.Where(w => w.Equiped))
                     .FirstOrDefaultAsync(a => a.Id == adventurerId);
 
-                if (adventurer == null)
+                if (adventurer == null || adventurer.UserId != userId)
                 {
                     throw new ArgumentException("There is no adventurer with given Id from user");
                 }

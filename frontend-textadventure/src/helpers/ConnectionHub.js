@@ -1,12 +1,14 @@
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { UseCMDWrapper } from '.';
-import { AdventurerAtom, EnemyAtom, ItemsAtom, JWTAtom } from '../state';
+import { AdventurerAtom, EnemyAtom, ItemsAtom, JWTAtom, userAtom } from '../state';
 
 export function UseConnectionHub() {
     const JWTToken = useRecoilValue(JWTAtom);
+    const User = useRecoilValue(userAtom);
     const [connection, setConnection] = useState(new HubConnectionBuilder()
         .withUrl(process.env.REACT_APP_GAME_MANAGER + "game", { accessTokenFactory: () => JWTToken })
         .configureLogging(LogLevel.Information)
@@ -21,6 +23,7 @@ export function UseConnectionHub() {
 
     //startup
     function ConnectToHub(connection) {
+        let history = useHistory();
         let URI = useLocation();
         const cmd = UseCMDWrapper();
 
@@ -45,6 +48,10 @@ export function UseConnectionHub() {
                     });
 
                     //invoke connection commands
+                    connection.on("ExitGame", () => {
+                        history.push("/")
+                    });
+
                     connection.on("ReceiveMessage", (message) => {
                         cmd.display(message);
                     });
@@ -90,7 +97,7 @@ export function UseConnectionHub() {
                         }));
                     });
 
-                    await connection.invoke("Join", parseInt(URI.search.replace("?user=", "")));
+                    await connection.invoke("Join", {adventurerId: parseInt(URI.search.replace("?user=", "")), userId: User.id});
                 }
                 catch (e) {
                     cmd.clear();

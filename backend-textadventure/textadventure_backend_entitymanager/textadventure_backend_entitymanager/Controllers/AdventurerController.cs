@@ -34,7 +34,7 @@ namespace textadventure_backend_entitymanager.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
         }
 
@@ -49,7 +49,7 @@ namespace textadventure_backend_entitymanager.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
         }
 
@@ -64,7 +64,7 @@ namespace textadventure_backend_entitymanager.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
         }
 
@@ -73,13 +73,13 @@ namespace textadventure_backend_entitymanager.Controllers
         {
             try
             {
-                var response = await adventurerService.Get(adventurerId);
+                var response = await adventurerService.Get(adventurerId, JWT.GetUserIdFromJWT(Request.Headers[HeaderNames.Authorization]));
 
                 return Ok(response);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
         }
 
@@ -95,7 +95,7 @@ namespace textadventure_backend_entitymanager.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
         }
     }

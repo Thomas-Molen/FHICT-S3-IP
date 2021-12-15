@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Threading.Tasks;
+using textadventure_backend.Models.Requests;
 using textadventure_backend.Services;
 
 namespace textadventure_backend.Hubs
@@ -24,11 +25,11 @@ namespace textadventure_backend.Hubs
         }
 
         [HubMethodName("Join")]
-        public async Task JoinGame(int adventurerId)
+        public async Task JoinGame(JoinGameRequest request)
         {
             try
             {
-                await gameplayService.AddPlayer(Context.ConnectionId, adventurerId);
+                await gameplayService.AddPlayer(Context.ConnectionId, request.adventurerId, request.userId);
             }
             catch (Exception ex)
             {

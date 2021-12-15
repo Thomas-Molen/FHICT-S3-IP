@@ -29,10 +29,17 @@ namespace textadventure_backend.Services
             commandService = _commandService;
         }
 
-        public async Task AddPlayer(string connectionId, int adventurerId)
+        public async Task AddPlayer(string connectionId, int adventurerId, int userId)
         {
             //add player to the sessionManager for use later
             var adventurer = await adventurerService.GetAdventurer(adventurerId);
+            
+            if (adventurer.UserId != userId)
+            {
+                await hubContext.Clients.Client(connectionId)
+                    .SendAsync("ExitGame");
+            }
+
             string group = adventurer.DungeonId.ToString();
 
             sessionManager.AddSession(connectionId, new SessionAdventurer {
