@@ -52,9 +52,6 @@ namespace textadventure_backend.Services
 
             await hubContext.Groups.AddToGroupAsync(connectionId, group);
 
-            await hubContext.Clients.Client(connectionId)
-                    .SendAsync("ReceiveMessage", $"Welcome {adventurer.Name}");
-
             await hubContext.Clients.GroupExcept(group, connectionId)
                 .SendAsync("ReceiveMessage", $"{adventurer.Name} Has entered the dungeon");
 
