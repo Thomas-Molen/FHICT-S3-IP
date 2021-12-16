@@ -22,6 +22,12 @@ namespace textadventure_backend_entitymanager.Services
             using (var db = contextFactory.CreateDbContext())
             {
                 var adventurer = await db.Adventurers.OrderByDescending(x => x.Id).FirstOrDefaultAsync(a => a.Id == adventurerId);
+
+                if (adventurer == null)
+                {
+                    throw new ArgumentException("No adventurer found with given id");
+                }
+
                 adventurer.Drawing = drawing;
 
                 db.Update(adventurer);
@@ -34,6 +40,11 @@ namespace textadventure_backend_entitymanager.Services
             using (var db = contextFactory.CreateDbContext())
             {
                 var adventurer = await db.Adventurers.OrderByDescending(x => x.Id).FirstOrDefaultAsync(a => a.Id == adventurerId);
+
+                if (adventurer == null)
+                {
+                    throw new ArgumentException("No adventurer found with given id");
+                }
 
                 return new GetDrawingResponse { drawing = adventurer.Drawing };
             }

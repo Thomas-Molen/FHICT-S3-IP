@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,6 +25,12 @@ namespace textadventure_backend_entitymanager.Services
                 var adventurer = await db.Adventurers
                     .OrderByDescending(x => x.Id)
                     .FirstOrDefaultAsync(a => a.Id == adventurerId);
+
+                if (adventurer == null)
+                {
+                    throw new ArgumentException("No User found with given adventurerId");
+                }
+
                 var weapon = new Weapons(adventurer.Experience);
                 weapon.AdventurerId = adventurerId;
 
@@ -43,6 +50,12 @@ namespace textadventure_backend_entitymanager.Services
                     .Include(a => a.Weapons
                     .Where(w => w.Durability > 0 || w.Equiped))
                     .FirstOrDefaultAsync(a => a.Id == adventurerId);
+
+                if (adventurer == null)
+                {
+                    throw new ArgumentException("No User found with given adventurerId");
+                }
+
                 return adventurer.Weapons.ToList();
             }
         }
@@ -56,11 +69,21 @@ namespace textadventure_backend_entitymanager.Services
                     .Include(a => a.Weapons)
                     .FirstOrDefaultAsync(a => a.Id == adventurerId);
 
+                if (adventurer == null)
+                {
+                    throw new ArgumentException("No User found with given adventurerId");
+                }
+
                 var currentlyEquipedWeapon = adventurer.Weapons.ToList().Find(w => w.Equiped);
                 var weaponToEquip = adventurer.Weapons.ToList().Find(w => w.Id == weaponId);
                 if (currentlyEquipedWeapon != null)
                 {
                     currentlyEquipedWeapon.Equiped = false;
+                }
+
+                if (weaponToEquip == null)
+                {
+                    throw new ArgumentException("No Weapon found with given weaponId");
                 }
                 weaponToEquip.Equiped = true;
 

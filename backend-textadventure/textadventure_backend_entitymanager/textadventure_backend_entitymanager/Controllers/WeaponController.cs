@@ -20,7 +20,7 @@ namespace textadventure_backend_entitymanager.Controllers
         }
 
         [HttpGet("generate/{adventurerId}/{accessToken}")]
-        public async Task<IActionResult> GenerateWeapon([FromRoute] string accesstoken, int adventurerId)
+        public async Task<IActionResult> GenerateWeapon([FromRoute] string accesstoken, [FromRoute] int adventurerId)
         {
             if (!accessTokenHelper.IsTokenValid(accesstoken))
             {
@@ -40,7 +40,7 @@ namespace textadventure_backend_entitymanager.Controllers
         }
 
         [HttpGet("get/{adventurerId}/{accessToken}")]
-        public async Task<IActionResult> GetAllWeapons([FromRoute] string accesstoken, string adventurerId)
+        public async Task<IActionResult> GetAllWeapons([FromRoute] string accesstoken, [FromRoute] int adventurerId)
         {
             if (!accessTokenHelper.IsTokenValid(accesstoken))
             {
@@ -49,7 +49,7 @@ namespace textadventure_backend_entitymanager.Controllers
 
             try
             {
-                var result = await weaponService.GetAllWeapons(Convert.ToInt32(adventurerId));
+                var result = await weaponService.GetAllWeapons(adventurerId);
 
                 return Ok(result);
             }

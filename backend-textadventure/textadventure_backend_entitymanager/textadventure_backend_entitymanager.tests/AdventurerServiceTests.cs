@@ -116,6 +116,7 @@ namespace textadventure_backend_entitymanager.tests
                 DungeonId = dungeon.Id
             };
             context.Add(adventurer);
+            context.SaveChanges();
             //Act
             //Assert
             await sut.Get(adventurer.Id, user2.Id).ShouldThrowAsync<ArgumentException>();
