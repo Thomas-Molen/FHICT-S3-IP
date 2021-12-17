@@ -81,7 +81,7 @@ export function GamePlayComponent() {
                                                 <div className="col-4">
                                                     <div className="d-flex align-items-center">
                                                         <div data-tip="Level">
-                                                            <Icon icon="mdi:chevron-double-up" width="50" color="white" />{adventurer.experience / 10}
+                                                            <Icon icon="mdi:chevron-double-up" width="50" color="white" />{(adventurer.experience == "-") ? adventurer.experience : adventurer.experience / 10}
                                                         </div>
                                                     </div>
                                                     <div className="d-flex align-items-center">
