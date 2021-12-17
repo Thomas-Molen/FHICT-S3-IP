@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace textadventure_backend.Services
 {
-    public class CombatService
+    public class CombatService : ICombatService
     {
         private readonly SessionManager sessionManager;
         private readonly RoomConnectionService roomService;

@@ -9,7 +9,16 @@ using textadventure_backend_entitymanager.Models.Responses;
 
 namespace textadventure_backend_entitymanager.Services
 {
-    public class AdventurerService
+    public interface IAdventurerService
+    {
+        Task<Adventurers> Create(string name, int userId);
+        Task Delete(int userId, int adventurerId);
+        Task<GetAdventurerResponse> Get(int adventurerId, int userId);
+        Task<ICollection<GetAdventurersResponse>> GetAllFromUser(int userId);
+        Task<ICollection<LeaderboardResponse>> GetLeaderboard();
+    }
+
+    public class AdventurerService : IAdventurerService
     {
         private readonly IDbContextFactory<TextadventureDBContext> contextFactory;
 
@@ -112,7 +121,7 @@ namespace textadventure_backend_entitymanager.Services
                 }
 
                 return result;
-                
+
             }
         }
 

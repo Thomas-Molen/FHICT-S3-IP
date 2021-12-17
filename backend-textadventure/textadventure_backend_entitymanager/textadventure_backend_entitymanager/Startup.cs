@@ -11,6 +11,7 @@ using System;
 using textadventure_backend_entitymanager.Context;
 using textadventure_backend_entitymanager.Helpers;
 using textadventure_backend_entitymanager.Services;
+using textadventure_backend_entitymanager.Services.Interfaces;
 
 namespace textadventure_backend_entitymanager
 {
@@ -47,13 +48,13 @@ namespace textadventure_backend_entitymanager
 
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
 
-            services.AddSingleton<UserService>();
-            services.AddSingleton<AdventurerService>();
-            services.AddSingleton<HubAdventurerService>();
-            services.AddSingleton<EnemyService>();
-            services.AddSingleton<RoomService>();
-            services.AddSingleton<WeaponService>();
-            services.AddSingleton<DrawingService>();
+            services.AddSingleton<IUserService, UserService>();
+            services.AddSingleton<IAdventurerService, AdventurerService>();
+            services.AddSingleton<IHubAdventurerService, HubAdventurerService>();
+            services.AddSingleton<IEnemyService, EnemyService>();
+            services.AddSingleton<IRoomService, RoomService>();
+            services.AddSingleton<IWeaponService, WeaponService>();
+            services.AddSingleton<IDrawingService, DrawingService>();
             services.AddSingleton<JWTHelper>();
             services.AddSingleton<AccessTokenHelper>();
 

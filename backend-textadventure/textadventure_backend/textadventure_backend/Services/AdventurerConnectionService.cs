@@ -7,7 +7,7 @@ using textadventure_backend.Models.Entities;
 
 namespace textadventure_backend.Services
 {
-    public class AdventurerConnectionService
+    public class AdventurerConnectionService : IAdventurerConnectionService
     {
         private readonly HttpClient httpClient;
         private readonly AppSettings appSettings;

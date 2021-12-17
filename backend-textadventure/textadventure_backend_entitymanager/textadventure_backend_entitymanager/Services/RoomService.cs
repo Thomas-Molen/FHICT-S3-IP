@@ -9,10 +9,11 @@ using textadventure_backend_entitymanager.Enums;
 using textadventure_backend_entitymanager.Models;
 using textadventure_backend_entitymanager.Models.Entities;
 using textadventure_backend_entitymanager.Models.Responses;
+using textadventure_backend_entitymanager.Services.Interfaces;
 
 namespace textadventure_backend_entitymanager.Services
 {
-    public class RoomService
+    public class RoomService : IRoomService
     {
         private readonly IDbContextFactory<TextadventureDBContext> contextFactory;
         private readonly Random rng;
@@ -168,7 +169,7 @@ namespace textadventure_backend_entitymanager.Services
                             .FirstOrDefaultAsync(r => (r.PositionY == position.Y + offsetY) && (r.PositionX == position.X));
                         offsetY = -1;
                     }
-                    
+
                     AdjacentRooms adjacentRoom = new AdjacentRooms { Room = roomBeingChecked, RelativePosition = (Directions)i };
                     adjacentRooms.Add(adjacentRoom);
                 }

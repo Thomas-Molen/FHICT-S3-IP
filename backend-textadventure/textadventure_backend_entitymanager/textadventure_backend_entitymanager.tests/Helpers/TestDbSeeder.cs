@@ -26,7 +26,7 @@ namespace textadventure_backend_entitymanager.tests.Helpers
                 var dungeon = new Dungeons();
                 var adventurer = new Adventurers
                 {
-                    Name = "AdventurerThatCanNotBeAccessed",
+                    Name = "testingAdventurer",
                     UserId = user.Id,
                     DungeonId = dungeon.Id
                 };

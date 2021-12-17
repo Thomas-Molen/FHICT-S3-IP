@@ -4,6 +4,7 @@ using System;
 using System.Threading.Tasks;
 using textadventure_backend_entitymanager.Models.Requests;
 using textadventure_backend_entitymanager.Services;
+using textadventure_backend_entitymanager.Services.Interfaces;
 
 namespace textadventure_backend_entitymanager.Controllers
 {
@@ -11,9 +12,9 @@ namespace textadventure_backend_entitymanager.Controllers
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly UserService userService;
+        private readonly IUserService userService;
 
-        public UserController(UserService _userService)
+        public UserController(IUserService _userService)
         {
             userService = _userService;
         }

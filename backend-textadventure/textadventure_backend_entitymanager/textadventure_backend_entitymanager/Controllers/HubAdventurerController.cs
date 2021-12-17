@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using textadventure_backend_entitymanager.Helpers;
 using textadventure_backend_entitymanager.Models.Requests;
 using textadventure_backend_entitymanager.Services;
+using textadventure_backend_entitymanager.Services.Interfaces;
 
 namespace textadventure_backend_entitymanager.Controllers
 {
@@ -15,9 +16,9 @@ namespace textadventure_backend_entitymanager.Controllers
     [Route("api/[controller]")]
     public class HubAdventurerController : ControllerBase
     {
-        private readonly HubAdventurerService adventurerService;
+        private readonly IHubAdventurerService adventurerService;
         private readonly AccessTokenHelper accessTokenHelper;
-        public HubAdventurerController(HubAdventurerService _adventurerService, AccessTokenHelper _accessTokenHelper)
+        public HubAdventurerController(IHubAdventurerService _adventurerService, AccessTokenHelper _accessTokenHelper)
         {
             adventurerService = _adventurerService;
             accessTokenHelper = _accessTokenHelper;

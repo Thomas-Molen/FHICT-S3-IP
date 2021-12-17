@@ -7,10 +7,11 @@ using textadventure_backend_entitymanager.Helpers;
 using textadventure_backend_entitymanager.Models.Entities;
 using textadventure_backend_entitymanager.Models.Requests;
 using textadventure_backend_entitymanager.Models.Responses;
+using textadventure_backend_entitymanager.Services.Interfaces;
 
 namespace textadventure_backend_entitymanager.Services
 {
-    public class UserService
+    public class UserService : IUserService
     {
         private readonly IDbContextFactory<TextadventureDBContext> contextFactory;
         private readonly JWTHelper JWT;
@@ -64,7 +65,7 @@ namespace textadventure_backend_entitymanager.Services
                 }
 
                 // authentication successful so generate jwt token
-                var token =  JWT.GenerateJwtToken(user);
+                var token = JWT.GenerateJwtToken(user);
                 var refreshToken = await JWT.GenerateRefreshToken(user);
 
                 return new VerificationResponse(user, token, refreshToken.Token);
@@ -78,7 +79,7 @@ namespace textadventure_backend_entitymanager.Services
 
         public async Task DeactivateToken(string refreshToken)
         {
-             await JWT.DeactivateRefreshToken(refreshToken);
+            await JWT.DeactivateRefreshToken(refreshToken);
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using textadventure_backend_entitymanager.Helpers;
 using textadventure_backend_entitymanager.Models.Requests;
 using textadventure_backend_entitymanager.Services;
+using textadventure_backend_entitymanager.Services.Interfaces;
 
 namespace textadventure_backend_entitymanager.Controllers
 {
@@ -11,9 +12,9 @@ namespace textadventure_backend_entitymanager.Controllers
     [Route("api/[controller]")]
     public class EnemyController : ControllerBase
     {
-        private readonly EnemyService enemyService;
+        private readonly IEnemyService enemyService;
         private readonly AccessTokenHelper accessTokenHelper;
-        public EnemyController(EnemyService _enemyService, AccessTokenHelper _accessTokenHelper)
+        public EnemyController(IEnemyService _enemyService, AccessTokenHelper _accessTokenHelper)
         {
             enemyService = _enemyService;
             accessTokenHelper = _accessTokenHelper;

@@ -10,7 +10,7 @@ using textadventure_backend.Models.Entities;
 
 namespace textadventure_backend.Services
 {
-    public class EnemyConnectionService
+    public class EnemyConnectionService : IEnemyConnectionService
     {
         private readonly HttpClient httpClient;
         private readonly AppSettings appSettings;

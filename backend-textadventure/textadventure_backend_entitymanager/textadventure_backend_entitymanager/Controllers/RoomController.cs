@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using textadventure_backend_entitymanager.Helpers;
 using textadventure_backend_entitymanager.Models.Requests;
 using textadventure_backend_entitymanager.Services;
+using textadventure_backend_entitymanager.Services.Interfaces;
 
 namespace textadventure_backend_entitymanager.Controllers
 {
@@ -13,9 +14,9 @@ namespace textadventure_backend_entitymanager.Controllers
     [Route("api/[controller]")]
     public class RoomController : ControllerBase
     {
-        private readonly RoomService roomService;
+        private readonly IRoomService roomService;
         private readonly AccessTokenHelper accessTokenHelper;
-        public RoomController(RoomService _roomService, AccessTokenHelper _accessTokenHelper)
+        public RoomController(IRoomService _roomService, AccessTokenHelper _accessTokenHelper)
         {
             roomService = _roomService;
             accessTokenHelper = _accessTokenHelper;

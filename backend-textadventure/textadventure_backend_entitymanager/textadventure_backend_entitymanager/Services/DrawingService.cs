@@ -5,10 +5,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using textadventure_backend_entitymanager.Context;
 using textadventure_backend_entitymanager.Models.Responses;
+using textadventure_backend_entitymanager.Services.Interfaces;
 
 namespace textadventure_backend_entitymanager.Services
 {
-    public class DrawingService
+
+    public class DrawingService : IDrawingService
     {
         private readonly IDbContextFactory<TextadventureDBContext> contextFactory;
 

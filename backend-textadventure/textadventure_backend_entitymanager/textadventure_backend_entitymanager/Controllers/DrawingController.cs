@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using textadventure_backend_entitymanager.Models.Requests;
 using textadventure_backend_entitymanager.Services;
+using textadventure_backend_entitymanager.Services.Interfaces;
 
 namespace textadventure_backend_entitymanager.Controllers
 {
@@ -14,8 +15,8 @@ namespace textadventure_backend_entitymanager.Controllers
     [Route("api/[controller]")]
     public class DrawingController : ControllerBase
     {
-        private readonly DrawingService drawingService;
-        public DrawingController(DrawingService _drawingService)
+        private readonly IDrawingService drawingService;
+        public DrawingController(IDrawingService _drawingService)
         {
             drawingService = _drawingService;
         }

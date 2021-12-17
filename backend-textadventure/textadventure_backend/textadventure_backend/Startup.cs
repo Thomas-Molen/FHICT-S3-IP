@@ -40,8 +40,7 @@ namespace textadventure_backend
             services.AddSignalR();
 
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
-
-            services.AddSingleton<HttpClient>();
+            
             services.AddSingleton<AdventurerConnectionService>();
             services.AddSingleton<SessionManager>();
             services.AddSingleton<EnemyConnectionService>();
@@ -50,6 +49,7 @@ namespace textadventure_backend
             services.AddSingleton<GameplayService>();
             services.AddSingleton<CommandService>();
             services.AddSingleton<CombatService>();
+            services.AddSingleton<HttpClient>();
 
             services.AddHttpContextAccessor();
 

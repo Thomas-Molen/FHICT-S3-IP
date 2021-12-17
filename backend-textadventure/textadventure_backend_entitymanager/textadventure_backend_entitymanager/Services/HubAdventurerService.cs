@@ -4,10 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using textadventure_backend_entitymanager.Context;
 using textadventure_backend_entitymanager.Models.Entities;
+using textadventure_backend_entitymanager.Services.Interfaces;
 
 namespace textadventure_backend_entitymanager.Services
 {
-    public class HubAdventurerService
+    public class HubAdventurerService : IHubAdventurerService
     {
         private readonly IDbContextFactory<TextadventureDBContext> contextFactory;
 
@@ -71,6 +72,11 @@ namespace textadventure_backend_entitymanager.Services
                 if (adventurer == null)
                 {
                     throw new ArgumentException("No adventurer found with given Id");
+                }
+
+                if (experience < 0)
+                {
+                    experience = 0;
                 }
 
                 adventurer.Experience = experience;

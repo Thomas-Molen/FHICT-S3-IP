@@ -15,9 +15,9 @@ namespace textadventure_backend_entitymanager.Controllers
     [Route("api/[controller]")]
     public class AdventurerController : ControllerBase
     {
-        private readonly AdventurerService adventurerService;
+        private readonly IAdventurerService adventurerService;
         private readonly JWTHelper JWT;
-        public AdventurerController(AdventurerService _adventurerService, JWTHelper JWThelper)
+        public AdventurerController(IAdventurerService _adventurerService, JWTHelper JWThelper)
         {
             adventurerService = _adventurerService;
             JWT = JWThelper;

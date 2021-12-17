@@ -8,7 +8,7 @@ using textadventure_backend.Hubs;
 
 namespace textadventure_backend.Services
 {
-    public class CommandService
+    public class CommandService : ICommandService
     {
         private readonly SessionManager sessionManager;
         private readonly IHubContext<GameHub> hubContext;
@@ -272,7 +272,7 @@ namespace textadventure_backend.Services
                     return;
                 case "attack":
                     Random rng = new Random();
-                    if (rng.Next(10*session.Enemy.Difficulty, 100) < 65)
+                    if (rng.Next(10 * session.Enemy.Difficulty, 100) < 65)
                     {
                         //player attacks
                         await combatService.PlayerAttack(connectionId);
@@ -338,7 +338,7 @@ namespace textadventure_backend.Services
             if (session.Enemy.Health < 1)
             {
                 Random rng = new Random();
-                int experience = rng.Next(1 * (session.Enemy.Difficulty*2), 15);
+                int experience = rng.Next(1 * (session.Enemy.Difficulty * 2), 15);
                 session.Adventurer.Experience += experience;
                 await adventurerService.SetExperience(session.Adventurer.Id, session.Adventurer.Experience);
                 await hubContext.Clients.Client(connectionId)

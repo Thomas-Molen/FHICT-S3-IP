@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using textadventure_backend_entitymanager.Helpers;
 using textadventure_backend_entitymanager.Models.Requests;
 using textadventure_backend_entitymanager.Services;
+using textadventure_backend_entitymanager.Services.Interfaces;
 
 namespace textadventure_backend_entitymanager.Controllers
 {
@@ -11,9 +12,9 @@ namespace textadventure_backend_entitymanager.Controllers
     [Route("api/[controller]")]
     public class WeaponController : ControllerBase
     {
-        private readonly WeaponService weaponService;
+        private readonly IWeaponService weaponService;
         private readonly AccessTokenHelper accessTokenHelper;
-        public WeaponController(WeaponService _weaponService, AccessTokenHelper _accessTokenHelper)
+        public WeaponController(IWeaponService _weaponService, AccessTokenHelper _accessTokenHelper)
         {
             weaponService = _weaponService;
             accessTokenHelper = _accessTokenHelper;
