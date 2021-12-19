@@ -24,14 +24,15 @@ namespace textadventure_backend_entitymanager.tests.Helpers
             {
                 var user = new Users("testingEmail", "testingUsername", "testingPassword");
                 var dungeon = new Dungeons();
+                db.Add(user);
+                db.Add(dungeon);
+
                 var adventurer = new Adventurers
                 {
                     Name = "testingAdventurer",
                     UserId = user.Id,
                     DungeonId = dungeon.Id
                 };
-                db.Add(user);
-                db.Add(dungeon);
                 db.Add(adventurer);
                 
                 db.SaveChanges();

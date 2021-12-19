@@ -24,36 +24,19 @@ namespace textadventure_backend_entitymanager.Services
             rng = new Random();
         }
 
-        public async Task<bool> MoveToRoom(int adventurerId, string direction)
+        public async Task<Rooms> Find(int roomId)
         {
             using (var db = contextFactory.CreateDbContext())
             {
-                var adventurer = await db.Adventurers
-                    .OrderByDescending(x => x.Id)
-                    .Include(a => a.Room)
-                    .FirstOrDefaultAsync(a => a.Id == adventurerId);
-
-                if (!adventurer.Room.DirectionHasDoor(direction))
-                {
-                    return false;
-                }
-
-                //get new room to load
-                Vector2 position = MoveInDirection(direction, new Vector2(adventurer.Room.PositionX, adventurer.Room.PositionY));
                 var room = await db.Rooms
                     .OrderByDescending(x => x.Id)
-                    .Where(r => r.DungeonId == adventurer.DungeonId)
-                    .FirstOrDefaultAsync(r => r.PositionX == position.X && r.PositionY == position.Y);
-
+                    .FirstOrDefaultAsync(a => a.Id == roomId);
                 if (room == null)
                 {
-                    room = new Rooms(adventurer.DungeonId, position, await GetAdjacentRooms(position));
-                    await db.AddAsync(room);
-                    await db.SaveChangesAsync();
+                    throw new ArgumentException("No room found with given Id");
                 }
-                await AddRoomToPlayer(adventurer, room);
 
-                return true;
+                return room;
             }
         }
 
@@ -66,6 +49,11 @@ namespace textadventure_backend_entitymanager.Services
                     .Include(a => a.Dungeon)
                         .ThenInclude(d => d.Rooms)
                     .FirstOrDefaultAsync(a => a.Id == adventurerId);
+
+                if (adventurer == null)
+                {
+                    throw new ArgumentException("No adventurer found with given id");
+                }
 
                 //find empty position in dungeon
                 Vector2 position = new Vector2(0, 0);
@@ -93,6 +81,12 @@ namespace textadventure_backend_entitymanager.Services
                 var adventurer = await db.Adventurers
                     .OrderByDescending(x => x.Id)
                     .FirstOrDefaultAsync(a => a.Id == adventurerId);
+
+                if (adventurer == null)
+                {
+                    throw new ArgumentException("No adventurer found with given Id");
+                }
+
                 var map = await db.AdventurerMaps
                     .OrderByDescending(x => x.Id)
                     .FirstOrDefaultAsync(am => am.AdventurerId == adventurerId && am.RoomId == adventurer.RoomId);
@@ -106,19 +100,41 @@ namespace textadventure_backend_entitymanager.Services
             }
         }
 
-        public async Task<Rooms> Find(int roomId)
+        public async Task<bool> MoveToRoom(int adventurerId, string direction)
         {
             using (var db = contextFactory.CreateDbContext())
             {
-                var room = await db.Rooms
+                var adventurer = await db.Adventurers
                     .OrderByDescending(x => x.Id)
-                    .FirstOrDefaultAsync(a => a.Id == roomId);
-                if (room == null)
+                    .Include(a => a.Room)
+                    .FirstOrDefaultAsync(a => a.Id == adventurerId);
+
+                if (adventurer == null)
                 {
-                    throw new ArgumentException("No room found with given Id");
+                    throw new ArgumentException("No adventurer found with given id");
+                }    
+
+                if (!adventurer.Room.DirectionHasDoor(direction))
+                {
+                    return false;
                 }
 
-                return room;
+                //get new room to load
+                Vector2 position = MoveInDirection(direction, new Vector2(adventurer.Room.PositionX, adventurer.Room.PositionY));
+                var room = await db.Rooms
+                    .OrderByDescending(x => x.Id)
+                    .Where(r => r.DungeonId == adventurer.DungeonId)
+                    .FirstOrDefaultAsync(r => r.PositionX == position.X && r.PositionY == position.Y);
+
+                if (room == null)
+                {
+                    room = new Rooms(adventurer.DungeonId, position, await GetAdjacentRooms(position));
+                    await db.AddAsync(room);
+                    await db.SaveChangesAsync();
+                }
+                await AddRoomToPlayer(adventurer, room);
+
+                return true;
             }
         }
 
@@ -145,7 +161,7 @@ namespace textadventure_backend_entitymanager.Services
             return position;
         }
 
-        private async Task<ICollection<AdjacentRooms>> GetAdjacentRooms(Vector2 position)
+        private async Task<List<AdjacentRooms>> GetAdjacentRooms(Vector2 position)
         {
             List<AdjacentRooms> adjacentRooms = new List<AdjacentRooms>();
             using (var db = contextFactory.CreateDbContext())

@@ -22,10 +22,9 @@ namespace textadventure_backend_entitymanager.Controllers
             accessTokenHelper = _accessTokenHelper;
         }
 
-        //Game endpoints
         [AllowAnonymous]
-        [HttpPost("move-to/{accessToken}")]
-        public async Task<IActionResult> EnterRoom([FromRoute] string accesstoken, [FromBody] EnterRoomRequest enterRoomRequest)
+        [HttpGet("get/{roomId}/{accessToken}")]
+        public async Task<IActionResult> GetRoom([FromRoute] int roomId, string accesstoken)
         {
             if (!accessTokenHelper.IsTokenValid(accesstoken))
             {
@@ -34,9 +33,9 @@ namespace textadventure_backend_entitymanager.Controllers
 
             try
             {
-                var result = await roomService.MoveToRoom(enterRoomRequest.AdventurerId, enterRoomRequest.Direction.ToLower());
+                var response = await roomService.Find(roomId);
 
-                return Ok(result);
+                return Ok(response);
             }
             catch (Exception ex)
             {
@@ -67,7 +66,7 @@ namespace textadventure_backend_entitymanager.Controllers
 
         [AllowAnonymous]
         [HttpPost("complete/{adventurerId}/{accessToken}")]
-        public async Task<IActionResult> CompleteRoom([FromRoute] string accesstoken, string adventurerId)
+        public async Task<IActionResult> CompleteRoom([FromRoute] string accesstoken, int adventurerId)
         {
             if (!accessTokenHelper.IsTokenValid(accesstoken))
             {
@@ -76,7 +75,7 @@ namespace textadventure_backend_entitymanager.Controllers
 
             try
             {
-                await roomService.CompleteRoom(Convert.ToInt32(adventurerId));
+                await roomService.CompleteRoom(adventurerId);
 
                 return Ok();
             }
@@ -87,8 +86,8 @@ namespace textadventure_backend_entitymanager.Controllers
         }
 
         [AllowAnonymous]
-        [HttpGet("get/{roomId}/{accessToken}")]
-        public async Task<IActionResult> GetRoom([FromRoute] int roomId, string accesstoken)
+        [HttpPost("move-to/{accessToken}")]
+        public async Task<IActionResult> EnterRoom([FromRoute] string accesstoken, [FromBody] EnterRoomRequest enterRoomRequest)
         {
             if (!accessTokenHelper.IsTokenValid(accesstoken))
             {
@@ -97,9 +96,9 @@ namespace textadventure_backend_entitymanager.Controllers
 
             try
             {
-                var response = await roomService.Find(roomId);
+                var result = await roomService.MoveToRoom(enterRoomRequest.AdventurerId, enterRoomRequest.Direction.ToLower());
 
-                return Ok(response);
+                return Ok(result);
             }
             catch (Exception ex)
             {

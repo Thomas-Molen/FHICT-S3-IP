@@ -32,7 +32,7 @@ namespace textadventure_backend_entitymanager.Models.Entities
             AdventurerMaps = new HashSet<AdventurerMaps>();
         }
 
-        public Rooms(int dungeonId, Vector2 position, ICollection<AdjacentRooms> adjacentRooms)
+        public Rooms(int dungeonId, Vector2 position, List<AdjacentRooms> adjacentRooms)
         {
             Adventurers = new HashSet<Adventurers>();
             AdventurerMaps = new HashSet<AdventurerMaps>();
@@ -48,7 +48,7 @@ namespace textadventure_backend_entitymanager.Models.Entities
             SetInteraction(adjacentRooms, rng);
         }
 
-        public Rooms(int dungeonId, Vector2 position, ICollection<AdjacentRooms> adjacentRooms, Events _event)
+        public Rooms(int dungeonId, Vector2 position, List<AdjacentRooms> adjacentRooms, Events _event)
         {
             Adventurers = new HashSet<Adventurers>();
             AdventurerMaps = new HashSet<AdventurerMaps>();
@@ -60,7 +60,7 @@ namespace textadventure_backend_entitymanager.Models.Entities
             SetInteraction(adjacentRooms, new Random());
         }
 
-        private void SetInteraction(ICollection<AdjacentRooms> adjacentRooms, Random rng)
+        private void SetInteraction(List<AdjacentRooms> adjacentRooms, Random rng)
         {
             //set interactions based on adjacentRooms
             foreach (var entry in adjacentRooms)
