@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using textadventure_backend.Models.Entities;
 
-namespace textadventure_backend.Services
+namespace textadventure_backend.Services.Interfaces
 {
     public interface IAdventurerConnectionService
     {

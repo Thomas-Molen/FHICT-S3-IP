@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace textadventure_backend.Services
+namespace textadventure_backend.Services.Interfaces
 {
     public interface ICommandService
     {

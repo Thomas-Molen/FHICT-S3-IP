@@ -4,15 +4,16 @@ using System;
 using System.Threading.Tasks;
 using textadventure_backend.Models.Requests;
 using textadventure_backend.Services;
+using textadventure_backend.Services.Interfaces;
 
 namespace textadventure_backend.Hubs
 {
     [Authorize]
     public class GameHub : Hub
     {
-        private readonly GameplayService gameplayService;
+        private readonly IGameplayService gameplayService;
 
-        public GameHub(GameplayService _gameplayService)
+        public GameHub(IGameplayService _gameplayService)
         {
             gameplayService = _gameplayService;
         }

@@ -5,20 +5,21 @@ using System.Linq;
 using System.Threading.Tasks;
 using textadventure_backend.Enums;
 using textadventure_backend.Hubs;
+using textadventure_backend.Services.Interfaces;
 
 namespace textadventure_backend.Services
 {
     public class CommandService : ICommandService
     {
-        private readonly SessionManager sessionManager;
+        private readonly ISessionManager sessionManager;
         private readonly IHubContext<GameHub> hubContext;
-        private readonly RoomConnectionService roomService;
-        private readonly WeaponConnectionService weaponService;
-        private readonly AdventurerConnectionService adventurerService;
-        private readonly EnemyConnectionService enemyService;
-        private readonly CombatService combatService;
+        private readonly IRoomConnectionService roomService;
+        private readonly IWeaponConnectionService weaponService;
+        private readonly IAdventurerConnectionService adventurerService;
+        private readonly IEnemyConnectionService enemyService;
+        private readonly ICombatService combatService;
 
-        public CommandService(SessionManager _sessionManager, IHubContext<GameHub> _hubContext, RoomConnectionService _roomService, WeaponConnectionService _weaponService, AdventurerConnectionService _adventurerService, EnemyConnectionService _enemyService, CombatService _combatService)
+        public CommandService(ISessionManager _sessionManager, IHubContext<GameHub> _hubContext, IRoomConnectionService _roomService, IWeaponConnectionService _weaponService, IAdventurerConnectionService _adventurerService, IEnemyConnectionService _enemyService, ICombatService _combatService)
         {
             sessionManager = _sessionManager;
             hubContext = _hubContext;

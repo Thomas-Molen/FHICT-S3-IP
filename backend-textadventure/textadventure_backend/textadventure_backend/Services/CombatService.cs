@@ -2,24 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using textadventure_backend.Services.Interfaces;
 
 namespace textadventure_backend.Services
 {
     public class CombatService : ICombatService
     {
-        private readonly SessionManager sessionManager;
-        private readonly RoomConnectionService roomService;
-        private readonly WeaponConnectionService weaponService;
-        private readonly AdventurerConnectionService adventurerService;
-        private readonly EnemyConnectionService enemyService;
+        private readonly ISessionManager sessionManager;
+        private readonly IAdventurerConnectionService adventurerService;
 
-        public CombatService(SessionManager _sessionManager, RoomConnectionService _roomService, WeaponConnectionService _weaponService, AdventurerConnectionService _adventurerService, EnemyConnectionService _enemyService)
+        public CombatService(ISessionManager _sessionManager, IAdventurerConnectionService _adventurerService)
         {
             sessionManager = _sessionManager;
-            roomService = _roomService;
-            weaponService = _weaponService;
             adventurerService = _adventurerService;
-            enemyService = _enemyService;
         }
 
         public async Task<bool> Run(string connectionId)

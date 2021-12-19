@@ -6,11 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 using textadventure_backend.Helpers;
 using textadventure_backend.Models.Entities;
+using textadventure_backend.Services.Interfaces;
 using textadventure_backend_entitymanager.Models.Responses;
 
 namespace textadventure_backend.Services
 {
-    public class RoomConnectionService
+    public class RoomConnectionService : IRoomConnectionService
     {
         private readonly HttpClient httpClient;
         private readonly AppSettings appSettings;

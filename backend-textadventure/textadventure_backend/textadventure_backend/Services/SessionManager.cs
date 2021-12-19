@@ -4,10 +4,11 @@ using System.Threading.Tasks;
 using textadventure_backend.Models;
 using textadventure_backend.Models.Entities;
 using textadventure_backend.Models.Session;
+using textadventure_backend.Services.Interfaces;
 
 namespace textadventure_backend.Services
 {
-    public class SessionManager
+    public class SessionManager : ISessionManager
     {
         private readonly List<Session> Sessions;
 

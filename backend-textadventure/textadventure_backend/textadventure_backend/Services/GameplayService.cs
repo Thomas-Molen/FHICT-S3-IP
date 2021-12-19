@@ -7,19 +7,20 @@ using textadventure_backend.Hubs;
 using textadventure_backend.Models.Entities;
 using textadventure_backend.Models.Requests;
 using textadventure_backend.Models.Session;
+using textadventure_backend.Services.Interfaces;
 
 namespace textadventure_backend.Services
 {
-    public class GameplayService
+    public class GameplayService : IGameplayService
     {
-        private readonly SessionManager sessionManager;
+        private readonly ISessionManager sessionManager;
         private readonly IHubContext<GameHub> hubContext;
-        private readonly RoomConnectionService roomService;
-        private readonly WeaponConnectionService weaponService;
-        private readonly AdventurerConnectionService adventurerService;
-        private readonly CommandService commandService;
+        private readonly IRoomConnectionService roomService;
+        private readonly IWeaponConnectionService weaponService;
+        private readonly IAdventurerConnectionService adventurerService;
+        private readonly ICommandService commandService;
 
-        public GameplayService(SessionManager _sessionManager, IHubContext<GameHub> _hubContext, RoomConnectionService _roomService, WeaponConnectionService _weaponService, AdventurerConnectionService _adventurerService, EnemyConnectionService _enemyService, CommandService _commandService)
+        public GameplayService(ISessionManager _sessionManager, IHubContext<GameHub> _hubContext, IRoomConnectionService _roomService, IWeaponConnectionService _weaponService, IAdventurerConnectionService _adventurerService, ICommandService _commandService)
         {
             sessionManager = _sessionManager;
             hubContext = _hubContext;
@@ -33,7 +34,7 @@ namespace textadventure_backend.Services
         {
             //add player to the sessionManager for use later
             var adventurer = await adventurerService.GetAdventurer(adventurerId);
-            
+
             if (adventurer.UserId != userId)
             {
                 await hubContext.Clients.Client(connectionId)
@@ -42,12 +43,14 @@ namespace textadventure_backend.Services
 
             string group = adventurer.DungeonId.ToString();
 
-            sessionManager.AddSession(connectionId, new SessionAdventurer {
+            sessionManager.AddSession(connectionId, new SessionAdventurer
+            {
                 Id = adventurerId,
-                Name = adventurer.Name, 
-                Damage = adventurer.Weapons.FirstOrDefault(w => w.Equiped)?.Attack ?? 0, 
+                Name = adventurer.Name,
+                Damage = adventurer.Weapons.FirstOrDefault(w => w.Equiped)?.Attack ?? 0,
                 Health = adventurer.Health,
-                Experience = adventurer.Experience}, 
+                Experience = adventurer.Experience
+            },
                 group);
 
             await hubContext.Groups.AddToGroupAsync(connectionId, group);
@@ -86,13 +89,16 @@ namespace textadventure_backend.Services
             int damage = adventurer.Weapons.FirstOrDefault(w => w.Equiped)?.Attack ?? 0;
             await hubContext.Clients.Client(connectionId)
                     .SendAsync(
-                        "UpdateAdventurer", 
-                        new { id = adventurerId, 
-                            experience = session.Adventurer.Experience, 
-                            health = session.Adventurer.Health, 
-                            name = session.Adventurer.Name, 
-                            damage = session.Adventurer.Damage, 
-                            roomsCleared = adventurer.AdventurerMaps.ToList().Count}
+                        "UpdateAdventurer",
+                        new
+                        {
+                            id = adventurerId,
+                            experience = session.Adventurer.Experience,
+                            health = session.Adventurer.Health,
+                            name = session.Adventurer.Name,
+                            damage = session.Adventurer.Damage,
+                            roomsCleared = adventurer.AdventurerMaps.ToList().Count
+                        }
                     );
 
             await hubContext.Clients.Client(connectionId)

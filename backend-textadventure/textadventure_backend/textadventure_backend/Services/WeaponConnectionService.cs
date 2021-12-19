@@ -8,10 +8,11 @@ using System.Threading.Tasks;
 using textadventure_backend.Helpers;
 using textadventure_backend.Models.Entities;
 using textadventure_backend.Models.Requests;
+using textadventure_backend.Services.Interfaces;
 
 namespace textadventure_backend.Services
 {
-    public class WeaponConnectionService
+    public class WeaponConnectionService : IWeaponConnectionService
     {
         private readonly HttpClient httpClient;
         private readonly AppSettings appSettings;
