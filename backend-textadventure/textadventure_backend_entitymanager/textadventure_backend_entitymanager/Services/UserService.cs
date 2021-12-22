@@ -7,10 +7,17 @@ using textadventure_backend_entitymanager.Helpers;
 using textadventure_backend_entitymanager.Models.Entities;
 using textadventure_backend_entitymanager.Models.Requests;
 using textadventure_backend_entitymanager.Models.Responses;
-using textadventure_backend_entitymanager.Services.Interfaces;
 
 namespace textadventure_backend_entitymanager.Services
 {
+    public interface IUserService
+    {
+        Task DeactivateToken(string refreshToken);
+        Task<VerificationResponse> Login(LoginRequest request);
+        Task<VerificationResponse> Register(RegisterRequest request);
+        Task<VerificationResponse> RenewToken(string refreshToken);
+    }
+
     public class UserService : IUserService
     {
         private readonly IDbContextFactory<TextadventureDBContext> contextFactory;

@@ -8,10 +8,16 @@ using System.Threading.Tasks;
 using textadventure_backend.Helpers;
 using textadventure_backend.Models.Entities;
 using textadventure_backend.Models.Requests;
-using textadventure_backend.Services.Interfaces;
 
 namespace textadventure_backend.Services
 {
+    public interface IWeaponConnectionService
+    {
+        Task<Weapons> CreateWeapon(int adventurerId);
+        Task<List<Weapons>> GetWeapons(int adventurerId);
+        Task SetWeapon(int adventurerId, int weaponId);
+    }
+
     public class WeaponConnectionService : IWeaponConnectionService
     {
         private readonly HttpClient httpClient;

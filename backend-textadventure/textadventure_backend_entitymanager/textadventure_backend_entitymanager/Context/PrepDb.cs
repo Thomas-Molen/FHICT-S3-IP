@@ -19,8 +19,8 @@ namespace textadventure_backend_entitymanager.Context
 
             using var db = contextFactory.CreateDbContext();
 
-                db.Database.Migrate();
-
+            Console.WriteLine("Attempting to apply migrations...");
+            db.Database.Migrate();
         }
     }
 }

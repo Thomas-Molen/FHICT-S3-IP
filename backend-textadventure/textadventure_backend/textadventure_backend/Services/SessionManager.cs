@@ -1,13 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using textadventure_backend.Models;
 using textadventure_backend.Models.Entities;
 using textadventure_backend.Models.Session;
-using textadventure_backend.Services.Interfaces;
 
 namespace textadventure_backend.Services
 {
+    public interface ISessionManager
+    {
+        void AddSession(string connectionId, SessionAdventurer adventurer, string group);
+        Session GetSession(string connectionId);
+        void RemoveSession(string connectionId);
+        void UpdateSessionRoom(string connectionId, Rooms room);
+    }
+
     public class SessionManager : ISessionManager
     {
         private readonly List<Session> Sessions;
@@ -53,11 +58,6 @@ namespace textadventure_backend.Services
                 SouthInteraction = room.SouthInteraction,
                 WestInteraction = room.WestInteraction
             };
-        }
-        public void UpdateSessionRoom(string connectionId, SessionRoom room)
-        {
-            var sessionToUpdate = GetSessionFromConnectionId(connectionId);
-            sessionToUpdate.Room = room;
         }
 
         private Session GetSessionFromConnectionId(string connectionId)

@@ -1,11 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using textadventure_backend.Services.Interfaces;
 
 namespace textadventure_backend.Services
 {
+    public interface ICombatService
+    {
+        Task EnemyAttack(string connectionId);
+        Task PlayerAttack(string connectionId);
+        Task<bool> Run(string connectionId);
+    }
+
     public class CombatService : ICombatService
     {
         private readonly ISessionManager sessionManager;

@@ -4,10 +4,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using textadventure_backend_entitymanager.Context;
 using textadventure_backend_entitymanager.Models.Entities;
-using textadventure_backend_entitymanager.Services.Interfaces;
 
 namespace textadventure_backend_entitymanager.Services
 {
+    public interface IHubAdventurerService
+    {
+        Task<Adventurers> Get(int adventurerId);
+        Task SetExperience(int adventurerId, int experience);
+        Task SetHealth(int adventurerId, int health);
+    }
+
     public class HubAdventurerService : IHubAdventurerService
     {
         private readonly IDbContextFactory<TextadventureDBContext> contextFactory;

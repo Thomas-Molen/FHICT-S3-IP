@@ -1,14 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using textadventure_backend_entitymanager.Context;
 using textadventure_backend_entitymanager.Models.Responses;
-using textadventure_backend_entitymanager.Services.Interfaces;
 
 namespace textadventure_backend_entitymanager.Services
 {
+    public interface IDrawingService
+    {
+        Task<GetDrawingResponse> GetDrawing(int adventurerId);
+        Task SaveDrawing(int adventurerId, string drawing);
+    }
 
     public class DrawingService : IDrawingService
     {

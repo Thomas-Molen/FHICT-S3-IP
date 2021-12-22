@@ -1,4 +1,4 @@
-name: Build and deploy ASP.Net Core app to Azure Web App - backendtextadventure
+name: Build, test and deploy ASP.Net Core app to Azure Web App - backendtextadventure-game
 
 on:
   push:
@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Set up .NET Core
+      - name: Setup
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '3.1.301'
@@ -24,6 +24,10 @@ jobs:
       - name: Build
         working-directory: backend-textadventure/textadventure_backend
         run: dotnet build --configuration Release
+
+      - name: Test
+        working-directory: ./backend-textadventure/textadventure_backend
+        run: dotnet test --no-build --verbosity normal
 
       - name: Publish
         working-directory: backend-textadventure/textadventure_backend

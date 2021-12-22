@@ -1,13 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Net.Http.Headers;
 using System;
 using System.Threading.Tasks;
 using textadventure_backend_entitymanager.Helpers;
-using textadventure_backend_entitymanager.Models.Requests;
 using textadventure_backend_entitymanager.Services;
-using textadventure_backend_entitymanager.Services.Interfaces;
 
 namespace textadventure_backend_entitymanager.Controllers
 {

@@ -1,16 +1,18 @@
 ﻿using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using textadventure_backend.Helpers;
 using textadventure_backend.Models.Entities;
-using textadventure_backend.Services.Interfaces;
 
 namespace textadventure_backend.Services
 {
+    public interface IEnemyConnectionService
+    {
+        Task<Enemy> CreateEnemy(int experience, int roomId);
+    }
+
     public class EnemyConnectionService : IEnemyConnectionService
     {
         private readonly HttpClient httpClient;

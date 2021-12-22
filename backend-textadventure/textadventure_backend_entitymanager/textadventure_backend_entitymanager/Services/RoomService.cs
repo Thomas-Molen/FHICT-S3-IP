@@ -8,11 +8,17 @@ using textadventure_backend_entitymanager.Context;
 using textadventure_backend_entitymanager.Enums;
 using textadventure_backend_entitymanager.Models;
 using textadventure_backend_entitymanager.Models.Entities;
-using textadventure_backend_entitymanager.Models.Responses;
-using textadventure_backend_entitymanager.Services.Interfaces;
 
 namespace textadventure_backend_entitymanager.Services
 {
+    public interface IRoomService
+    {
+        Task CompleteRoom(int adventurerId);
+        Task CreateSpawn(int adventurerId);
+        Task<Rooms> Find(int roomId);
+        Task<bool> MoveToRoom(int adventurerId, string direction);
+    }
+
     public class RoomService : IRoomService
     {
         private readonly IDbContextFactory<TextadventureDBContext> contextFactory;

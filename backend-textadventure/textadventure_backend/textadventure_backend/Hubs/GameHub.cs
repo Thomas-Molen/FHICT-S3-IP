@@ -4,7 +4,6 @@ using System;
 using System.Threading.Tasks;
 using textadventure_backend.Models.Requests;
 using textadventure_backend.Services;
-using textadventure_backend.Services.Interfaces;
 
 namespace textadventure_backend.Hubs
 {

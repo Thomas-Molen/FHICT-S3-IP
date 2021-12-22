@@ -4,10 +4,16 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using textadventure_backend.Helpers;
 using textadventure_backend.Models.Entities;
-using textadventure_backend.Services.Interfaces;
 
 namespace textadventure_backend.Services
 {
+    public interface IAdventurerConnectionService
+    {
+        Task<Adventurers> GetAdventurer(int adventurerId);
+        Task SetExperience(int adventurerId, int experience);
+        Task SetHealth(int adventurerId, int health);
+    }
+
     public class AdventurerConnectionService : IAdventurerConnectionService
     {
         private readonly HttpClient httpClient;

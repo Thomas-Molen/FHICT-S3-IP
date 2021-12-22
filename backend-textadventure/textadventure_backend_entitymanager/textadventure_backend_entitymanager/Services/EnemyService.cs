@@ -1,15 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using textadventure_backend_entitymanager.Context;
-using textadventure_backend_entitymanager.Models.Entities;
-using textadventure_backend_entitymanager.Models.Responses;
-using textadventure_backend_entitymanager.Services.Interfaces;
+﻿using textadventure_backend_entitymanager.Models.Entities;
 
 namespace textadventure_backend_entitymanager.Services
 {
+    public interface IEnemyService
+    {
+        Enemy GenerateEnemy(int experience);
+    }
+
     public class EnemyService : IEnemyService
     {
 

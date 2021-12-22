@@ -1,16 +1,21 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using textadventure_backend.Hubs;
 using textadventure_backend.Models.Entities;
-using textadventure_backend.Models.Requests;
 using textadventure_backend.Models.Session;
-using textadventure_backend.Services.Interfaces;
 
 namespace textadventure_backend.Services
 {
+    public interface IGameplayService
+    {
+        Task AddPlayer(string connectionId, int adventurerId, int userId);
+        Task EquipWeapon(string connectionId, int weaponId);
+        Task ExecuteCommand(string message, string connectionId);
+        Task RemovePlayer(string connectionId);
+    }
+
     public class GameplayService : IGameplayService
     {
         private readonly ISessionManager sessionManager;

@@ -5,10 +5,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using textadventure_backend.Enums;
 using textadventure_backend.Hubs;
-using textadventure_backend.Services.Interfaces;
 
 namespace textadventure_backend.Services
 {
+    public interface ICommandService
+    {
+        Task HandleExploringCommands(string connectionId, string message);
+        Task HandleFightingCommands(string connectionId, string message);
+    }
+
     public class CommandService : ICommandService
     {
         private readonly ISessionManager sessionManager;

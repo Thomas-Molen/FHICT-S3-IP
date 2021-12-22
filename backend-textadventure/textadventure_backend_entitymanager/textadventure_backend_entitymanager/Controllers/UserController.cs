@@ -4,7 +4,6 @@ using System;
 using System.Threading.Tasks;
 using textadventure_backend_entitymanager.Models.Requests;
 using textadventure_backend_entitymanager.Services;
-using textadventure_backend_entitymanager.Services.Interfaces;
 
 namespace textadventure_backend_entitymanager.Controllers
 {

@@ -11,7 +11,6 @@ using System;
 using textadventure_backend_entitymanager.Context;
 using textadventure_backend_entitymanager.Helpers;
 using textadventure_backend_entitymanager.Services;
-using textadventure_backend_entitymanager.Services.Interfaces;
 
 namespace textadventure_backend_entitymanager
 {

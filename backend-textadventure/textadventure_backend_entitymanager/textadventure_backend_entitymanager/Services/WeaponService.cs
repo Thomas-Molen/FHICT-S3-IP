@@ -5,11 +5,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using textadventure_backend_entitymanager.Context;
 using textadventure_backend_entitymanager.Models.Entities;
-using textadventure_backend_entitymanager.Models.Responses;
-using textadventure_backend_entitymanager.Services.Interfaces;
 
 namespace textadventure_backend_entitymanager.Services
 {
+    public interface IWeaponService
+    {
+        Task EquipWeapon(int adventurerId, int weaponId);
+        Task<Weapons> GenerateWeapon(int adventurerId);
+        Task<List<Weapons>> GetAllWeapons(int adventurerId);
+    }
+
     public class WeaponService : IWeaponService
     {
         private readonly IDbContextFactory<TextadventureDBContext> contextFactory;
