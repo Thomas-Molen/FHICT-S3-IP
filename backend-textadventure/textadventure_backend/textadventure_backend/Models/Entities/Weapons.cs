@@ -16,7 +16,7 @@ namespace textadventure_backend.Models.Entities
         public virtual Adventurers Adventurer { get; set; }
         public virtual ICollection<NPCs> NPCs { get; set; }
 
-        Weapons()
+        public Weapons()
         {
             NPCs = new HashSet<NPCs>();
         }

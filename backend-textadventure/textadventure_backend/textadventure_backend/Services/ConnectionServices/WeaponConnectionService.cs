@@ -9,7 +9,7 @@ using textadventure_backend.Helpers;
 using textadventure_backend.Models.Entities;
 using textadventure_backend.Models.Requests;
 
-namespace textadventure_backend.Services
+namespace textadventure_backend.Services.ConnectionServices
 {
     public interface IWeaponConnectionService
     {

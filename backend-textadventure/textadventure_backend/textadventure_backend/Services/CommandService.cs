@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using textadventure_backend.Enums;
 using textadventure_backend.Hubs;
+using textadventure_backend.Services.ConnectionServices;
 
 namespace textadventure_backend.Services
 {
@@ -35,7 +36,7 @@ namespace textadventure_backend.Services
             combatService = _combatService;
         }
 
-        private List<string> GetWorldCommands(string Event, bool EventCompleted)
+        public List<string> GetWorldCommands(string Event, bool EventCompleted)
         {
             List<string> result = new List<string> { "help", "say", "go", "look", "clear", "test" };
             if (!EventCompleted)
@@ -60,7 +61,7 @@ namespace textadventure_backend.Services
             return result;
         }
 
-        private List<string> GetCombatCommands()
+        public List<string> GetCombatCommands()
         {
             List<string> result = new List<string> { "help", "attack", "run", "test" };
             return result;

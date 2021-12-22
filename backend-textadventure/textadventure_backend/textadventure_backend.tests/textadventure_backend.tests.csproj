@@ -16,10 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="MockedServices\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\textadventure_backend\textadventure_backend.csproj" />
   </ItemGroup>
 

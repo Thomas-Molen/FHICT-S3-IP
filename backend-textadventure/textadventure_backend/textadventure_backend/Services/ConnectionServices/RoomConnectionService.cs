@@ -8,7 +8,7 @@ using textadventure_backend.Helpers;
 using textadventure_backend.Models.Entities;
 using textadventure_backend_entitymanager.Models.Responses;
 
-namespace textadventure_backend.Services
+namespace textadventure_backend.Services.ConnectionServices
 {
     public interface IRoomConnectionService
     {

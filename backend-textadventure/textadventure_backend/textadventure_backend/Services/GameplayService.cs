@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using textadventure_backend.Hubs;
 using textadventure_backend.Models.Entities;
 using textadventure_backend.Models.Session;
+using textadventure_backend.Services.ConnectionServices;
 
 namespace textadventure_backend.Services
 {
