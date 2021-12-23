@@ -27,7 +27,7 @@ jobs:
 
       - name: Test
         working-directory: ./backend-textadventure/textadventure_backend
-        run: dotnet test --no-build --verbosity normal
+        run: dotnet test --verbosity normal
 
       - name: Publish
         working-directory: backend-textadventure/textadventure_backend
