@@ -19,7 +19,6 @@ namespace textadventure_backend_entitymanager
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            Console.WriteLine("test");
         }
 
         public IConfiguration Configuration { get; }
