@@ -1,19 +1,26 @@
 name: Build, Test and Deploy ASP.Net Core app to Azure Web App - backendtextadventure
 
 on:
-  [push]
+  push:
+    paths:
+    - 'frontend-textadventure/**'
+    branches: [ dev ]
+  pull_request:
+    branches: [ dev ]
 
 jobs:
  cypress-run:
     runs-on: ubuntu-latest
     steps: 
-      - name: Checkout
         uses: actions/checkout@v2
-      - name: Install node
+
+      - name: Setup
         uses: actions/setup-node@v2
         with:
-            node:version: '14'
-      - name: Install dependencies
-        run: npm install       
+            node-version: '14'
+
+        working-directory: frontend-textadventure
+        run: npm install
+        
       - name: Cypress run
         uses: cypress-io/github-action@v2
