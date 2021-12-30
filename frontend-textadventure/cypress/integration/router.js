@@ -1,15 +1,11 @@
-import { React } from 'react';
-import { useSetRecoilState } from 'recoil';
-import { userAtom } from '../../src/state';
-
 describe("router rendering", () => {
     beforeEach(() => {
-        cy.intercept('Get', '/api/Adventurer/get-leaderboard', {
+        cy.intercept('Get', '**/get-leaderboard', {
             statusCode: 200,
             body: [],
         }).as("default get-leaderboard");
 
-        cy.intercept('Post', '/api/User/renew-token', {
+        cy.intercept('Post', '**/renew-token', {
             statusCode: 400,
             body: {
                 message: "renew token was denied"
@@ -39,7 +35,7 @@ describe("router rendering", () => {
     });
 
     it("Gameplay page loads correct components when logged in", () => {
-        cy.intercept('Post', '/api/User/renew-token', {
+        cy.intercept('Post', '**/renew-token', {
             statusCode: 200,
             body: {
                 id: 1,
@@ -51,26 +47,9 @@ describe("router rendering", () => {
         }).as("override renew-token");
 
         cy.visit("/game");
-        cy.wait(2000);
         cy.get("#navBarComponent").should("exist");
         cy.get("#gameComponent").should("exist");
         cy.get("#footerComponent").should("exist");
-        cy.wait(5000);
-    });
-
-    it("router renders container", () => {
-        cy.visit("/");
-        cy.get("#container").should("exist");
-    });
-
-    it("router renders container", () => {
-        cy.visit("/");
-        cy.get("#container").should("exist");
-    });
-
-    it("router renders container", () => {
-        cy.visit("/");
-        cy.get("#container").should("exist");
     });
 
     // it("logging in will allow access to game page", () => {
