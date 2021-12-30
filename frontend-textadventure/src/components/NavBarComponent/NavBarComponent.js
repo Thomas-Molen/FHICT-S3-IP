@@ -13,7 +13,7 @@ export function NavBarComponent() {
     const [isLoggingOut, setIsLoggingOut] = useState(false);
     return (
         <>
-            <div className="navbarBackground container-fluid">
+            <div className="navbarBackground container-fluid" id="navBarComponent">
                 <div className="row">
                     <div className="col-xl-6 col-sm-8 col-6 row">
                         <div className="col-10 col-sm-2 col-xl-1">
@@ -30,7 +30,7 @@ export function NavBarComponent() {
                         <div className="col-xl-3 col-12 text-end">
                             {user.id == null ?
                                 <>
-                                    <button type="button" className="btn btn-dark btn-lg signUpButton" onClick={() => setIsSignUpOpen(!isSignUpOpen)}>SIGN IN</button>
+                                    <button type="button" className="btn btn-dark btn-lg signUpButton" onClick={() => setIsSignUpOpen(!isSignUpOpen)} id="signInButton">SIGN IN</button>
                                     <div className="text-start">
                                         <SignUpComponent isOpen={isSignUpOpen} className="LoginComponent"></SignUpComponent>
                                     </div>
@@ -48,7 +48,7 @@ export function NavBarComponent() {
                                                     setIsLoggingOut(false);
                                                 })
                                             window.location.reload(false);
-                                        }} />
+                                        }} id="signOutButton"/>
                                 </>
                             }
                         </div>

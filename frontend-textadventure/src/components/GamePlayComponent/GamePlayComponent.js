@@ -39,7 +39,7 @@ export function GamePlayComponent() {
 
     return (
         <>
-            <div className="gameBackground">
+            <div className="gameBackground" id="gameComponent">
                 <div className="col-12 col-lg-9">
                     <div className="gameHeader offset-1 col ">
                         Welcome {adventurer.name}
@@ -49,10 +49,10 @@ export function GamePlayComponent() {
                     <div className="row">
                         <div className="col-11 col-lg-8 ms-2 ms-lg-0">
                             <div className="offset-1 col">
-                                <textarea className="Console" readOnly />
+                                <textarea className="Console" readOnly id="console"/>
                             </div>
                             <div className="offset-1 col">
-                                <textarea className="gameInput" rows="1" onChange={(e) => setInputCommand(e.target.value)} onKeyDown={(e) => CheckForSpecialKey(e)} autoFocus={true}></textarea>
+                                <textarea className="gameInput" rows="1" onChange={(e) => setInputCommand(e.target.value)} onKeyDown={(e) => CheckForSpecialKey(e)} autoFocus={true} id="consoleInput"></textarea>
                                 <Icon icon="akar-icons:send" width="28" className={"sendCommandIcon float-end " + (inputCommand == "" ? "noclick" : "white pointer")} onClick={(e) => ClickSendButton(e)} />
                             </div>
                         </div>

@@ -4,7 +4,7 @@ import React from 'react';
 export function SocialMediaComponent() {
 
     return (
-        <div className="socialmediaBackground container-fluid">
+        <div className="socialmediaBackground container-fluid" id="socialmediaComponent">
             <h1 className="socialmediaHeader">Find out what is happening</h1>
             <div className="d-flex align-items-center justify-content-center">
                 <button className="btn btn-outline-dark rounded-circle socialmediaButton desktopSocialMediaButton">

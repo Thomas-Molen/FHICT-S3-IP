@@ -22,7 +22,7 @@ export function SignUpComponent({ isOpen }) {
     if (!isOpen) return null
     if (isLogin)
         return (
-            <div className="SignUpForm rounded border border-info">
+            <div className="SignUpForm rounded border border-info" id="loginForm">
                 <div className="form-group signUpFormField">
                     <label>Email address</label>
                     <input type="email" className="form-control" value={email} placeholder="name@example.com" onChange={(e) => setEmail(e.target.value)} required />
@@ -67,7 +67,7 @@ export function SignUpComponent({ isOpen }) {
     }
 
     return (
-        <div className="SignUpForm rounded border border-info">
+        <div className="SignUpForm rounded border border-info" id="registerForm">
             <div className="form-group signUpFormField">
                 <label>Email address</label>
                 <input type="email" className="form-control" value={email} placeholder="name@example.com" onChange={(e) => setEmail(e.target.value)} required />

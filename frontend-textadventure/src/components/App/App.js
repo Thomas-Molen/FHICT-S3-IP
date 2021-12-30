@@ -1,4 +1,4 @@
-import { React} from 'react';
+import { React } from 'react';
 import { Sugar } from 'react-preloaders2';
 import { withRouter } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
@@ -12,7 +12,9 @@ function App() {
   useAuthHook();
   return (
     <>
-      <Sugar color={'#ffffff'} background='#212529' customLoading={isLoading} time={0} />
+      {(process.env.NODE_ENV === 'production') &&
+        <Sugar color={'#ffffff'} background='#212529' customLoading={isLoading} time={0} />
+      }
       <Routes />
     </>
   );

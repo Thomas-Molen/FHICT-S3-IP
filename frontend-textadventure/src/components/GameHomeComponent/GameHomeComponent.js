@@ -21,7 +21,7 @@ export function GameHomeComponent() {
 
     if (!isSelectingAdventurers)
         return (
-            <div className="gameBackground container-fluid">
+            <div className="gameBackground container-fluid"  id="gameHomeComponent">
                 <div className="gameHomeHeader">
                     <h1 className="gameHomeHeaderText">START YOUR ADVENTURE</h1>
                 </div>
@@ -36,7 +36,7 @@ export function GameHomeComponent() {
         )
 
     return (
-        <div className="gameBackground container-fluid">
+        <div className="gameBackground container-fluid"  id="gameSelectionComponent">
             <div className="gameHomeHeader">
                 <h1 className="gameHomeHeaderText">SELECT YOUR CHARACTER</h1>
             </div>

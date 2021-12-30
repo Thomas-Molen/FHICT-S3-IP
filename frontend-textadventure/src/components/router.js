@@ -9,7 +9,7 @@ const Routes = () => {
     const user = useRecoilValue(userAtom);
     
     return (
-        <main>
+        <main id="container">
             <Switch>
                 {user.id != null &&
                 <Route path='/game'>
@@ -19,7 +19,7 @@ const Routes = () => {
                 </Route>
                 }
                 <Route path='/'>
-                <NavBarComponent />
+                    <NavBarComponent />
                     <IntroductionComponent />
                     <SocialMediaComponent />
                     <GameHomeComponent />
