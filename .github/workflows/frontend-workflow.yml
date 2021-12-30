@@ -3,7 +3,7 @@ name: Build, test and deploy ReactJS to Vercel - text-adventure-beta
 on:
   push:
     paths:
-    - 'textadventure-backend/**'
+    - 'frontend-textadventure/**'
     branches: [ main ]
   pull_request:
     branches: [ main ]
