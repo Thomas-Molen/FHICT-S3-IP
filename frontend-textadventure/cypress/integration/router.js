@@ -50,10 +50,15 @@ describe("router rendering", () => {
             },
         }).as("override renew-token");
 
+        cy.screenshot("pre game")
         cy.visit("/game");
+        cy.screenshot("post game")
         cy.get("#navBarComponent").should("exist");
+        cy.screenshot("post navbar")
         cy.get("#gameComponent").should("exist");
+        cy.screenshot("post gameComponent")
         cy.get("#footerComponent").should("exist");
+        cy.screenshot("post footer")
     });
 
     // it("logging in will allow access to game page", () => {
