@@ -1,5 +1,8 @@
 name: Build, Test and Deploy ASP.Net Core app to Azure Web App - backendtextadventure
 
+on:
+  [push]
+
 jobs:
  cypress-run:
     runs-on: ubuntu-latest
