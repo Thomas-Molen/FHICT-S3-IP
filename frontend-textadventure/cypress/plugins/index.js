@@ -1,6 +1,6 @@
-const injectDevServer = require("@cypress/react/plugins/react-scripts")
+// cypress/plugins/index.js
 
+// export a function
 module.exports = (on, config) => {
-  injectDevServer(on, config)
-  return config
+  // configure plugins here
 }
