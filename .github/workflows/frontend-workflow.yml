@@ -7,20 +7,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Install node
-        uses: actions/setup-node@v2
-        with:
-            node-version: '14'
-
-      - name: Install dependencies
-        working-directory: frontend-textadventure
-        run: npm install
-
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
+          working-directory: frontend-textadventure
           start: npm start
-          install: false
           wait-on: 'http://localhost:3000'
           wait-on-timeout: 120
-          record: textadventure
