@@ -9,5 +9,5 @@ jobs:
       # Install NPM dependencies, cache them correctly
       # and run all Cypress tests
       - name: Cypress run
-        working-directory: frontend-textadventure
         uses: cypress-io/github-action@v2
+        working-directory: frontend-textadventure
