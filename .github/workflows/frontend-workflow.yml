@@ -4,13 +4,11 @@ on:
   push:
     paths:
     - 'frontend-textadventure/**'
-    branches: [ dev ]
-  pull_request:
-    branches: [ dev ]
 
 jobs:
  cypress-run:
     runs-on: ubuntu-latest
+
     steps: 
         uses: actions/checkout@v2
 
@@ -21,6 +19,6 @@ jobs:
 
         working-directory: frontend-textadventure
         run: npm install
-        
+
       - name: Cypress run
         uses: cypress-io/github-action@v2
