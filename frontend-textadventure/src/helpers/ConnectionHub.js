@@ -99,10 +99,10 @@ export function UseConnectionHub() {
 
                     await connection.invoke("Join", {adventurerId: parseInt(URI.search.replace("?user=", "")), userId: User.id});
                 }
-                catch (e) {
+                catch (error) {
                     cmd.clear();
                     cmd.display("Failed to connect to game server. \nPlease check your internet connection and the status of our servers.");
-                    console.log("Error: " + e);
+                    console.log("Error: " + error);
                 }
             }
         }
