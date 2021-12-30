@@ -19,6 +19,9 @@ export function DrawingComponent({ adventurerId }) {
             .then((response) => {
                 setDrawing(decompressFromBase64(response.drawing));
             })
+            .catch(error => {
+                console.error('Error:', error);
+            });
     }, [])
 
     return (
