@@ -27,7 +27,7 @@ export function GameHomeComponent() {
                 </div>
                 <div className="d-flex justify-content-center">
                     {user.id == null ?
-                        <Button variant="light" className="gameHomeButton" disabled><p className="mb-0">C:\ Start</p></Button>
+                        <Button variant="light" className="gameHomeButton disabled"><p className="mb-0">C:\ Start</p></Button>
                         :
                         <Button variant="light" className="gameHomeButton" onClick={() => GetAdventurers()}><p className="mb-0">C:\ Start</p></Button>
                     }
@@ -67,23 +67,23 @@ export function GameHomeComponent() {
                             (selectedAdventurer == null) ?
                                 <>
                                     <Button variant="secondary" className="CreateAdventurerButton" size="lg" onClick={() => setSettingAdventurerName(!settingAdventurerName)}><p className="SelectionButtonText noclick">New adventure</p></Button>
-                                    <Button variant="primary" disabled size="lg"><p className="SelectionButtonText">Resume</p></Button>
+                                    <Button variant="primary" className="resumeButton disabled" size="lg"><p className="SelectionButtonText">Resume</p></Button>
                                 </>
                                 :
                                 <>
                                     <Button variant="secondary" className="CreateAdventurerButton" size="lg" onClick={() => setSettingAdventurerName(!settingAdventurerName)}><p className="SelectionButtonText noclick">New adventure</p></Button>
-                                    <Button variant="primary" size="lg" onClick={() => ResumeGame()}><p className="SelectionButtonText noclick">Resume</p></Button>
+                                    <Button variant="primary" className="resumeButton" size="lg" onClick={() => ResumeGame()}><p className="SelectionButtonText noclick">Resume</p></Button>
                                 </>
                             :
                             <>
                                 <Button variant="secondary" className="CreateAdventurerButton" size="lg">
                                     <div className="d-flex align-items-center">
                                         <Icon icon="icomoon-free:cross" className="closeCreateAdventure" color="white" width="18" onClick={() => setSettingAdventurerName(!settingAdventurerName)} />
-                                        <input type="text" className="form-control form-control-sm SelectionButtonText" placeholder="Adventurer" maxLength="20" />
+                                        <input type="text" className="form-control form-control-sm SelectionButtonText createAdventurerInputBox" placeholder="Adventurer" maxLength="20" />
                                     </div>
                                 </Button>
                                 {!creatingAdventurer ?
-                                    <Button variant="primary" size="lg" onClick={(selectedButton) => CreateAdventurer(selectedButton.target)}><p className="SelectionButtonText noclick">Create</p></Button>
+                                    <Button variant="primary" size="lg" onClick={(selectedButton) => CreateAdventurer(selectedButton.target)} id="createAdventurerButton"><p className="SelectionButtonText noclick">Create</p></Button>
                                     :
                                     <Button variant="primary" className="d-flex align-items-center" disabled size="lg">
                                         <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>

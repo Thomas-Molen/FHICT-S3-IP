@@ -44,7 +44,7 @@ export function LeaderboardComponent() {
                             <tbody>
                                 {(leaderboard !== null && leaderboard !== [] && leaderboard !== undefined) &&
                                     leaderboard.map((adventurer) =>
-                                        <tr key={adventurer.position}>
+                                        <tr key={adventurer.position} className="leaderboardEntry">
                                             <th>{adventurer.position}</th>
                                             <td>{adventurer.user}</td>
                                             <td>{adventurer.adventurer}</td>

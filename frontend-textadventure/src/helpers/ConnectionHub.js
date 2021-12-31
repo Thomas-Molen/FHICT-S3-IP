@@ -111,7 +111,7 @@ export function UseConnectionHub() {
     //game logic
     function SendCommand(connection) {
         return async (command) => {
-            if (connection.state != "Disconnected") {
+            if (connection.state == "Connected") {
                 await connection.invoke("SendCommand", command);
             }
         }
@@ -119,7 +119,7 @@ export function UseConnectionHub() {
 
     function EquipWeapon(connection) {
         return async (weaponId) => {
-            if (connection.state != "Disconnected") {
+            if (connection.state == "Connected") {
                 await connection.invoke("EquipWeapon", weaponId)
             }
         }

@@ -27,12 +27,6 @@ export function GamePlayComponent() {
     const [inputHistory, setInputHistory] = useState([]);
     const [inputHistoryIndex, setInputHistoryIndex] = useState(0);
 
-    const [connection, setConnection] = useState(new HubConnectionBuilder()
-        .withUrl(process.env.REACT_APP_GAME_MANAGER + "game", { accessTokenFactory: () => JWTToken })
-        .configureLogging(LogLevel.Information)
-        .withAutomaticReconnect()
-        .build());
-
     useEffect(() => {
         hub.connect();
     }, [])

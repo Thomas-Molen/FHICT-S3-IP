@@ -38,8 +38,11 @@ export function DrawingComponent({ adventurerId }) {
                                     .then(() => {
                                         setDrawing(drawing);
                                     })
+                                    .catch(error => {
+                                        console.error('Error:', error);
+                                    });
                                 setIsSaving(false);
-                            }} />
+                            }} id="saveDrawingOption"/>
                     </a>
                     <a data-tip="Undo last action">
                         <Icon icon="ic:baseline-undo" color="#585858" width="30" className="pointer drawingOption me-2"
