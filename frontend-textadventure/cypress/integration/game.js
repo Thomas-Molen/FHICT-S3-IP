@@ -51,7 +51,7 @@ describe("game page", () => {
     });
 
     it("can save drawing", () => {
-        cy.intercept('Post', '**/Drawing/save/**', {
+        cy.intercept('Post', '**/save/**', {
             statusCode: 200
         }).as("override save drawing");
 
