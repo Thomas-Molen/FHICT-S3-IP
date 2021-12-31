@@ -99,7 +99,8 @@ describe("home page game area", () => {
         cy.get(".adventurerDeleteButton").click();
         cy.on("window:confirm", () => true);
 
-        //check request made
+        //wait and check body of request made
+        cy.wait("@override delete adventurer");
         cy.get("@override delete adventurer")
             .its("request.body")
             .should(
