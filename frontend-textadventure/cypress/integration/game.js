@@ -56,7 +56,6 @@ describe("game page", () => {
         }).as("override save drawing");
 
         cy.get(".NotePadCanvas > :nth-child(4)").click(10, 10);
-        // cy.get(".NotePadCanvas > :nth-child(4)").click(800, 500);
         cy.get("#saveDrawingOption").click();
 
         //wait for request and then check it
@@ -65,10 +64,6 @@ describe("game page", () => {
             .its("request.body")
             .should(
                 "deep.equal",
-                {
-                    drawing: "N4IgNglgdgpgziAXAbQLoBoQHcIBMAuAFkgIwAMFmhMEA5ofkgMwBsZAvkA="
-                }
-                ||
                 {
                     drawing: "N4IgNglgdgpgziAXAbVABwPbQC4JaADyQE4A6YiyqygFgGYAaEATyQEYAGUgJgFYOBgoR14B2AL4NCJctTnF6TVok49+w4WMnTEZeXMUt2XPhs0SAukwBGAJwCucABYBhDGAy2kIAMQAODgCAkBsHZwAlAEMAEwhHJG5xKxAAdwho7CdjASYnGAgAcydsJDoANg5xIA="
                 }
