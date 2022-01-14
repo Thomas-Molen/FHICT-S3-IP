@@ -1,4 +1,4 @@
 export * from './Auth'
-export * from './Cmd'
+export * from './cmd'
 export * from './FetchWrapper'
 export * from './ConnectionHub'
