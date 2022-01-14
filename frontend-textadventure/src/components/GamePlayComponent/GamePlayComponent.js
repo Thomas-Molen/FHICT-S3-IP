@@ -1,5 +1,4 @@
 import { Icon } from '@iconify/react';
-import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import { React, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
