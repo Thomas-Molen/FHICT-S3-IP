@@ -11,5 +11,3 @@
     - Contains All documentation files (e.g. Analysis, Research, etc.)
     - Contains All used diagrams (e.g. ERD, Class diagram, etc.)
     - Cotnains All media (e.g. images used, videos download, etc.)
-    - Contains A testing folder containing all projects used for research.
----
