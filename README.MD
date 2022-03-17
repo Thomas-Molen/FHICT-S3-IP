@@ -11,7 +11,7 @@
   <a href="https://github.com/Thomas-Molen/WebAdventure">
     <img src="Documentation/Media/LogoCMDWhite.png" alt="Logo" width="80" height="80">
   </a>
-  <h3>A procedually generating text adventure game in your browser!</h3>
+  <h3>A procedurally generating text adventure game in your browser!</h3>
 </div>
 
 
@@ -55,7 +55,7 @@ If you are interested in any of these, you should give this completely online we
 Here's why:
 * Clean darkmode aesthetic just like that good old commandline.
 * Fully cloud synced gameplay, so you can continue your adventure anywhere.
-* Completely procedually generated meaning the adventure is never over!
+* Completely procedurally generated meaning the adventure is never over!
 * Play and chat with other people in real time.
 * Participate on the global leaderboards for the top place.
 * Modern day UX optimization for the best text adventure experience possible.
@@ -104,7 +104,7 @@ Create / Select / Delete adventurers.
 </br>
 <h3>Gameplay Page</h3>
 <p>
-After selecting an adventurer get brought to the gameplay page with all usefull information at your fingertips.
+After selecting an adventurer get brought to the gameplay page with all useful information at your fingertips.
 </p>
   <img src="Documentation/Media/GameplayPage.png"
    alt="Gameplay page" width="500">
