@@ -39,10 +39,7 @@ namespace textadventure_backend_entitymanager
 
             services.AddDbContextFactory<TextadventureDBContext>(options =>
             {
-                options.UseMySql(
-                    Configuration.GetConnectionString("SQL_DB"), 
-                    ServerVersion.AutoDetect(Configuration.GetConnectionString("SQL_DB")), 
-                    o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
+                options.UseSqlite("Data Source=webadventure.db");
             });
 
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));

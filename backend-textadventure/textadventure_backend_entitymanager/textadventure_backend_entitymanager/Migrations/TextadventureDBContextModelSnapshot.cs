@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using textadventure_backend_entitymanager.Context;
 
+#nullable disable
+
 namespace textadventure_backend_entitymanager.Migrations
 {
     [DbContext(typeof(TextadventureDBContext))]
@@ -13,25 +15,23 @@ namespace textadventure_backend_entitymanager.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder
-                .HasAnnotation("Relational:MaxIdentifierLength", 64)
-                .HasAnnotation("ProductVersion", "5.0.12");
+            modelBuilder.HasAnnotation("ProductVersion", "6.0.0");
 
             modelBuilder.Entity("textadventure_backend_entitymanager.Models.Entities.AdventurerMaps", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("INTEGER")
                         .HasColumnName("id");
 
                     b.Property<int>("AdventurerId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("EventCompleted")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("RoomId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -46,35 +46,35 @@ namespace textadventure_backend_entitymanager.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("INTEGER")
                         .HasColumnName("id");
 
                     b.Property<string>("Drawing")
-                        .HasColumnType("longtext")
+                        .HasColumnType("TEXT")
                         .HasColumnName("drawing");
 
                     b.Property<int>("DungeonId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("Experience")
-                        .HasColumnType("int")
+                        .HasColumnType("INTEGER")
                         .HasColumnName("experience");
 
                     b.Property<int>("Health")
-                        .HasColumnType("int")
+                        .HasColumnType("INTEGER")
                         .HasColumnName("health");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(20)
-                        .HasColumnType("varchar(20)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("name");
 
                     b.Property<int?>("RoomId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -91,7 +91,7 @@ namespace textadventure_backend_entitymanager.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("INTEGER")
                         .HasColumnName("id");
 
                     b.HasKey("Id");
@@ -103,28 +103,28 @@ namespace textadventure_backend_entitymanager.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("INTEGER")
                         .HasColumnName("id");
 
                     b.Property<int>("AdventurerId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("content");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(1000)
-                        .HasColumnType("varchar(1000)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("description");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("name");
 
                     b.HasKey("Id");
@@ -138,25 +138,25 @@ namespace textadventure_backend_entitymanager.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("INTEGER")
                         .HasColumnName("id");
 
                     b.Property<string>("Conversation")
                         .IsRequired()
                         .HasMaxLength(5000)
-                        .HasColumnType("varchar(5000)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("conversation");
 
                     b.Property<int>("ItemId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("Risk")
                         .HasMaxLength(101)
-                        .HasColumnType("int")
+                        .HasColumnType("INTEGER")
                         .HasColumnName("risk");
 
                     b.Property<int>("WeaponId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -167,32 +167,32 @@ namespace textadventure_backend_entitymanager.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("INTEGER")
                         .HasColumnName("id");
 
                     b.Property<bool>("Active")
-                        .HasColumnType("tinyint(1)")
+                        .HasColumnType("INTEGER")
                         .HasColumnName("active");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("created_at");
 
                     b.Property<DateTime>("ExpiresAt")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("expires_at");
 
                     b.Property<DateTime?>("RevokedAt")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("revoked_at");
 
                     b.Property<string>("Token")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("TEXT")
                         .HasColumnName("token");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -205,48 +205,48 @@ namespace textadventure_backend_entitymanager.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("INTEGER")
                         .HasColumnName("id");
 
                     b.Property<int>("DungeonId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("EastInteraction")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("east");
 
                     b.Property<string>("Event")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("event");
 
                     b.Property<string>("NorthInteraction")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("north");
 
                     b.Property<int>("PositionX")
-                        .HasColumnType("int")
+                        .HasColumnType("INTEGER")
                         .HasColumnName("position_x");
 
                     b.Property<int>("PositionY")
-                        .HasColumnType("int")
+                        .HasColumnType("INTEGER")
                         .HasColumnName("position_y");
 
                     b.Property<string>("SouthInteraction")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("south");
 
                     b.Property<string>("WestInteraction")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("west");
 
                     b.HasKey("Id");
@@ -260,31 +260,31 @@ namespace textadventure_backend_entitymanager.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("INTEGER")
                         .HasColumnName("id");
 
                     b.Property<bool>("Admin")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint(1)")
+                        .HasColumnType("INTEGER")
                         .HasDefaultValue(false)
                         .HasColumnName("admin");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(200)
-                        .HasColumnType("varchar(200)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("email");
 
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(200)
-                        .HasColumnType("varchar(200)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("password");
 
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasMaxLength(20)
-                        .HasColumnType("varchar(20)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("username");
 
                     b.HasKey("Id");
@@ -296,29 +296,29 @@ namespace textadventure_backend_entitymanager.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("INTEGER")
                         .HasColumnName("id");
 
                     b.Property<int>("AdventurerId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("Attack")
-                        .HasColumnType("int")
+                        .HasColumnType("INTEGER")
                         .HasColumnName("attack");
 
                     b.Property<int>("Durability")
                         .HasMaxLength(101)
-                        .HasColumnType("int")
+                        .HasColumnType("INTEGER")
                         .HasColumnName("durability");
 
                     b.Property<bool>("Equiped")
-                        .HasColumnType("tinyint(1)")
+                        .HasColumnType("INTEGER")
                         .HasColumnName("equiped");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("name");
 
                     b.HasKey("Id");
@@ -333,16 +333,16 @@ namespace textadventure_backend_entitymanager.Migrations
                     b.HasOne("textadventure_backend_entitymanager.Models.Entities.Adventurers", "Adventurer")
                         .WithMany("AdventurerMaps")
                         .HasForeignKey("AdventurerId")
-                        .HasConstraintName("FK_AdventurerMaps_Adventurers")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_AdventurerMaps_Adventurers");
 
                     b.HasOne("textadventure_backend_entitymanager.Models.Entities.Rooms", "Room")
                         .WithMany("AdventurerMaps")
                         .HasForeignKey("RoomId")
-                        .HasConstraintName("FK_AdventurerMaps_Rooms")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_AdventurerMaps_Rooms");
 
                     b.Navigation("Adventurer");
 
@@ -354,21 +354,21 @@ namespace textadventure_backend_entitymanager.Migrations
                     b.HasOne("textadventure_backend_entitymanager.Models.Entities.Dungeons", "Dungeon")
                         .WithMany("Adventurers")
                         .HasForeignKey("DungeonId")
-                        .HasConstraintName("FK_Adventurers_Dungeons")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_Adventurers_Dungeons");
 
                     b.HasOne("textadventure_backend_entitymanager.Models.Entities.Rooms", "Room")
                         .WithMany("Adventurers")
                         .HasForeignKey("RoomId")
-                        .HasConstraintName("FK_Adventurers_Rooms")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasConstraintName("FK_Adventurers_Rooms");
 
                     b.HasOne("textadventure_backend_entitymanager.Models.Entities.Users", "User")
                         .WithMany("Adventurers")
                         .HasForeignKey("UserId")
-                        .HasConstraintName("FK_Adventurers_Users")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_Adventurers_Users");
 
                     b.Navigation("Dungeon");
 
@@ -382,9 +382,9 @@ namespace textadventure_backend_entitymanager.Migrations
                     b.HasOne("textadventure_backend_entitymanager.Models.Entities.Adventurers", "Adventurer")
                         .WithMany("Items")
                         .HasForeignKey("AdventurerId")
-                        .HasConstraintName("FK_Items_Adventurers")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_Items_Adventurers");
 
                     b.Navigation("Adventurer");
                 });
@@ -394,9 +394,9 @@ namespace textadventure_backend_entitymanager.Migrations
                     b.HasOne("textadventure_backend_entitymanager.Models.Entities.Users", "User")
                         .WithMany("RefreshTokens")
                         .HasForeignKey("UserId")
-                        .HasConstraintName("FK_RefreshTokens_Users")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_RefreshTokens_Users");
 
                     b.Navigation("User");
                 });
@@ -406,9 +406,9 @@ namespace textadventure_backend_entitymanager.Migrations
                     b.HasOne("textadventure_backend_entitymanager.Models.Entities.Dungeons", "Dungeon")
                         .WithMany("Rooms")
                         .HasForeignKey("DungeonId")
-                        .HasConstraintName("FK_Rooms_Dungeons")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_Rooms_Dungeons");
 
                     b.Navigation("Dungeon");
                 });
@@ -418,9 +418,9 @@ namespace textadventure_backend_entitymanager.Migrations
                     b.HasOne("textadventure_backend_entitymanager.Models.Entities.Adventurers", "Adventurer")
                         .WithMany("Weapons")
                         .HasForeignKey("AdventurerId")
-                        .HasConstraintName("FK_Weapons_Adventurers")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_Weapons_Adventurers");
 
                     b.Navigation("Adventurer");
                 });
