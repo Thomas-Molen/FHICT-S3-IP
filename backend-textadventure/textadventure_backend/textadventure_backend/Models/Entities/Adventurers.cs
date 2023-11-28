@@ -17,11 +17,8 @@ namespace textadventure_backend.Models.Entities
         public int DungeonId { get; set; }
         public int? RoomId { get; set; }
 
-        [JsonIgnore]
         public virtual Users User { get; set; }
-        [JsonIgnore]
         public virtual Dungeons Dungeon { get; set; }
-        [JsonIgnore]
         public virtual Rooms Room { get; set; } = null;
 
         public virtual ICollection<AdventurerMaps> AdventurerMaps { get; set; }

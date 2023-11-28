@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 using textadventure_backend.Helpers;
@@ -37,7 +38,7 @@ namespace textadventure_backend.Services.ConnectionServices
                 {
                     throw new ArgumentException(response.ReasonPhrase);
                 }
-                return await response.Content.ReadAsAsync<List<Weapons>>();
+                return await response.Content.ReadFromJsonAsync<List<Weapons>>();
             }
         }
 

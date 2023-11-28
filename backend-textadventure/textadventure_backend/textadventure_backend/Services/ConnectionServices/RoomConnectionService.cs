@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 using textadventure_backend.Helpers;
@@ -37,7 +38,7 @@ namespace textadventure_backend.Services.ConnectionServices
                 {
                     throw new ArgumentException(roomResponse.ReasonPhrase);
                 }
-                return await roomResponse.Content.ReadAsAsync<Rooms>();
+                return await roomResponse.Content.ReadFromJsonAsync<Rooms>();
             }
         }
 

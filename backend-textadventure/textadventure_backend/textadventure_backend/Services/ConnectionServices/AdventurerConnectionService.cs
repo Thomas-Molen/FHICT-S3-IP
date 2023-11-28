@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using System;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 using textadventure_backend.Helpers;
 using textadventure_backend.Models.Entities;
@@ -33,7 +34,7 @@ namespace textadventure_backend.Services.ConnectionServices
                 {
                     throw new ArgumentException(response.ReasonPhrase);
                 }
-                return await response.Content.ReadAsAsync<Adventurers>();
+                return await response.Content.ReadFromJsonAsync<Adventurers>();
             }
         }
 
