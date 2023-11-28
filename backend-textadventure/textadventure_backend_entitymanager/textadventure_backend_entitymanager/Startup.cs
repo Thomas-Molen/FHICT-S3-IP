@@ -39,7 +39,7 @@ namespace textadventure_backend_entitymanager
 
             services.AddDbContextFactory<TextadventureDBContext>(options =>
             {
-                options.UseSqlite("Data Source=webadventure.db");
+                options.UseSqlite("Data Source=/home/webadventure/webadventure.db");
             });
 
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
